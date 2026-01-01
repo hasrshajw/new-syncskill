@@ -7,26 +7,25 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     
     <style>
         :root {
             --text-sub: #6b7280;
             --header-height-desktop: 70px;
-            --sidebar-width: 260px;
-            --row-height: 48px;
+            --sidebar-width: 270px;
+            --row-height: 52px; /* Increased height for larger text */
             --sidebar-bg: #ffffff;
             --header-bg: #ffffff;
             --page-bg: #f4f5f7;
             --text-color: rgb(24, 24, 26);
             --icon-color: #6b7280;
-            /* Updated to SyncSkill Green */
             --brand-primary: #34c375; 
             --icon-active: #34c375;
-            --active-bg: #f0faf4; /* Light green tint */
+            --active-bg: #f0faf4; 
             --hover-bg: #f3f4f6;
             --border-subtle: #e5e7eb;
-            --radius-md: 8px;
+            --radius-md: 10px;
             --shadow-premium: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
             --danger-color: #ef4444;
         }
@@ -43,17 +42,17 @@
             background: var(--page-bg);
             font-family: "DM Sans", Roboto, sans-serif;
             font-weight: 500;
-            font-size: 14px;
+            font-size: 15px; /* Base font size increased */
             color: var(--text-color);
             overflow-x: hidden;
         }
 
-        /* Branding Text Style */
+        /* Branding Text - Larger and Bolder */
         .brand-text {
-            font-size: 22px;
-            font-weight: 800;
+            font-size: 26px; /* Increased from 22px */
+            font-weight: 900; /* Ultra bold */
             color: var(--brand-primary);
-            letter-spacing: -0.5px;
+            letter-spacing: -0.8px;
             text-decoration: none;
         }
 
@@ -62,21 +61,20 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 24px;
-            height: 24px;
+            width: 26px; /* Slightly larger icons */
+            height: 26px;
         }
         
         .icon svg {
-            width: 22px;
-            height: 22px;
+            width: 24px;
+            height: 24px;
             stroke: var(--icon-color);
             fill: none;
-            stroke-width: 2;
+            stroke-width: 2.2; /* Slightly thicker strokes */
             stroke-linecap: round;
             stroke-linejoin: round;
         }
 
-        /* Handling for the Certificates SVG */
         .icon svg.custom-cert {
             stroke: none;
             fill: var(--icon-color);
@@ -114,37 +112,40 @@
 
         .d-sidebar-inner { padding: 32px 16px 16px 12px; display: flex; flex-direction: column; height: 100%; }
 
-        .d-nav-item, .m-nav-item {
+        /* Navigation Items - Desktop Text Size & Weight */
+        .d-nav-item {
             display: flex;
             align-items: center;
             height: var(--row-height);
-            padding: 0 12px;
-            margin: 2px 0;
-            border-radius: 8px;
-            gap: 12px;
+            padding: 0 16px;
+            margin: 4px 0;
+            border-radius: var(--radius-md);
+            gap: 14px;
             cursor: pointer;
             color: var(--text-color);
             text-decoration: none;
-            transition: all 0.15s ease;
+            transition: all 0.2s ease;
+            font-size: 15px; /* Increased */
+            font-weight: 600; /* Semi-bold */
         }
 
-        .d-nav-item:hover, .m-nav-item:hover { background: var(--hover-bg); }
-        .d-nav-item--active, .m-nav-item.active { background: var(--active-bg); color: var(--brand-primary); }
-        .d-nav-item--active .icon svg, .m-nav-item.active .icon svg { stroke: var(--brand-primary); }
-        .d-nav-item--active .icon svg.custom-cert, .m-nav-item.active .icon svg.custom-cert { fill: var(--brand-primary); stroke: none; }
+        .d-nav-item:hover { background: var(--hover-bg); }
+        .d-nav-item--active { background: var(--active-bg); color: var(--brand-primary); }
+        .d-nav-item--active .icon svg { stroke: var(--brand-primary); }
+        .d-nav-item--active .icon svg.custom-cert { fill: var(--brand-primary); stroke: none; }
 
-        /* Account Section Styles */
+        /* Account Section - Desktop */
         .d-account-section, .m-account-section {
             margin-top: auto;
-            padding: 16px;
+            padding: 20px 16px;
             border-top: 1px solid var(--border-subtle);
             cursor: pointer;
         }
-        .account-card { display: flex; align-items: center; gap: 12px; }
-        .account-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 1px solid var(--border-subtle); }
+        .account-card { display: flex; align-items: center; gap: 14px; }
+        .account-avatar { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; border: 1.5px solid var(--border-subtle); }
         .account-text { display: flex; flex-direction: column; line-height: 1.4; }
-        .account-name { font-size: 14px; font-weight: 600; color: var(--text-color); }
-        .account-email { font-size: 12px; color: var(--text-sub); }
+        .account-name { font-size: 16px; font-weight: 700; color: var(--text-color); }
+        .account-email { font-size: 13px; font-weight: 500; color: var(--text-sub); }
 
         /* ============= MOBILE LAYOUT ============= */
         .page-mobile { display: none; flex-direction: column; }
@@ -154,19 +155,11 @@
             padding: 0 16px; position: fixed; top: 0; left: 0; width: 100%; z-index: 100;
         }
         
-        .m-menu-btn, .m-drawer-close {
-            width: 40px; height: 40px; border-radius: 10px; border: 1px solid #e5e7eb;
+        .m-menu-btn {
+            width: 44px; height: 44px; border-radius: 12px; border: 1px solid #e5e7eb;
             background: #f9fafb; display: flex; align-items: center; justify-content: center;
         }
         
-        .m-menu-lines { width: 18px; height: 14px; position: relative; }
-        .m-menu-lines::before, .m-menu-lines::after, .m-menu-lines span {
-            content: ""; position: absolute; left: 0; right: 0; height: 2px; background: #111827; border-radius: 10px;
-        }
-        .m-menu-lines::before { top: 0; }
-        .m-menu-lines span { top: 6px; }
-        .m-menu-lines::after { bottom: 0; }
-
         .m-overlay {
             position: fixed; inset: 0; background: rgba(15, 23, 42, 0.45);
             opacity: 0; pointer-events: none; transition: 0.25s; z-index: 2000;
@@ -174,34 +167,55 @@
         .m-overlay.open { opacity: 1; pointer-events: auto; }
         
         .m-drawer {
-            position: absolute; left: 0; top: 0; width: 300px; max-width: 85vw; height: 100%;
+            position: absolute; left: 0; top: 0; width: 310px; max-width: 85vw; height: 100%;
             background: #ffffff; transform: translateX(-100%); transition: 0.25s;
             display: flex; flex-direction: column; overflow-y: auto;
         }
         .m-overlay.open .m-drawer { transform: translateX(0); }
         
-        .m-drawer-header { height: 72px; border-bottom: 1px solid var(--border-subtle); display: flex; align-items: center; justify-content: space-between; padding: 0 16px; }
-        .m-drawer-nav { padding: 24px 8px; flex: 1; }
+        .m-drawer-header { height: 72px; border-bottom: 1px solid var(--border-subtle); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; }
+        .m-drawer-nav { padding: 24px 12px; flex: 1; }
         
+        /* Navigation Items - Mobile Text Size & Weight */
+        .m-nav-item {
+            display: flex;
+            align-items: center;
+            height: 56px; /* Taller touch targets */
+            padding: 0 16px;
+            margin: 6px 0;
+            border-radius: var(--radius-md);
+            gap: 16px;
+            text-decoration: none;
+            color: var(--text-color);
+            font-size: 17px; /* Increased for mobile */
+            font-weight: 700; /* Bold */
+            transition: all 0.2s ease;
+        }
+        .m-nav-item.active { background: var(--active-bg); color: var(--brand-primary); }
+        .m-nav-item.active .icon svg { stroke: var(--brand-primary); }
+
+        .m-drawer-close {
+            width: 40px; height: 40px; border-radius: 10px; border: 1px solid #e5e7eb;
+            background: #f9fafb; display: flex; align-items: center; justify-content: center;
+        }
         .m-drawer-close-icon { width: 14px; height: 14px; position: relative; }
         .m-drawer-close-icon::before, .m-drawer-close-icon::after {
-            content: ""; position: absolute; inset: 0; margin: auto; width: 14px; height: 2px; background: #111827;
+            content: ""; position: absolute; inset: 0; margin: auto; width: 16px; height: 2.5px; background: #111827;
         }
         .m-drawer-close-icon::before { transform: rotate(45deg); }
         .m-drawer-close-icon::after { transform: rotate(-45deg); }
 
         /* Profile Popup */
         .profile-popup {
-            position: fixed; background: #fff; border-radius: 12px; box-shadow: var(--shadow-premium);
+            position: fixed; background: #fff; border-radius: 15px; box-shadow: var(--shadow-premium);
             border: 1px solid #e5e7eb; width: 280px; z-index: 3000; opacity: 0; pointer-events: none;
             transition: 0.2s; overflow: hidden;
         }
         .profile-popup.active { opacity: 1; pointer-events: all; }
-        .popup-header { padding: 1rem; border-bottom: 1px solid #e5e7eb; background: #f9fafb; display: flex; align-items: center; gap: 12px; }
-        .popup-list { list-style: none; padding: 8px; }
-        .popup-list a { display: flex; align-items: center; gap: 12px; padding: 12px; text-decoration: none; color: var(--text-color); border-radius: 8px; cursor: pointer; }
+        .popup-header { padding: 1.2rem; border-bottom: 1px solid #e5e7eb; background: #f9fafb; display: flex; align-items: center; gap: 12px; }
+        .popup-list { list-style: none; padding: 10px; }
+        .popup-list a { display: flex; align-items: center; gap: 12px; padding: 14px; text-decoration: none; color: var(--text-color); border-radius: 10px; cursor: pointer; font-weight: 600; }
         .popup-list a:hover { background: #f3f4f6; }
-        .popup-list a.logout { color: var(--danger-color); }
 
         @media (max-width: 768px) {
             .page-desktop { display: none; }
@@ -226,7 +240,6 @@
             <aside class="d-sidebar">
                 <div class="d-sidebar-inner">
                     <nav class="d-nav">
-                        <!-- Dashboard -->
                         <a href="#" class="d-nav-item d-nav-item--active">
                             <span class="icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect width="7" height="18" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/></svg>
@@ -234,7 +247,6 @@
                             <span class="label">Dashboard</span>
                         </a>
 
-                        <!-- View Course -->
                         <a href="#" class="d-nav-item">
                             <span class="icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 5H3"/><path d="M10 12H3"/><path d="M10 19H3"/><path d="M15 12.003a1 1 0 0 1 1.517-.859l4.997 2.997a1 1 0 0 1 0 1.718l-4.997 2.997a1 1 0 0 1-1.517-.86z"/></svg>
@@ -242,7 +254,6 @@
                             <span class="label">View Course</span>
                         </a>
 
-                        <!-- My Courses -->
                         <a href="#" class="d-nav-item">
                             <span class="icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect width="8" height="18" x="3" y="3" rx="1"/><path d="M7 3v18"/><path d="M20.4 18.9c.2.5-.1 1.1-.6 1.3l-1.9.7c-.5.2-1.1-.1-1.3-.6L11.1 5.1c-.2-.5.1-1.1.6-1.3l1.9-.7c.5-.2 1.1.1 1.3.6Z"/></svg>
@@ -250,7 +261,6 @@
                             <span class="label">My Courses</span>
                         </a>
 
-                        <!-- Leaderboard -->
                         <a href="#" class="d-nav-item">
                             <span class="icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 14.66v1.626a2 2 0 0 1-.976 1.696A5 5 0 0 0 7 21.978"/><path d="M14 14.66v1.626a2 2 0 0 0 .976 1.696A5 5 0 0 1 17 21.978"/><path d="M18 9h1.5a1 1 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M6 9a6 6 0 0 0 12 0V3a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1z"/><path d="M6 9H4.5a1 1 0 0 1 0-5H6"/></svg>
@@ -258,7 +268,6 @@
                             <span class="label">Leaderboard</span>
                         </a>
 
-                        <!-- Certificates -->
                         <a href="#" class="d-nav-item">
                             <span class="icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" class="custom-cert">
@@ -268,7 +277,6 @@
                             <span class="label">Certificates</span>
                         </a>
 
-                        <!-- Support -->
                         <a href="#" class="d-nav-item">
                             <span class="icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
@@ -277,7 +285,6 @@
                         </a>
                     </nav>
 
-                    <!-- Account Desktop -->
                     <div class="d-account-section" id="profile-trigger-desktop">
                         <div class="account-card">
                             <img class="account-avatar" src="https://ui-avatars.com/api/?name=John+Doe&background=34c375&color=fff" alt="Profile">
@@ -290,8 +297,7 @@
                 </div>
             </aside>
             <main style="flex:1; padding: 40px; overflow-y: auto;">
-                <h1>Dashboard</h1>
-                <p style="margin-top: 15px; color: var(--text-sub);">Branding updated to SyncSkill with the new green theme.</p>
+                <h1>SyncSkill Dashboard</h1>
             </main>
         </div>
     </div>
@@ -355,7 +361,6 @@
                     </a>
                 </nav>
 
-                <!-- FIXED: Account Mobile with Email Visible -->
                 <div class="m-account-section" id="profile-trigger-mobile">
                     <div class="account-card">
                         <img class="account-avatar" src="https://ui-avatars.com/api/?name=John+Doe&background=34c375&color=fff" alt="Profile">
@@ -386,7 +391,6 @@
     </div>
 
     <script>
-        // --- MOBILE DRAWER LOGIC ---
         const mOpen = document.getElementById('m-open-drawer');
         const mClose = document.getElementById('m-close-drawer');
         const mOverlay = document.getElementById('m-overlay');
@@ -397,7 +401,6 @@
             if (e.target === mOverlay) mOverlay.classList.remove('open');
         };
 
-        // --- PROFILE POPUP LOGIC ---
         const pPopup = document.getElementById('profile-popup');
         const pTriggers = [
             document.getElementById('profile-trigger-desktop'),

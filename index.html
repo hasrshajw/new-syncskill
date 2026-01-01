@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SyncSkill Navigation</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --text-sub: #6b7280;
+            --header-height-desktop: 70px;
+            --sidebar-width: 260px;
+            --row-height: 48px;
+            --sidebar-bg: #ffffff;
+            --header-bg: #ffffff;
+            --page-bg: #f4f5f7;
+            --text-color: rgb(24, 24, 26);
+            --icon-color: #6b7280;
+            /* Updated to SyncSkill Green */
+            --brand-primary: #34c375; 
+            --icon-active: #34c375;
+            --active-bg: #f0faf4; /* Light green tint */
+            --hover-bg: #f3f4f6;
+            --border-subtle: #e5e7eb;
+            --radius-md: 8px;
+            --shadow-premium: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --danger-color: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            min-height: 100vh;
+            background: var(--page-bg);
+            font-family: "DM Sans", Roboto, sans-serif;
+            font-weight: 500;
+            font-size: 14px;
+            color: var(--text-color);
+            overflow-x: hidden;
+        }
+
+        /* Branding Text Style */
+        .brand-text {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--brand-primary);
+            letter-spacing: -0.5px;
+            text-decoration: none;
+        }
+
+        /* Common Icon Styling */
+        .icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+        }
+        
+        .icon svg {
+            width: 22px;
+            height: 22px;
+            stroke: var(--icon-color);
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* Handling for the Certificates SVG */
+        .icon svg.custom-cert {
+            stroke: none;
+            fill: var(--icon-color);
+            width: 24px;
+            height: 24px;
+        }
+
+        /* ============= DESKTOP LAYOUT ============= */
+        .page-desktop {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .d-topbar {
+            height: var(--header-height-desktop);
+            background: var(--header-bg);
+            border-bottom: 1px solid var(--border-subtle);
+            display: flex;
+            align-items: center;
+            padding-left: 40px;
+            z-index: 50;
+        }
+
+        .d-app { flex: 1; display: flex; overflow: hidden; }
+
+        .d-sidebar {
+            width: var(--sidebar-width);
+            background: var(--sidebar-bg);
+            border-right: 1px solid var(--border-subtle);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .d-sidebar-inner { padding: 32px 16px 16px 12px; display: flex; flex-direction: column; height: 100%; }
+
+        .d-nav-item, .m-nav-item {
+            display: flex;
+            align-items: center;
+            height: var(--row-height);
+            padding: 0 12px;
+            margin: 2px 0;
+            border-radius: 8px;
+            gap: 12px;
+            cursor: pointer;
+            color: var(--text-color);
+            text-decoration: none;
+            transition: all 0.15s ease;
+        }
+
+        .d-nav-item:hover, .m-nav-item:hover { background: var(--hover-bg); }
+        .d-nav-item--active, .m-nav-item.active { background: var(--active-bg); color: var(--brand-primary); }
+        .d-nav-item--active .icon svg, .m-nav-item.active .icon svg { stroke: var(--brand-primary); }
+        .d-nav-item--active .icon svg.custom-cert, .m-nav-item.active .icon svg.custom-cert { fill: var(--brand-primary); stroke: none; }
+
+        /* Account Section Styles */
+        .d-account-section, .m-account-section {
+            margin-top: auto;
+            padding: 16px;
+            border-top: 1px solid var(--border-subtle);
+            cursor: pointer;
+        }
+        .account-card { display: flex; align-items: center; gap: 12px; }
+        .account-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 1px solid var(--border-subtle); }
+        .account-text { display: flex; flex-direction: column; line-height: 1.4; }
+        .account-name { font-size: 14px; font-weight: 600; color: var(--text-color); }
+        .account-email { font-size: 12px; color: var(--text-sub); }
+
+        /* ============= MOBILE LAYOUT ============= */
+        .page-mobile { display: none; flex-direction: column; }
+        .m-header {
+            height: 72px; background: var(--header-bg); border-bottom: 1px solid var(--border-subtle);
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 16px; position: fixed; top: 0; left: 0; width: 100%; z-index: 100;
+        }
+        
+        .m-menu-btn, .m-drawer-close {
+            width: 40px; height: 40px; border-radius: 10px; border: 1px solid #e5e7eb;
+            background: #f9fafb; display: flex; align-items: center; justify-content: center;
+        }
+        
+        .m-menu-lines { width: 18px; height: 14px; position: relative; }
+        .m-menu-lines::before, .m-menu-lines::after, .m-menu-lines span {
+            content: ""; position: absolute; left: 0; right: 0; height: 2px; background: #111827; border-radius: 10px;
+        }
+        .m-menu-lines::before { top: 0; }
+        .m-menu-lines span { top: 6px; }
+        .m-menu-lines::after { bottom: 0; }
+
+        .m-overlay {
+            position: fixed; inset: 0; background: rgba(15, 23, 42, 0.45);
+            opacity: 0; pointer-events: none; transition: 0.25s; z-index: 2000;
+        }
+        .m-overlay.open { opacity: 1; pointer-events: auto; }
+        
+        .m-drawer {
+            position: absolute; left: 0; top: 0; width: 300px; max-width: 85vw; height: 100%;
+            background: #ffffff; transform: translateX(-100%); transition: 0.25s;
+            display: flex; flex-direction: column; overflow-y: auto;
+        }
+        .m-overlay.open .m-drawer { transform: translateX(0); }
+        
+        .m-drawer-header { height: 72px; border-bottom: 1px solid var(--border-subtle); display: flex; align-items: center; justify-content: space-between; padding: 0 16px; }
+        .m-drawer-nav { padding: 24px 8px; flex: 1; }
+        
+        .m-drawer-close-icon { width: 14px; height: 14px; position: relative; }
+        .m-drawer-close-icon::before, .m-drawer-close-icon::after {
+            content: ""; position: absolute; inset: 0; margin: auto; width: 14px; height: 2px; background: #111827;
+        }
+        .m-drawer-close-icon::before { transform: rotate(45deg); }
+        .m-drawer-close-icon::after { transform: rotate(-45deg); }
+
+        /* Profile Popup */
+        .profile-popup {
+            position: fixed; background: #fff; border-radius: 12px; box-shadow: var(--shadow-premium);
+            border: 1px solid #e5e7eb; width: 280px; z-index: 3000; opacity: 0; pointer-events: none;
+            transition: 0.2s; overflow: hidden;
+        }
+        .profile-popup.active { opacity: 1; pointer-events: all; }
+        .popup-header { padding: 1rem; border-bottom: 1px solid #e5e7eb; background: #f9fafb; display: flex; align-items: center; gap: 12px; }
+        .popup-list { list-style: none; padding: 8px; }
+        .popup-list a { display: flex; align-items: center; gap: 12px; padding: 12px; text-decoration: none; color: var(--text-color); border-radius: 8px; cursor: pointer; }
+        .popup-list a:hover { background: #f3f4f6; }
+        .popup-list a.logout { color: var(--danger-color); }
+
+        @media (max-width: 768px) {
+            .page-desktop { display: none; }
+            .page-mobile { display: flex; }
+            .profile-popup { bottom: 100px; left: 50%; transform: translateX(-50%); }
+        }
+        
+        @media (min-width: 769px) {
+            .profile-popup { bottom: 100px; left: 30px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ================= DESKTOP VIEW ================= -->
+    <div class="page-desktop">
+        <header class="d-topbar">
+            <a href="#" class="brand-text">SyncSkill</a>
+        </header>
+
+        <div class="d-app">
+            <aside class="d-sidebar">
+                <div class="d-sidebar-inner">
+                    <nav class="d-nav">
+                        <!-- Dashboard -->
+                        <a href="#" class="d-nav-item d-nav-item--active">
+                            <span class="icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect width="7" height="18" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/></svg>
+                            </span>
+                            <span class="label">Dashboard</span>
+                        </a>
+
+                        <!-- View Course -->
+                        <a href="#" class="d-nav-item">
+                            <span class="icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 5H3"/><path d="M10 12H3"/><path d="M10 19H3"/><path d="M15 12.003a1 1 0 0 1 1.517-.859l4.997 2.997a1 1 0 0 1 0 1.718l-4.997 2.997a1 1 0 0 1-1.517-.86z"/></svg>
+                            </span>
+                            <span class="label">View Course</span>
+                        </a>
+
+                        <!-- My Courses -->
+                        <a href="#" class="d-nav-item">
+                            <span class="icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect width="8" height="18" x="3" y="3" rx="1"/><path d="M7 3v18"/><path d="M20.4 18.9c.2.5-.1 1.1-.6 1.3l-1.9.7c-.5.2-1.1-.1-1.3-.6L11.1 5.1c-.2-.5.1-1.1.6-1.3l1.9-.7c.5-.2 1.1.1 1.3.6Z"/></svg>
+                            </span>
+                            <span class="label">My Courses</span>
+                        </a>
+
+                        <!-- Leaderboard -->
+                        <a href="#" class="d-nav-item">
+                            <span class="icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 14.66v1.626a2 2 0 0 1-.976 1.696A5 5 0 0 0 7 21.978"/><path d="M14 14.66v1.626a2 2 0 0 0 .976 1.696A5 5 0 0 1 17 21.978"/><path d="M18 9h1.5a1 1 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M6 9a6 6 0 0 0 12 0V3a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1z"/><path d="M6 9H4.5a1 1 0 0 1 0-5H6"/></svg>
+                            </span>
+                            <span class="label">Leaderboard</span>
+                        </a>
+
+                        <!-- Certificates -->
+                        <a href="#" class="d-nav-item">
+                            <span class="icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" class="custom-cert">
+                                    <path d="M128,136a8,8,0,0,1-8,8H72a8,8,0,0,1,0-16h48A8,8,0,0,1,128,136Zm-8-40H72a8,8,0,0,0,0,16h48a8,8,0,0,0,0-16Zm112,65.47V224A8,8,0,0,1,220,231l-24-13.74L172,231A8,8,0,0,1,160,224V200H40a16,16,0,0,1-16-16V56A16,16,0,0,1,40,40H216a16,16,0,0,1,16,16V86.53a51.88,51.88,0,0,1,0,74.94ZM160,184V161.47A52,52,0,0,1,216,76V56H40V184Zm56-12a51.88,51.88,0,0,1-40,0v38.22l16-9.16a8,8,0,0,1,7.94,0l16,9.16Zm16-48a36,36,0,1,0-36,36A36,36,0,0,0,232,124Z"></path>
+                                </svg>
+                            </span>
+                            <span class="label">Certificates</span>
+                        </a>
+
+                        <!-- Support -->
+                        <a href="#" class="d-nav-item">
+                            <span class="icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
+                            </span>
+                            <span class="label">Support</span>
+                        </a>
+                    </nav>
+
+                    <!-- Account Desktop -->
+                    <div class="d-account-section" id="profile-trigger-desktop">
+                        <div class="account-card">
+                            <img class="account-avatar" src="https://ui-avatars.com/api/?name=John+Doe&background=34c375&color=fff" alt="Profile">
+                            <div class="account-text">
+                                <div class="account-name">John Doe</div>
+                                <div class="account-email">john@syncskill.com</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+            <main style="flex:1; padding: 40px; overflow-y: auto;">
+                <h1>Dashboard</h1>
+                <p style="margin-top: 15px; color: var(--text-sub);">Branding updated to SyncSkill with the new green theme.</p>
+            </main>
+        </div>
+    </div>
+
+    <!-- ================= MOBILE VIEW ================= -->
+    <div class="page-mobile">
+        <header class="m-header">
+            <button class="m-menu-btn" id="m-open-drawer">
+                <div class="m-menu-lines"><span></span></div>
+            </button>
+            <a href="#" class="brand-text">SyncSkill</a>
+            <div style="width:40px;"></div>
+        </header>
+
+        <div class="m-overlay" id="m-overlay">
+            <div class="m-drawer">
+                <div class="m-drawer-header">
+                    <span class="brand-text">SyncSkill</span>
+                    <button class="m-drawer-close" id="m-close-drawer">
+                        <div class="m-drawer-close-icon"></div>
+                    </button>
+                </div>
+                <nav class="m-drawer-nav">
+                    <a href="#" class="m-nav-item active">
+                        <span class="icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect width="7" height="18" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/></svg>
+                        </span>
+                        <span class="label">Dashboard</span>
+                    </a>
+                    <a href="#" class="m-nav-item">
+                        <span class="icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 5H3"/><path d="M10 12H3"/><path d="M10 19H3"/><path d="M15 12.003a1 1 0 0 1 1.517-.859l4.997 2.997a1 1 0 0 1 0 1.718l-4.997 2.997a1 1 0 0 1-1.517-.86z"/></svg>
+                        </span>
+                        <span class="label">View Course</span>
+                    </a>
+                    <a href="#" class="m-nav-item">
+                        <span class="icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect width="8" height="18" x="3" y="3" rx="1"/><path d="M7 3v18"/><path d="M20.4 18.9c.2.5-.1 1.1-.6 1.3l-1.9.7c-.5.2-1.1-.1-1.3-.6L11.1 5.1c-.2-.5.1-1.1.6-1.3l1.9-.7c.5-.2 1.1.1 1.3.6Z"/></svg>
+                        </span>
+                        <span class="label">My Courses</span>
+                    </a>
+                    <a href="#" class="m-nav-item">
+                        <span class="icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 14.66v1.626a2 2 0 0 1-.976 1.696A5 5 0 0 0 7 21.978"/><path d="M14 14.66v1.626a2 2 0 0 0 .976 1.696A5 5 0 0 1 17 21.978"/><path d="M18 9h1.5a1 1 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M6 9a6 6 0 0 0 12 0V3a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1z"/><path d="M6 9H4.5a1 1 0 0 1 0-5H6"/></svg>
+                        </span>
+                        <span class="label">Leaderboard</span>
+                    </a>
+                    <a href="#" class="m-nav-item">
+                        <span class="icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" class="custom-cert">
+                                <path d="M128,136a8,8,0,0,1-8,8H72a8,8,0,0,1,0-16h48A8,8,0,0,1,128,136Zm-8-40H72a8,8,0,0,0,0,16h48a8,8,0,0,0,0-16Zm112,65.47V224A8,8,0,0,1,220,231l-24-13.74L172,231A8,8,0,0,1,160,224V200H40a16,16,0,0,1-16-16V56A16,16,0,0,1,40,40H216a16,16,0,0,1,16,16V86.53a51.88,51.88,0,0,1,0,74.94ZM160,184V161.47A52,52,0,0,1,216,76V56H40V184Zm56-12a51.88,51.88,0,0,1-40,0v38.22l16-9.16a8,8,0,0,1,7.94,0l16,9.16Zm16-48a36,36,0,1,0-36,36A36,36,0,0,0,232,124Z"></path>
+                            </svg>
+                        </span>
+                        <span class="label">Certificates</span>
+                    </a>
+                    <a href="#" class="m-nav-item">
+                        <span class="icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
+                        </span>
+                        <span class="label">Support</span>
+                    </a>
+                </nav>
+
+                <!-- FIXED: Account Mobile with Email Visible -->
+                <div class="m-account-section" id="profile-trigger-mobile">
+                    <div class="account-card">
+                        <img class="account-avatar" src="https://ui-avatars.com/api/?name=John+Doe&background=34c375&color=fff" alt="Profile">
+                        <div class="account-text">
+                            <div class="account-name">John Doe</div>
+                            <div class="account-email">john@syncskill.com</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= PROFILE POPUP ================= -->
+    <div class="profile-popup" id="profile-popup">
+        <div class="popup-header">
+            <img class="account-avatar" src="https://ui-avatars.com/api/?name=John+Doe&background=34c375&color=fff" alt="User">
+            <div class="account-text">
+                <div class="account-name">John Doe</div>
+                <div class="account-email">john@syncskill.com</div>
+            </div>
+        </div>
+        <ul class="popup-list">
+            <li><a><span>Profile</span></a></li>
+            <li><a><span>Settings</span></a></li>
+            <li><a class="logout"><span>Logout</span></a></li>
+        </ul>
+    </div>
+
+    <script>
+        // --- MOBILE DRAWER LOGIC ---
+        const mOpen = document.getElementById('m-open-drawer');
+        const mClose = document.getElementById('m-close-drawer');
+        const mOverlay = document.getElementById('m-overlay');
+
+        mOpen.onclick = () => mOverlay.classList.add('open');
+        mClose.onclick = () => mOverlay.classList.remove('open');
+        mOverlay.onclick = (e) => {
+            if (e.target === mOverlay) mOverlay.classList.remove('open');
+        };
+
+        // --- PROFILE POPUP LOGIC ---
+        const pPopup = document.getElementById('profile-popup');
+        const pTriggers = [
+            document.getElementById('profile-trigger-desktop'),
+            document.getElementById('profile-trigger-mobile')
+        ];
+
+        pTriggers.forEach(trigger => {
+            trigger.onclick = (e) => {
+                e.stopPropagation();
+                pPopup.classList.toggle('active');
+            };
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!pPopup.contains(e.target)) pPopup.classList.remove('active');
+        });
+    </script>
+</body>
+</html>

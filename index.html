@@ -20,10 +20,9 @@
             --page-bg: #f4f5f7;
             --text-color: rgb(24, 24, 26);
             --icon-color: #6b7280;
-            /* Updated to SyncSkill Green */
             --brand-primary: #34c375; 
             --icon-active: #34c375;
-            --active-bg: #f0faf4; /* Light green tint */
+            --active-bg: #f0faf4; 
             --hover-bg: #f3f4f6;
             --border-subtle: #e5e7eb;
             --radius-md: 8px;
@@ -45,27 +44,18 @@
             font-weight: 500;
             font-size: 14px;
             color: var(--text-color);
-            overflow-x: hidden;
+            overflow: hidden;
         }
 
-        /* Branding Text Style */
         .brand-text {
-            font-size: 22px;
+            font-size: 24px;
             font-weight: 800;
             color: var(--brand-primary);
-            letter-spacing: -0.5px;
+            letter-spacing: -1px;
             text-decoration: none;
         }
 
-        /* Common Icon Styling */
-        .icon {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 24px;
-            height: 24px;
-        }
-        
+        /* SVG Icon Logic */
         .icon svg {
             width: 22px;
             height: 22px;
@@ -76,7 +66,6 @@
             stroke-linejoin: round;
         }
 
-        /* Handling for the Certificates SVG */
         .icon svg.custom-cert {
             stroke: none;
             fill: var(--icon-color);
@@ -84,11 +73,47 @@
             height: 24px;
         }
 
-        /* ============= DESKTOP LAYOUT ============= */
+        /* ============= DESKTOP LAYOUT (SIDEBAR FIRST) ============= */
         .page-desktop {
+            display: flex;
             height: 100vh;
+            width: 100vw;
+        }
+
+        .d-sidebar {
+            width: var(--sidebar-width);
+            height: 100%;
+            background: var(--sidebar-bg);
+            border-right: 1px solid var(--border-subtle);
             display: flex;
             flex-direction: column;
+            flex-shrink: 0;
+            z-index: 100;
+        }
+
+        .d-sidebar-header {
+            height: var(--header-height-desktop);
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+            /* Bottom border removed as requested */
+            border-bottom: none;
+        }
+
+        .d-sidebar-inner {
+            flex: 1;
+            padding: 8px 16px 16px 12px;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .d-main-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            background: var(--page-bg);
         }
 
         .d-topbar {
@@ -97,23 +122,17 @@
             border-bottom: 1px solid var(--border-subtle);
             display: flex;
             align-items: center;
-            padding-left: 40px;
-            z-index: 50;
+            padding: 0 40px;
+            flex-shrink: 0;
         }
 
-        .d-app { flex: 1; display: flex; overflow: hidden; }
-
-        .d-sidebar {
-            width: var(--sidebar-width);
-            background: var(--sidebar-bg);
-            border-right: 1px solid var(--border-subtle);
-            display: flex;
-            flex-direction: column;
+        .d-content-area {
+            flex: 1;
+            padding: 40px;
             overflow-y: auto;
         }
 
-        .d-sidebar-inner { padding: 32px 16px 16px 12px; display: flex; flex-direction: column; height: 100%; }
-
+        /* Nav Items */
         .d-nav-item, .m-nav-item {
             display: flex;
             align-items: center;
@@ -125,36 +144,42 @@
             cursor: pointer;
             color: var(--text-color);
             text-decoration: none;
-            transition: all 0.15s ease;
+            transition: all 0.2s ease;
         }
 
         .d-nav-item:hover, .m-nav-item:hover { background: var(--hover-bg); }
-        .d-nav-item--active, .m-nav-item.active { background: var(--active-bg); color: var(--brand-primary); }
+        .d-nav-item--active, .m-nav-item.active { 
+            background: var(--active-bg); 
+            color: var(--brand-primary); 
+            font-weight: 700;
+        }
         .d-nav-item--active .icon svg, .m-nav-item.active .icon svg { stroke: var(--brand-primary); }
-        .d-nav-item--active .icon svg.custom-cert, .m-nav-item.active .icon svg.custom-cert { fill: var(--brand-primary); stroke: none; }
+        .d-nav-item--active .icon svg.custom-cert, .m-nav-item.active .icon svg.custom-cert { fill: var(--brand-primary); }
 
-        /* Account Section Styles */
+        /* Profile Section Pinned to Bottom */
         .d-account-section, .m-account-section {
-            margin-top: auto;
+            margin-top: auto; /* Pins to bottom */
             padding: 16px;
             border-top: 1px solid var(--border-subtle);
             cursor: pointer;
         }
+        
         .account-card { display: flex; align-items: center; gap: 12px; }
         .account-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 1px solid var(--border-subtle); }
-        .account-text { display: flex; flex-direction: column; line-height: 1.4; }
-        .account-name { font-size: 14px; font-weight: 600; color: var(--text-color); }
-        .account-email { font-size: 12px; color: var(--text-sub); }
+        .account-text { display: flex; flex-direction: column; overflow: hidden; }
+        .account-name { font-size: 14px; font-weight: 600; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; }
+        .account-email { font-size: 12px; color: var(--text-sub); white-space: nowrap; text-overflow: ellipsis; overflow: hidden; }
 
         /* ============= MOBILE LAYOUT ============= */
-        .page-mobile { display: none; flex-direction: column; }
+        .page-mobile { display: none; flex-direction: column; height: 100vh; }
+        
         .m-header {
             height: 72px; background: var(--header-bg); border-bottom: 1px solid var(--border-subtle);
             display: flex; align-items: center; justify-content: space-between;
-            padding: 0 16px; position: fixed; top: 0; left: 0; width: 100%; z-index: 100;
+            padding: 0 16px; position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
         }
         
-        .m-menu-btn, .m-drawer-close {
+        .m-menu-btn {
             width: 40px; height: 40px; border-radius: 10px; border: 1px solid #e5e7eb;
             background: #f9fafb; display: flex; align-items: center; justify-content: center;
         }
@@ -174,15 +199,16 @@
         .m-overlay.open { opacity: 1; pointer-events: auto; }
         
         .m-drawer {
-            position: absolute; left: 0; top: 0; width: 300px; max-width: 85vw; height: 100%;
+            position: absolute; left: 0; top: 0; width: 280px; height: 100%;
             background: #ffffff; transform: translateX(-100%); transition: 0.25s;
-            display: flex; flex-direction: column; overflow-y: auto;
+            display: flex; flex-direction: column;
         }
         .m-overlay.open .m-drawer { transform: translateX(0); }
         
         .m-drawer-header { height: 72px; border-bottom: 1px solid var(--border-subtle); display: flex; align-items: center; justify-content: space-between; padding: 0 16px; }
-        .m-drawer-nav { padding: 24px 8px; flex: 1; }
+        .m-drawer-nav { padding: 12px 8px; flex: 1; overflow-y: auto; }
         
+        .m-drawer-close { width: 40px; height: 40px; border-radius: 10px; border: 1px solid #e5e7eb; display: flex; align-items: center; justify-content: center; }
         .m-drawer-close-icon { width: 14px; height: 14px; position: relative; }
         .m-drawer-close-icon::before, .m-drawer-close-icon::after {
             content: ""; position: absolute; inset: 0; margin: auto; width: 14px; height: 2px; background: #111827;
@@ -193,24 +219,19 @@
         /* Profile Popup */
         .profile-popup {
             position: fixed; background: #fff; border-radius: 12px; box-shadow: var(--shadow-premium);
-            border: 1px solid #e5e7eb; width: 280px; z-index: 3000; opacity: 0; pointer-events: none;
+            border: 1px solid #e5e7eb; width: 260px; z-index: 3000; opacity: 0; pointer-events: none;
             transition: 0.2s; overflow: hidden;
         }
         .profile-popup.active { opacity: 1; pointer-events: all; }
-        .popup-header { padding: 1rem; border-bottom: 1px solid #e5e7eb; background: #f9fafb; display: flex; align-items: center; gap: 12px; }
+        .popup-header { padding: 16px; border-bottom: 1px solid #e5e7eb; background: #f9fafb; display: flex; align-items: center; gap: 12px; }
         .popup-list { list-style: none; padding: 8px; }
         .popup-list a { display: flex; align-items: center; gap: 12px; padding: 12px; text-decoration: none; color: var(--text-color); border-radius: 8px; cursor: pointer; }
         .popup-list a:hover { background: #f3f4f6; }
-        .popup-list a.logout { color: var(--danger-color); }
 
         @media (max-width: 768px) {
             .page-desktop { display: none; }
             .page-mobile { display: flex; }
             .profile-popup { bottom: 100px; left: 50%; transform: translateX(-50%); }
-        }
-        
-        @media (min-width: 769px) {
-            .profile-popup { bottom: 100px; left: 30px; }
         }
     </style>
 </head>
@@ -218,80 +239,87 @@
 
     <!-- ================= DESKTOP VIEW ================= -->
     <div class="page-desktop">
-        <header class="d-topbar">
-            <a href="#" class="brand-text">SyncSkill</a>
-        </header>
+        <!-- 1. FULL HEIGHT SIDEBAR -->
+        <aside class="d-sidebar">
+            <div class="d-sidebar-header">
+                <a href="#" class="brand-text">SyncSkill</a>
+            </div>
+            
+            <div class="d-sidebar-inner">
+                <nav class="d-nav">
+                    <!-- Dashboard -->
+                    <a href="#" class="d-nav-item d-nav-item--active">
+                        <span class="icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect width="7" height="18" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/></svg>
+                        </span>
+                        <span class="label">Dashboard</span>
+                    </a>
 
-        <div class="d-app">
-            <aside class="d-sidebar">
-                <div class="d-sidebar-inner">
-                    <nav class="d-nav">
-                        <!-- Dashboard -->
-                        <a href="#" class="d-nav-item d-nav-item--active">
-                            <span class="icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect width="7" height="18" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/></svg>
-                            </span>
-                            <span class="label">Dashboard</span>
-                        </a>
+                    <!-- View Course -->
+                    <a href="#" class="d-nav-item">
+                        <span class="icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 5H3"/><path d="M10 12H3"/><path d="M10 19H3"/><path d="M15 12.003a1 1 0 0 1 1.517-.859l4.997 2.997a1 1 0 0 1 0 1.718l-4.997 2.997a1 1 0 0 1-1.517-.86z"/></svg>
+                        </span>
+                        <span class="label">View Course</span>
+                    </a>
 
-                        <!-- View Course -->
-                        <a href="#" class="d-nav-item">
-                            <span class="icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 5H3"/><path d="M10 12H3"/><path d="M10 19H3"/><path d="M15 12.003a1 1 0 0 1 1.517-.859l4.997 2.997a1 1 0 0 1 0 1.718l-4.997 2.997a1 1 0 0 1-1.517-.86z"/></svg>
-                            </span>
-                            <span class="label">View Course</span>
-                        </a>
+                    <!-- My Courses -->
+                    <a href="#" class="d-nav-item">
+                        <span class="icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect width="8" height="18" x="3" y="3" rx="1"/><path d="M7 3v18"/><path d="M20.4 18.9c.2.5-.1 1.1-.6 1.3l-1.9.7c-.5.2-1.1-.1-1.3-.6L11.1 5.1c-.2-.5.1-1.1.6-1.3l1.9-.7c.5-.2 1.1.1 1.3.6Z"/></svg>
+                        </span>
+                        <span class="label">My Courses</span>
+                    </a>
 
-                        <!-- My Courses -->
-                        <a href="#" class="d-nav-item">
-                            <span class="icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect width="8" height="18" x="3" y="3" rx="1"/><path d="M7 3v18"/><path d="M20.4 18.9c.2.5-.1 1.1-.6 1.3l-1.9.7c-.5.2-1.1-.1-1.3-.6L11.1 5.1c-.2-.5.1-1.1.6-1.3l1.9-.7c.5-.2 1.1.1 1.3.6Z"/></svg>
-                            </span>
-                            <span class="label">My Courses</span>
-                        </a>
+                    <!-- Leaderboard -->
+                    <a href="#" class="d-nav-item">
+                        <span class="icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 14.66v1.626a2 2 0 0 1-.976 1.696A5 5 0 0 0 7 21.978"/><path d="M14 14.66v1.626a2 2 0 0 0 .976 1.696A5 5 0 0 1 17 21.978"/><path d="M18 9h1.5a1 1 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M6 9a6 6 0 0 0 12 0V3a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1z"/><path d="M6 9H4.5a1 1 0 0 1 0-5H6"/></svg>
+                        </span>
+                        <span class="label">Leaderboard</span>
+                    </a>
 
-                        <!-- Leaderboard -->
-                        <a href="#" class="d-nav-item">
-                            <span class="icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 14.66v1.626a2 2 0 0 1-.976 1.696A5 5 0 0 0 7 21.978"/><path d="M14 14.66v1.626a2 2 0 0 0 .976 1.696A5 5 0 0 1 17 21.978"/><path d="M18 9h1.5a1 1 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M6 9a6 6 0 0 0 12 0V3a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1z"/><path d="M6 9H4.5a1 1 0 0 1 0-5H6"/></svg>
-                            </span>
-                            <span class="label">Leaderboard</span>
-                        </a>
+                    <!-- Certificates -->
+                    <a href="#" class="d-nav-item">
+                        <span class="icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" class="custom-cert">
+                                <path d="M128,136a8,8,0,0,1-8,8H72a8,8,0,0,1,0-16h48A8,8,0,0,1,128,136Zm-8-40H72a8,8,0,0,0,0,16h48a8,8,0,0,0,0-16Zm112,65.47V224A8,8,0,0,1,220,231l-24-13.74L172,231A8,8,0,0,1,160,224V200H40a16,16,0,0,1-16-16V56A16,16,0,0,1,40,40H216a16,16,0,0,1,16,16V86.53a51.88,51.88,0,0,1,0,74.94ZM160,184V161.47A52,52,0,0,1,216,76V56H40V184Zm56-12a51.88,51.88,0,0,1-40,0v38.22l16-9.16a8,8,0,0,1,7.94,0l16,9.16Zm16-48a36,36,0,1,0-36,36A36,36,0,0,0,232,124Z"></path>
+                            </svg>
+                        </span>
+                        <span class="label">Certificates</span>
+                    </a>
 
-                        <!-- Certificates -->
-                        <a href="#" class="d-nav-item">
-                            <span class="icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" class="custom-cert">
-                                    <path d="M128,136a8,8,0,0,1-8,8H72a8,8,0,0,1,0-16h48A8,8,0,0,1,128,136Zm-8-40H72a8,8,0,0,0,0,16h48a8,8,0,0,0,0-16Zm112,65.47V224A8,8,0,0,1,220,231l-24-13.74L172,231A8,8,0,0,1,160,224V200H40a16,16,0,0,1-16-16V56A16,16,0,0,1,40,40H216a16,16,0,0,1,16,16V86.53a51.88,51.88,0,0,1,0,74.94ZM160,184V161.47A52,52,0,0,1,216,76V56H40V184Zm56-12a51.88,51.88,0,0,1-40,0v38.22l16-9.16a8,8,0,0,1,7.94,0l16,9.16Zm16-48a36,36,0,1,0-36,36A36,36,0,0,0,232,124Z"></path>
-                                </svg>
-                            </span>
-                            <span class="label">Certificates</span>
-                        </a>
+                    <!-- Support -->
+                    <a href="#" class="d-nav-item">
+                        <span class="icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
+                        </span>
+                        <span class="label">Support</span>
+                    </a>
+                </nav>
 
-                        <!-- Support -->
-                        <a href="#" class="d-nav-item">
-                            <span class="icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
-                            </span>
-                            <span class="label">Support</span>
-                        </a>
-                    </nav>
-
-                    <!-- Account Desktop -->
-                    <div class="d-account-section" id="profile-trigger-desktop">
-                        <div class="account-card">
-                            <img class="account-avatar" src="https://ui-avatars.com/api/?name=John+Doe&background=34c375&color=fff" alt="Profile">
-                            <div class="account-text">
-                                <div class="account-name">John Doe</div>
-                                <div class="account-email">john@syncskill.com</div>
-                            </div>
+                <!-- Profile Desktop: pinned to bottom -->
+                <div class="d-account-section" id="profile-trigger-desktop">
+                    <div class="account-card">
+                        <img class="account-avatar" src="https://ui-avatars.com/api/?name=John+Doe&background=34c375&color=fff" alt="Profile">
+                        <div class="account-text">
+                            <div class="account-name">John Doe</div>
+                            <div class="account-email">john@syncskill.com</div>
                         </div>
                     </div>
                 </div>
-            </aside>
-            <main style="flex:1; padding: 40px; overflow-y: auto;">
-                <h1>Dashboard</h1>
-                <p style="margin-top: 15px; color: var(--text-sub);">Branding updated to SyncSkill with the new green theme.</p>
+            </div>
+        </aside>
+
+        <!-- 2. MAIN AREA (NAVBAR + CONTENT) -->
+        <div class="d-main-wrapper">
+            <header class="d-topbar">
+                <div style="font-weight: 700; font-size: 18px;">Dashboard</div>
+            </header>
+            
+            <main class="d-content-area">
+                <h1>Welcome back, John!</h1>
+                <p style="margin-top: 10px; color: var(--text-sub);">The Sidebar line below the logo is removed, and the profile is pinned to the bottom.</p>
             </main>
         </div>
     </div>
@@ -316,46 +344,34 @@
                 </div>
                 <nav class="m-drawer-nav">
                     <a href="#" class="m-nav-item active">
-                        <span class="icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect width="7" height="18" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/></svg>
-                        </span>
+                        <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect width="7" height="18" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/></svg></span>
                         <span class="label">Dashboard</span>
                     </a>
                     <a href="#" class="m-nav-item">
-                        <span class="icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 5H3"/><path d="M10 12H3"/><path d="M10 19H3"/><path d="M15 12.003a1 1 0 0 1 1.517-.859l4.997 2.997a1 1 0 0 1 0 1.718l-4.997 2.997a1 1 0 0 1-1.517-.86z"/></svg>
-                        </span>
+                        <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 5H3"/><path d="M10 12H3"/><path d="M10 19H3"/><path d="M15 12.003a1 1 0 0 1 1.517-.859l4.997 2.997a1 1 0 0 1 0 1.718l-4.997 2.997a1 1 0 0 1-1.517-.86z"/></svg></span>
                         <span class="label">View Course</span>
                     </a>
                     <a href="#" class="m-nav-item">
-                        <span class="icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect width="8" height="18" x="3" y="3" rx="1"/><path d="M7 3v18"/><path d="M20.4 18.9c.2.5-.1 1.1-.6 1.3l-1.9.7c-.5.2-1.1-.1-1.3-.6L11.1 5.1c-.2-.5.1-1.1.6-1.3l1.9-.7c.5-.2 1.1.1 1.3.6Z"/></svg>
-                        </span>
+                        <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect width="8" height="18" x="3" y="3" rx="1"/><path d="M7 3v18"/><path d="M20.4 18.9c.2.5-.1 1.1-.6 1.3l-1.9.7c-.5.2-1.1-.1-1.3-.6L11.1 5.1c-.2-.5.1-1.1.6-1.3l1.9-.7c.5-.2 1.1.1 1.3.6Z"/></svg></span>
                         <span class="label">My Courses</span>
                     </a>
                     <a href="#" class="m-nav-item">
-                        <span class="icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 14.66v1.626a2 2 0 0 1-.976 1.696A5 5 0 0 0 7 21.978"/><path d="M14 14.66v1.626a2 2 0 0 0 .976 1.696A5 5 0 0 1 17 21.978"/><path d="M18 9h1.5a1 1 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M6 9a6 6 0 0 0 12 0V3a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1z"/><path d="M6 9H4.5a1 1 0 0 1 0-5H6"/></svg>
-                        </span>
+                        <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 14.66v1.626a2 2 0 0 1-.976 1.696A5 5 0 0 0 7 21.978"/><path d="M14 14.66v1.626a2 2 0 0 0 .976 1.696A5 5 0 0 1 17 21.978"/><path d="M18 9h1.5a1 1 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M6 9a6 6 0 0 0 12 0V3a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1z"/><path d="M6 9H4.5a1 1 0 0 1 0-5H6"/></svg></span>
                         <span class="label">Leaderboard</span>
                     </a>
                     <a href="#" class="m-nav-item">
                         <span class="icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" class="custom-cert">
-                                <path d="M128,136a8,8,0,0,1-8,8H72a8,8,0,0,1,0-16h48A8,8,0,0,1,128,136Zm-8-40H72a8,8,0,0,0,0,16h48a8,8,0,0,0,0-16Zm112,65.47V224A8,8,0,0,1,220,231l-24-13.74L172,231A8,8,0,0,1,160,224V200H40a16,16,0,0,1-16-16V56A16,16,0,0,1,40,40H216a16,16,0,0,1,16,16V86.53a51.88,51.88,0,0,1,0,74.94ZM160,184V161.47A52,52,0,0,1,216,76V56H40V184Zm56-12a51.88,51.88,0,0,1-40,0v38.22l16-9.16a8,8,0,0,1,7.94,0l16,9.16Zm16-48a36,36,0,1,0-36,36A36,36,0,0,0,232,124Z"></path>
-                            </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" style="fill: #6b7280; stroke: none;"><path d="M128,136a8,8,0,0,1-8,8H72a8,8,0,0,1,0-16h48A8,8,0,0,1,128,136Zm-8-40H72a8,8,0,0,0,0,16h48a8,8,0,0,0,0-16Zm112,65.47V224A8,8,0,0,1,220,231l-24-13.74L172,231A8,8,0,0,1,160,224V200H40a16,16,0,0,1-16-16V56A16,16,0,0,1,40,40H216a16,16,0,0,1,16,16V86.53a51.88,51.88,0,0,1,0,74.94ZM160,184V161.47A52,52,0,0,1,216,76V56H40V184Zm56-12a51.88,51.88,0,0,1-40,0v38.22l16-9.16a8,8,0,0,1,7.94,0l16,9.16Zm16-48a36,36,0,1,0-36,36A36,36,0,0,0,232,124Z"></path></svg>
                         </span>
                         <span class="label">Certificates</span>
                     </a>
                     <a href="#" class="m-nav-item">
-                        <span class="icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
-                        </span>
+                        <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg></span>
                         <span class="label">Support</span>
                     </a>
                 </nav>
 
-                <!-- FIXED: Account Mobile with Email Visible -->
+                <!-- FIXED: Mobile Account Section with Email -->
                 <div class="m-account-section" id="profile-trigger-mobile">
                     <div class="account-card">
                         <img class="account-avatar" src="https://ui-avatars.com/api/?name=John+Doe&background=34c375&color=fff" alt="Profile">
@@ -379,41 +395,45 @@
             </div>
         </div>
         <ul class="popup-list">
-            <li><a><span>Profile</span></a></li>
+            <li><a><span>My Profile</span></a></li>
             <li><a><span>Settings</span></a></li>
-            <li><a class="logout"><span>Logout</span></a></li>
+            <li style="border-top: 1px solid #eee;">
+                <a style="color: var(--danger-color);"><span>Logout</span></a>
+            </li>
         </ul>
     </div>
 
     <script>
-        // --- MOBILE DRAWER LOGIC ---
+        // MOBILE DRAWER
         const mOpen = document.getElementById('m-open-drawer');
         const mClose = document.getElementById('m-close-drawer');
         const mOverlay = document.getElementById('m-overlay');
 
         mOpen.onclick = () => mOverlay.classList.add('open');
         mClose.onclick = () => mOverlay.classList.remove('open');
-        mOverlay.onclick = (e) => {
-            if (e.target === mOverlay) mOverlay.classList.remove('open');
-        };
+        mOverlay.onclick = (e) => { if (e.target === mOverlay) mOverlay.classList.remove('open'); };
 
-        // --- PROFILE POPUP LOGIC ---
+        // PROFILE POPUP
         const pPopup = document.getElementById('profile-popup');
-        const pTriggers = [
+        const triggers = [
             document.getElementById('profile-trigger-desktop'),
             document.getElementById('profile-trigger-mobile')
         ];
 
-        pTriggers.forEach(trigger => {
-            trigger.onclick = (e) => {
+        triggers.forEach(t => {
+            t.onclick = (e) => {
                 e.stopPropagation();
+                
+                if (window.innerWidth > 768) {
+                    pPopup.style.left = '16px';
+                    pPopup.style.bottom = '80px';
+                }
+                
                 pPopup.classList.toggle('active');
             };
         });
 
-        document.addEventListener('click', (e) => {
-            if (!pPopup.contains(e.target)) pPopup.classList.remove('active');
-        });
+        document.addEventListener('click', () => pPopup.classList.remove('active'));
     </script>
 </body>
 </html>

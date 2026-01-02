@@ -323,19 +323,25 @@
             }
         }
 
-        document.getElementById('add-problem-btn').onclick = async () => {
-            const { error } = await supabaseClient.from('code_problems').insert([{
-                title: 'New Logic Problem', 
-                points: 10, 
-                statement: 'Describe the problem...', 
-                function_name: 'solution', 
-                starter_code: templates.javascript,
-                language: 'javascript', 
-                assignment_id: currentAssignment.id,
-                test_cases: []
-            }]);
-            if(!error) loadProblems();
-        };
+document.getElementById('add-problem-btn').onclick = async () => {
+    const { data, error } = await supabaseClient.from('code_problems').insert([{
+        title: 'New Logic Problem', 
+        points: 10, 
+        statement: 'Describe the problem...', 
+        function_name: 'solution', 
+        starter_code: templates.javascript,
+        language: 'javascript', 
+        assignment_id: currentAssignment.id,
+        test_cases: [] // Ensure this is an empty array
+    }]).select(); // Adding .select() helps some versions of the client
+
+    if(!error) {
+        loadProblems();
+    } else {
+        console.error("Supabase Error:", error);
+        alert("Error creating problem: " + error.message + "\nDetails: " + error.details);
+    }
+};
 
         // Modal Logic
         const modal = document.getElementById('assignment-modal');

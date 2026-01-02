@@ -2,8 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Subjects</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Supabase Library -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
@@ -15,59 +17,118 @@
             <a href="#">Settings</a>
         </nav>
     </div>
+
     <div class="main">
         <h1>Course Management</h1>
         
         <div class="card">
             <h3>Create New Subject</h3>
+            <p style="font-size: 0.8rem; color: #666;">Phase 1: Defining the Container</p>
             <input type="text" id="subName" placeholder="Subject Name (e.g. Java Programming)">
             <input type="text" id="subFile" placeholder="Filename (e.g. java-course.html)">
-            <button onclick="createSubject()">Create Subject & Course Shell</button>
+            <button id="createBtn">Create Subject & Course Shell</button>
         </div>
 
-        <div id="subjectList" class="grid"></div>
+        <h3>Existing Subjects</h3>
+        <div id="subjectList" class="grid">
+            <!-- Data loads here -->
+        </div>
     </div>
 
     <script>
-        // CONFIGURATION: Replace with your actual keys
-        const SB_URL = "https://knfypqztuiemawullipi.supabase.co";
+        // 1. CONFIGURATION - REPLACE THESE WITH YOUR ACTUAL SUPABASE VALUES
+        const SB_URL = "https://knfypqztuiemawullipi.supabase.co"; 
         const SB_KEY = "sb_publishable_yZhWBF9pFHHxn7jO-zr2Kw_-E-SSktb";
+
+        // Initialize Supabase client
         const supabase = supabase.createClient(SB_URL, SB_KEY);
 
+        // 2. DOM Elements
+        const createBtn = document.getElementById('createBtn');
+        const subjectList = document.getElementById('subjectList');
+
+        // 3. Functions
         async function createSubject() {
             const name = document.getElementById('subName').value;
             const filename = document.getElementById('subFile').value;
 
-            // 1. Create Course Record
-            const { data: course, error: cErr } = await supabase.from('courses').insert({ chapters: [] }).select().single();
-            
-            if (course) {
-                // 2. Create Subject Record linked to Course
-                await supabase.from('subjects').insert({
-                    name: name,
-                    filename: filename,
-                    course_id: course.id
-                });
-                location.reload();
+            if (!name || !filename) {
+                alert("Please fill in both fields");
+                return;
+            }
+
+            try {
+                // Step A: Create the Course Record (The shell)
+                const { data: course, error: courseError } = await supabase
+                    .from('courses')
+                    .insert([{ chapters: [] }])
+                    .select()
+                    .single();
+
+                if (courseError) throw courseError;
+
+                // Step B: Create the Subject Record (The container) linked via course_id
+                const { error: subjectError } = await supabase
+                    .from('subjects')
+                    .insert([{
+                        name: name,
+                        filename: filename,
+                        course_id: course.id
+                    }]);
+
+                if (subjectError) throw subjectError;
+
+                alert("Subject and Course created successfully!");
+                location.reload(); // Refresh to show new data
+
+            } catch (err) {
+                console.error("Error creating subject:", err);
+                alert("Error: " + err.message);
             }
         }
 
         async function loadSubjects() {
-            const { data } = await supabase.from('subjects').select('*');
-            const container = document.getElementById('subjectList');
-            container.innerHTML = data.map(sub => `
-                <div class="card">
-                    <h4>${sub.name}</h4>
-                    <p>File: ${sub.filename}</p>
-                    <div style="display:flex; gap:5px; flex-wrap:wrap">
-                        <button onclick="window.location.href='lessons.html?courseId=${sub.course_id}'">Content</button>
-                        <button class="secondary" onclick="window.location.href='exams.html?subjectId=${sub.id}'">Exams</button>
-                        <button class="secondary" onclick="window.location.href='code.html?subjectId=${sub.id}'">Code</button>
+            try {
+                const { data, error } = await supabase
+                    .from('subjects')
+                    .select('*');
+
+                if (error) throw error;
+
+                if (data.length === 0) {
+                    subjectList.innerHTML = "<p>No subjects found. Create your first one above!</p>";
+                    return;
+                }
+
+                subjectList.innerHTML = data.map(sub => `
+                    <div class="card">
+                        <h4>${sub.name}</h4>
+                        <p class="tag">${sub.filename}</p>
+                        <div style="display:flex; gap:10px; margin-top:15px; flex-wrap:wrap">
+                            <button onclick="window.location.href='lessons.html?courseId=${sub.course_id}'">
+                                📚 Content
+                            </button>
+                            <button class="secondary" onclick="window.location.href='exams.html?subjectId=${sub.id}'">
+                                📝 Exams
+                            </button>
+                            <button class="secondary" onclick="window.location.href='code.html?subjectId=${sub.id}'">
+                                💻 Code
+                            </button>
+                        </div>
                     </div>
-                </div>
-            `).join('');
+                `).join('');
+            } catch (err) {
+                console.error("Error loading subjects:", err);
+                subjectList.innerHTML = "Failed to load subjects.";
+            }
         }
-        loadSubjects();
+
+        // 4. Event Listeners
+        // Using addEventListener instead of inline onclick is safer and prevents "not defined" errors
+        createBtn.addEventListener('click', createSubject);
+
+        // Load data on page start
+        window.onload = loadSubjects;
     </script>
 </body>
 </html>

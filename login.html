@@ -3,148 +3,174 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Supabase Auth</title>
-    <!-- Tailwind CSS for styling -->
+    <title>Supabase Profile Manager</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Supabase JS Library -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        .hidden { display: none !important; }
+        .loader { border-top-color: #3498db; animation: spinner 1.5s linear infinite; }
+        @keyframes spinner { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
 </head>
-<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+<body class="bg-gray-50 min-h-screen flex items-center justify-center p-4">
 
-    <div class="max-w-md w-full bg-white p-8 rounded-xl shadow-lg">
-        <!-- 1. AUTH FORM -->
-        <div id="auth-container">
-            <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Login or Sign Up</h2>
-            
+    <div class="max-w-md w-full bg-white p-8 rounded-xl shadow-xl border border-gray-100">
+        
+        <!-- SECTION 1: LOGIN -->
+        <div id="section-login">
+            <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Welcome</h2>
             <div class="space-y-4">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700">Email</label>
-                    <input type="email" id="email" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" placeholder="name@company.com">
-                </div>
-
-                <div>
-                    <label class="block text-sm font-medium text-gray-700">Password</label>
-                    <input type="password" id="password" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" placeholder="••••••••">
-                </div>
-
-                <button onclick="handleEmailLogin()" id="login-btn" class="w-full bg-blue-600 text-white py-2 rounded-md font-semibold hover:bg-blue-700 transition">
-                    Continue with Email
-                </button>
-
-                <div class="relative flex items-center py-2">
-                    <div class="flex-grow border-t border-gray-300"></div>
-                    <span class="flex-shrink mx-4 text-gray-400 text-sm">OR</span>
-                    <div class="flex-grow border-t border-gray-300"></div>
-                </div>
-
+                <input type="email" id="email" placeholder="Email" class="w-full px-4 py-2 border rounded-md outline-none focus:ring-2 focus:ring-blue-500">
+                <input type="password" id="password" placeholder="Password" class="w-full px-4 py-2 border rounded-md outline-none focus:ring-2 focus:ring-blue-500">
+                <button onclick="handleEmailLogin()" class="w-full bg-blue-600 text-white py-2 rounded-md font-semibold hover:bg-blue-700 transition">Continue</button>
+                <div class="text-center text-gray-400 text-sm">OR</div>
                 <button onclick="handleGoogleLogin()" class="w-full flex justify-center items-center py-2 px-4 border border-gray-300 rounded-md bg-white hover:bg-gray-50 transition">
-                    <img class="h-5 w-5 mr-2" src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
-                    <span class="text-gray-700 font-medium">Continue with Google</span>
+                    <img class="h-5 w-5 mr-2" src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg">
+                    Google
                 </button>
             </div>
-            
-            <p id="message" class="mt-4 text-center text-sm font-medium min-h-[1.25rem]"></p>
         </div>
 
-        <!-- 2. SUCCESS STATE -->
-        <div id="success-container" class="hidden text-center">
-            <div class="inline-flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mb-4">
-                <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                </svg>
+        <!-- SECTION 2: PROFILE FORM (Onboarding / Edit) -->
+        <div id="section-form" class="hidden">
+            <h2 class="text-xl font-bold mb-4 text-gray-800">Complete Your Profile</h2>
+            <div class="space-y-3">
+                <input type="text" id="form-name" placeholder="Full Name" class="w-full px-4 py-2 border rounded-md">
+                <input type="text" id="form-roll" placeholder="Roll Number" class="w-full px-4 py-2 border rounded-md">
+                <input type="text" id="form-mobile" placeholder="Mobile Number" class="w-full px-4 py-2 border rounded-md">
+                <input type="text" id="form-college" placeholder="College Name" class="w-full px-4 py-2 border rounded-md">
+                <button onclick="saveProfile()" class="w-full bg-green-600 text-white py-2 rounded-md font-semibold hover:bg-green-700">Save Details</button>
+                <button onclick="checkProfile()" class="w-full text-gray-500 text-sm underline mt-2">Cancel</button>
             </div>
-            <h2 class="text-2xl font-bold mb-2 text-gray-800">Login Successful!</h2>
-            <p id="user-display" class="text-gray-600 mb-6"></p>
-            <button onclick="handleLogout()" class="text-blue-600 hover:text-blue-800 font-medium underline">Sign Out</button>
         </div>
+
+        <!-- SECTION 3: PROFILE VIEW (Dashboard) -->
+        <div id="section-view" class="hidden text-center">
+            <div class="bg-green-100 text-green-700 p-2 rounded-md mb-4 text-sm font-bold">Login Successfully!</div>
+            <h2 class="text-2xl font-bold mb-4 text-gray-800" id="view-name-title">Hello!</h2>
+            <div class="text-left space-y-2 mb-6 bg-gray-50 p-4 rounded-lg border">
+                <p class="text-sm text-gray-500">Roll Number: <span id="view-roll" class="text-gray-800 font-medium">-</span></p>
+                <p class="text-sm text-gray-500">Mobile: <span id="view-mobile" class="text-gray-800 font-medium">-</span></p>
+                <p class="text-sm text-gray-500">College: <span id="view-college" class="text-gray-800 font-medium">-</span></p>
+                <p class="text-sm text-gray-500">Email: <span id="view-email" class="text-gray-800 font-medium">-</span></p>
+            </div>
+            <div class="flex flex-col gap-2">
+                <button onclick="showEditForm()" class="w-full bg-blue-100 text-blue-700 py-2 rounded-md font-semibold hover:bg-blue-200">Edit Profile</button>
+                <button onclick="handleLogout()" class="text-red-500 text-sm underline">Sign Out</button>
+            </div>
+        </div>
+
+        <p id="msg" class="mt-4 text-center text-xs font-bold uppercase"></p>
     </div>
 
     <script>
-        // --- CONFIGURATION ---
-        // Replace these with your actual Supabase Project details
-        const SUPABASE_URL = 'https://knfypqztuiemawullipi.supabase.co';
-        const SUPABASE_ANON_KEY = 'sb_publishable_yZhWBF9pFHHxn7jO-zr2Kw_-E-SSktb';
+        // 1. YOUR CREDENTIALS
+        const SUPABASE_URL = 'https://YOUR_PROJECT_ID.supabase.co';
+        const SUPABASE_ANON_KEY = 'YOUR_ANON_KEY';
 
-        // Initialize the client (Using a unique name to avoid naming conflicts)
-        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        const authContainer = document.getElementById('auth-container');
-        const successContainer = document.getElementById('success-container');
-        const messageEl = document.getElementById('message');
-        const userDisplay = document.getElementById('user-display');
+        // UI Selectors
+        const secLogin = document.getElementById('section-login');
+        const secForm = document.getElementById('section-form');
+        const secView = document.getElementById('section-view');
+        const msgEl = document.getElementById('msg');
 
-        // Check user session on load
-        async function checkUser() {
-            const { data: { session } } = await supabaseClient.auth.getSession();
-            toggleUI(session);
-        }
-        checkUser();
-
-        // Listen for auth changes (login/logout)
-        supabaseClient.auth.onAuthStateChange((event, session) => {
-            console.log("Auth Event:", event);
-            toggleUI(session);
+        // Check auth on load
+        sb.auth.onAuthStateChange(async (event, session) => {
+            if (session) {
+                checkProfile(); // Check if user has data in DB
+            } else {
+                showSection('login');
+            }
         });
 
-        // EMAIL LOGIN/SIGNUP
+        // AUTH FUNCTIONS
         async function handleEmailLogin() {
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-            
-            if (!email || !password) {
-                showMessage("Please enter both email and password", "red");
-                return;
-            }
-
-            showMessage("Processing...", "blue");
-
-            // Attempt Sign In
-            const { data, error: signInError } = await supabaseClient.auth.signInWithPassword({ email, password });
-
-            if (signInError) {
-                // If login fails, try to Sign Up (creates account if doesn't exist)
-                const { error: signUpError } = await supabaseClient.auth.signUp({ email, password });
-                
-                if (signUpError) {
-                    showMessage(signUpError.message, "red");
-                } else {
-                    showMessage("Account created! Please check your email for confirmation.", "blue");
-                }
+            setMsg("Processing...", "blue");
+            const { error } = await sb.auth.signInWithPassword({ email, password });
+            if (error) {
+                const { error: signUpError } = await sb.auth.signUp({ email, password });
+                if (signUpError) setMsg(signUpError.message, "red");
+                else setMsg("Check email for verification link!", "blue");
             }
         }
 
-        // GOOGLE LOGIN
         async function handleGoogleLogin() {
-            const { error } = await supabaseClient.auth.signInWithOAuth({
-                provider: 'google',
-                options: {
-                    redirectTo: window.location.href // Redirects back to this same page
-                }
-            });
-            if (error) showMessage(error.message, "red");
+            await sb.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: window.location.href } });
         }
 
-        // LOGOUT
         async function handleLogout() {
-            await supabaseClient.auth.signOut();
-            location.reload(); 
+            await sb.auth.signOut();
+            location.reload();
         }
 
-        // UI HELPERS
-        function toggleUI(session) {
-            if (session) {
-                authContainer.classList.add('hidden');
-                successContainer.classList.remove('hidden');
-                userDisplay.innerText = session.user.email;
+        // DATABASE FUNCTIONS
+        async function checkProfile() {
+            const user = (await sb.auth.getUser()).data.user;
+            if (!user) return;
+
+            setMsg("Loading data...", "gray");
+            const { data, error } = await sb.from('profiles').select('*').eq('id', user.id).single();
+
+            if (data) {
+                // If user exists in DB, show data
+                document.getElementById('view-name-title').innerText = `Hello, ${data.full_name}!`;
+                document.getElementById('view-roll').innerText = data.roll_number;
+                document.getElementById('view-mobile').innerText = data.mobile;
+                document.getElementById('view-college').innerText = data.college;
+                document.getElementById('view-email').innerText = user.email;
+                showSection('view');
+                setMsg("");
             } else {
-                authContainer.classList.remove('hidden');
-                successContainer.classList.add('hidden');
+                // If user is new, show form
+                showSection('form');
+                setMsg("New user detected. Please fill profile.", "orange");
             }
         }
 
-        function showMessage(msg, color) {
-            messageEl.innerText = msg;
-            messageEl.className = `mt-4 text-center text-sm font-medium text-${color}-600`;
+        async function saveProfile() {
+            const user = (await sb.auth.getUser()).data.user;
+            const profileData = {
+                id: user.id,
+                full_name: document.getElementById('form-name').value,
+                roll_number: document.getElementById('form-roll').value,
+                mobile: document.getElementById('form-mobile').value,
+                college: document.getElementById('form-college').value,
+                updated_at: new Date()
+            };
+
+            setMsg("Saving...", "blue");
+            const { error } = await sb.from('profiles').upsert(profileData);
+
+            if (error) setMsg(error.message, "red");
+            else checkProfile();
+        }
+
+        // NAVIGATION
+        function showSection(name) {
+            secLogin.classList.add('hidden');
+            secForm.classList.add('hidden');
+            secView.classList.add('hidden');
+            if (name === 'login') secLogin.classList.remove('hidden');
+            if (name === 'form') secForm.classList.remove('hidden');
+            if (name === 'view') secView.classList.remove('hidden');
+        }
+
+        function showEditForm() {
+            // Pre-fill form with existing view data
+            document.getElementById('form-name').value = document.getElementById('view-name-title').innerText.replace('Hello, ', '').replace('!', '');
+            document.getElementById('form-roll').value = document.getElementById('view-roll').innerText;
+            document.getElementById('form-mobile').value = document.getElementById('view-mobile').innerText;
+            document.getElementById('form-college').value = document.getElementById('view-college').innerText;
+            showSection('form');
+        }
+
+        function setMsg(txt, color) {
+            msgEl.innerText = txt;
+            msgEl.style.color = color;
         }
     </script>
 </body>

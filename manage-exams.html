@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Exams - Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        :root {
+            --body-bg: #F9FAFB; --widget-bg: #FFFFFF; --border-color: #E5E7EB;
+            --text-primary: #111827; --text-secondary: #6B7280; --brand-purple: #6D28D9;
+            --brand-purple-hover: #5B21B6; --hover-bg: #F3F4F6; --danger-color: #EF4444;
+            --success-color: #10B981; --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'IBM Plex Sans', sans-serif; background-color: var(--body-bg); color: var(--text-primary); font-size: 14px; line-height: 1.5; }
+        
+        .top-bar { 
+            background: var(--widget-bg); padding: 1rem 2rem; border-bottom: 1px solid var(--border-color);
+            display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100;
+        }
+        .logo-img { height: 30px; }
+
+        .container { max-width: 1000px; margin: 0 auto; padding: 2rem 1.25rem; }
+        .back-link { display: inline-flex; align-items: center; gap: 5px; color: var(--brand-purple); font-weight: 600; text-decoration: none; margin-bottom: 1rem; }
+        .header-flex { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem; }
+        
+        .table-wrapper { background: var(--widget-bg); border-radius: 12px; border: 1px solid var(--border-color); overflow-x: auto; box-shadow: var(--shadow-sm); }
+        table { width: 100%; border-collapse: collapse; text-align: left; }
+        th { background: #F9FAFB; padding: 1rem; font-size: 12px; text-transform: uppercase; color: var(--text-secondary); border-bottom: 1px solid var(--border-color); }
+        td { padding: 1rem; border-bottom: 1px solid var(--border-color); }
+
+        .switch { position: relative; display: inline-block; width: 40px; height: 20px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; inset: 0; background: #ccc; border-radius: 20px; transition: .3s; }
+        .slider:before { content: ""; position: absolute; height: 14px; width: 14px; left: 3px; bottom: 3px; background: white; border-radius: 50%; transition: .3s; }
+        input:checked + .slider { background: var(--success-color); }
+        input:checked + .slider:before { transform: translateX(20px); }
+
+        .btn { padding: 0.6rem 1.2rem; border-radius: 8px; font-weight: 600; cursor: pointer; border: none; display: inline-flex; align-items: center; gap: 6px; }
+        .btn-primary { background: var(--brand-purple); color: white; }
+        .btn-secondary { background: #eee; color: var(--text-primary); }
+        
+        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; place-items: center; z-index: 1000; padding: 1rem; }
+        .modal.show { display: grid; }
+        .modal-content { background: white; border-radius: 12px; width: 100%; max-width: 700px; padding: 1.5rem; max-height: 90vh; overflow-y: auto; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+        .field { margin-bottom: 1rem; }
+        .field label { display: block; font-weight: 600; margin-bottom: 4px; }
+        .field input, .field textarea { width: 100%; padding: 0.7rem; border: 1px solid var(--border-color); border-radius: 6px; }
+        
+        .question-box { border: 1px solid var(--border-color); padding: 1rem; border-radius: 8px; margin-top: 10px; background: #f9f9f9; position: relative; }
+        .remove-q-btn { position: absolute; top: 10px; right: 10px; color: var(--danger-color); cursor: pointer; border: none; background: none; }
+
+        #loading-overlay { position: fixed; inset: 0; background: white; z-index: 9999; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+        
+        @media (max-width: 600px) {
+            .form-row { grid-template-columns: 1fr; }
+            .header-flex { flex-direction: column; align-items: flex-start; }
+            .btn-primary { width: 100%; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+    <div id="loading-overlay">Authenticating Admin...</div>
+
+    <header class="top-bar">
+        <img src="https://ihtnas.com/assets/ihtnas-nav.png" alt="Logo" class="logo-img">
+        <div style="font-weight: 600; color: var(--text-secondary);">Exam Manager</div>
+    </header>
+
+    <main class="container">
+        <a href="manage-subjects.html" class="back-link"><i class='bx bx-arrow-back'></i> Back to Courses</a>
+        
+        <div class="header-flex">
+            <h1 id="page-title">Loading Exams...</h1>
+            <button class="btn btn-primary" id="create-exam-btn"><i class='bx bx-plus'></i> New Exam</button>
+        </div>
+
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Exam Name</th>
+                        <th>Duration</th>
+                        <th>Questions</th>
+                        <th>Deadline</th>
+                        <th>Active</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="exams-list"></tbody>
+            </table>
+        </div>
+    </main>
+
+    <!-- Exam Modal -->
+    <div class="modal" id="exam-modal">
+        <div class="modal-content">
+            <h2 id="modal-title" style="margin-bottom:1.5rem">Exam Details</h2>
+            <form id="exam-form">
+                <input type="hidden" id="exam-id">
+                <div class="form-row">
+                    <div class="field"><label>Exam Name</label><input type="text" id="exam-name" placeholder="e.g. Midterm Assessment" required></div>
+                    <div class="field"><label>Duration (mins)</label><input type="number" id="exam-duration" placeholder="e.g. 60" required></div>
+                </div>
+                <div class="field"><label>Deadline Date</label><input type="date" id="exam-deadline"></div>
+                
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-top:1rem">
+                    <h4 style="font-weight:700">Questions</h4>
+                    <button type="button" class="btn btn-secondary" onclick="addQuestionUI()"><i class='bx bx-plus'></i> Add Question</button>
+                </div>
+                <div id="q-list-container" style="margin-top: 10px;"></div>
+
+                <div style="display:flex; gap:10px; margin-top:2rem">
+                    <button type="button" class="btn btn-primary" id="save-exam-btn" style="flex:1; justify-content:center">Save Exam</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()" style="flex:1; justify-content:center">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <script>
+        const SUPABASE_URL = "YOUR_SUPABASE_PROJECT_URL";
+        const SUPABASE_KEY = "YOUR_SUPABASE_ANON_KEY";
+        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        const ADMIN_EMAIL = "harshavardhanjw@gmail.com";
+        let currentCourseId = null;
+
+        async function checkAuth() {
+            const { data: { session } } = await supabase.auth.getSession();
+            if (session && session.user.email === ADMIN_EMAIL) {
+                const urlParams = new URLSearchParams(window.location.search);
+                currentCourseId = urlParams.get('courseId');
+                if (!currentCourseId) return window.location.href = 'manage-subjects.html';
+                
+                const { data: course } = await supabase.from('courses').select('name').eq('id', currentCourseId).single();
+                if(course) document.getElementById('page-title').textContent = course.name + " Exams";
+                
+                document.getElementById('loading-overlay').style.display = 'none';
+                loadExams();
+            } else {
+                window.location.href = 'index.html';
+            }
+        }
+        checkAuth();
+
+        async function loadExams() {
+            const list = document.getElementById('exams-list');
+            const { data: exams, error } = await supabase
+                .from('exams')
+                .select('*')
+                .eq('course_id', currentCourseId)
+                .order('created_at', { ascending: false });
+
+            list.innerHTML = '';
+            exams?.forEach(e => {
+                const questionsCount = Array.isArray(e.payload) ? e.payload.length : 0;
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td style="font-weight:600">${e.name}</td>
+                    <td>${e.duration / 60} min</td>
+                    <td>${questionsCount} Qs</td>
+                    <td>${e.deadline ? new Date(e.deadline).toLocaleDateString() : 'No Limit'}</td>
+                    <td>
+                        <label class="switch">
+                            <input type="checkbox" onchange="toggleLock('${e.id}', this.checked)" ${!e.is_locked ? 'checked' : ''}>
+                            <span class="slider"></span>
+                        </label>
+                    </td>
+                    <td>
+                        <button onclick="editExam('${e.id}')" style="background:none; border:none; cursor:pointer; font-size:1.2rem; color:#666"><i class='bx bx-edit'></i></button>
+                        <button onclick="deleteExam('${e.id}')" style="background:none; border:none; cursor:pointer; font-size:1.2rem; color:var(--danger-color); margin-left:10px"><i class='bx bx-trash'></i></button>
+                    </td>
+                `;
+                list.appendChild(tr);
+            });
+        }
+
+        async function toggleLock(id, isActive) {
+            await supabase.from('exams').update({ is_locked: !isActive }).eq('id', id);
+        }
+
+        async function deleteExam(id) {
+            if(confirm('Delete this exam permanently?')) {
+                await supabase.from('exams').delete().eq('id', id);
+                loadExams();
+            }
+        }
+
+        const modal = document.getElementById('exam-modal');
+        function closeModal() { modal.classList.remove('show'); }
+
+        document.getElementById('create-exam-btn').onclick = () => {
+            document.getElementById('exam-form').reset();
+            document.getElementById('exam-id').value = '';
+            document.getElementById('q-list-container').innerHTML = '';
+            document.getElementById('modal-title').innerText = 'Create New Exam';
+            modal.classList.add('show');
+            addQuestionUI();
+        };
+
+        async function editExam(id) {
+            const { data: e } = await supabase.from('exams').select('*').eq('id', id).single();
+            document.getElementById('exam-id').value = id;
+            document.getElementById('exam-name').value = e.name;
+            document.getElementById('exam-duration').value = e.duration / 60;
+            if (e.deadline) document.getElementById('exam-deadline').value = e.deadline.split('T')[0];
+            
+            document.getElementById('q-list-container').innerHTML = '';
+            if(e.payload) e.payload.forEach(q => addQuestionUI(q));
+            
+            document.getElementById('modal-title').innerText = 'Edit Exam';
+            modal.classList.add('show');
+        }
+
+        function addQuestionUI(q = null) {
+            const div = document.createElement('div');
+            div.className = 'question-box';
+            div.innerHTML = `
+                <button type="button" class="remove-q-btn" onclick="this.parentElement.remove()"><i class='bx bx-trash'></i></button>
+                <input type="text" class="qt" placeholder="Enter Question" value="${q?.title || ''}" style="margin-bottom:8px; border:none; border-bottom:1px solid #ddd; width:95%; outline:none; font-weight:600">
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px">
+                    <input type="text" class="o0" placeholder="Option A" value="${q?.options?.[0] || ''}">
+                    <input type="text" class="o1" placeholder="Option B" value="${q?.options?.[1] || ''}">
+                    <input type="text" class="o2" placeholder="Option C" value="${q?.options?.[2] || ''}">
+                    <input type="text" class="o3" placeholder="Option D" value="${q?.options?.[3] || ''}">
+                </div>
+                <div style="margin-top:8px; display:flex; align-items:center; gap:10px">
+                    <label style="font-size:12px">Correct Option (0-3):</label>
+                    <input type="number" class="qc" min="0" max="3" value="${q?.correctAnswer ?? 0}" style="width:50px; padding:4px; border:1px solid #ddd; border-radius:4px">
+                </div>
+            `;
+            document.getElementById('q-list-container').appendChild(div);
+        }
+
+        document.getElementById('save-exam-btn').onclick = async () => {
+            const id = document.getElementById('exam-id').value;
+            const name = document.getElementById('exam-name').value;
+            const duration = parseInt(document.getElementById('exam-duration').value) * 60;
+            const deadline = document.getElementById('exam-deadline').value || null;
+            
+            const questions = [];
+            document.querySelectorAll('.question-box').forEach(box => {
+                questions.push({
+                    title: box.querySelector('.qt').value,
+                    options: [box.querySelector('.o0').value, box.querySelector('.o1').value, box.querySelector('.o2').value, box.querySelector('.o3').value],
+                    correctAnswer: parseInt(box.querySelector('.qc').value),
+                    points: 5
+                });
+            });
+
+            const examData = { name, duration, course_id: currentCourseId, payload: questions, deadline };
+            
+            let res;
+            if(id) res = await supabase.from('exams').update(examData).eq('id', id);
+            else res = await supabase.from('exams').insert([{ ...examData, is_locked: true }]);
+            
+            if(!res.error) {
+                closeModal();
+                loadExams();
+            } else {
+                alert("Error saving exam: " + res.error.message);
+            }
+        };
+    </script>
+</body>
+</html>

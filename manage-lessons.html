@@ -8,6 +8,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <!-- Added SortableJS -->
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
     <style>
         :root {
             --body-bg: #F9FAFB; --widget-bg: #FFFFFF; --border-color: #E5E7EB;
@@ -28,12 +30,17 @@
         .back-btn { display: inline-flex; align-items: center; gap: 5px; color: var(--brand-purple); font-weight: 600; text-decoration: none; margin-bottom: 1rem; }
         .admin-content-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem; }
 
-        .chapter-block { background: var(--widget-bg); border: 1px solid var(--border-color); border-radius: 12px; margin-bottom: 1.5rem; overflow: hidden; box-shadow: var(--shadow-sm); }
+        .chapter-block { background: var(--widget-bg); border: 1px solid var(--border-color); border-radius: 12px; margin-bottom: 1.5rem; overflow: hidden; box-shadow: var(--shadow-sm); cursor: default; }
         .chapter-header { padding: 1rem 1.5rem; background: #FDFDFD; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
-        .chapter-title { font-size: 1.1rem; font-weight: 700; }
         
-        .lessons-list { padding: 0.5rem; }
-        .lesson-item { display: flex; align-items: center; gap: 1rem; padding: 0.75rem 1rem; border-radius: 8px; transition: background 0.2s; }
+        /* Drag Handle Style */
+        .drag-handle { cursor: grab; color: #ccc; font-size: 1.4rem; margin-right: 10px; }
+        .drag-handle:active { cursor: grabbing; }
+
+        .chapter-title { font-size: 1.1rem; font-weight: 700; flex: 1; }
+        
+        .lessons-list { padding: 0.5rem; min-height: 20px; }
+        .lesson-item { display: flex; align-items: center; gap: 1rem; padding: 0.75rem 1rem; border-radius: 8px; transition: background 0.2s; background: white; margin-bottom: 2px; }
         .lesson-item:hover { background: var(--hover-bg); }
         .lesson-icon { font-size: 1.25rem; color: var(--text-secondary); }
         .lesson-details { flex: 1; }
@@ -61,6 +68,10 @@
         .question-card { border: 1px solid var(--border-color); padding: 1rem; border-radius: 8px; margin-top: 1rem; background: #f9f9f9; position: relative; }
         .remove-q-btn { position: absolute; top: 10px; right: 10px; color: var(--danger-color); cursor: pointer; border: none; background: none; }
 
+        /* Sortable Ghost Styles */
+        .sortable-ghost { opacity: 0.4; background: var(--hover-bg) !important; border: 2px dashed var(--brand-purple) !important; }
+        .sortable-chosen { background: #fff; box-shadow: var(--shadow-md); }
+
         #loading-overlay { position: fixed; inset: 0; background: white; z-index: 9999; display: flex; align-items: center; justify-content: center; font-weight: 700; }
     </style>
 </head>
@@ -73,12 +84,13 @@
     </header>
 
     <main class="container">
-        <a href="manage-subjects.html" class="back-btn"><i class='bx bx-arrow-back'></i> Back to Courses</a>
+        <a href="manage-courses.html" class="back-btn"><i class='bx bx-arrow-back'></i> Back to Courses</a>
         
         <div class="admin-content-header">
             <h1 id="page-title">Loading Course...</h1>
         </div>
 
+        <!-- This container will be Sortable -->
         <div id="lesson-editor-container"></div>
         
         <button class="add-chapter-btn" id="add-chapter-btn"><i class='bx bx-plus'></i> Add New Chapter</button>
@@ -96,28 +108,23 @@
         </div>
     </div>
 
-<!-- Supabase SDK -->
+    <!-- Supabase SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <script>
-        // Supabase Configuration
         const SUPABASE_URL = "https://knfypqztuiemawullipi.supabase.co";
-        // Fixed missing quote below
         const SUPABASE_KEY = "sb_publishable_yZhWBF9pFHHxn7jO-zr2Kw_-E-SSktb";
-        
-        // Changed variable name to supabaseClient to avoid SyntaxError
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
         const ADMIN_EMAIL = "harshavardhanjw@gmail.com";
         let currentCourse = null;
 
         async function checkAuth() {
-            // Updated to use supabaseClient
             const { data: { session } } = await supabaseClient.auth.getSession();
             if (session && session.user.email === ADMIN_EMAIL) {
                 const urlParams = new URLSearchParams(window.location.search);
                 const courseId = urlParams.get('courseId');
-                if (!courseId) return window.location.href = 'manage-subjects.html';
+                if (!courseId) return window.location.href = 'manage-courses.html';
                 
                 await loadCourseData(courseId);
                 document.getElementById('loading-overlay').style.display = 'none';
@@ -145,15 +152,18 @@
             for (let idx = 0; idx < chapters.length; idx++) {
                 const block = document.createElement('div');
                 block.className = 'chapter-block';
+                // Important: Store chapter name for re-ordering logic
+                block.dataset.chapterName = chapters[idx]; 
                 block.innerHTML = `
                     <div class="chapter-header">
+                        <i class='bx bx-menu drag-handle chapter-dragger'></i>
                         <span class="chapter-title">${idx + 1}. ${chapters[idx]}</span>
                         <div class="btn-group">
                             <button class="icon-btn" onclick="openChapterModal(${idx})"><i class='bx bx-edit'></i></button>
                             <button class="icon-btn delete" onclick="deleteChapter(${idx})"><i class='bx bx-trash'></i></button>
                         </div>
                     </div>
-                    <div class="lessons-list" id="list-${idx}">Loading items...</div>
+                    <div class="lessons-list" id="list-${idx}" data-chapter-index="${idx}">Loading items...</div>
                     <div class="add-content-area">
                         <button class="secondary-btn" onclick="openLessonModal(${idx})">+ Lesson</button>
                         <button class="primary-btn" onclick="openQuizModal(${idx})">+ Quiz</button>
@@ -162,6 +172,25 @@
                 container.appendChild(block);
                 loadItems(idx);
             }
+
+            // Initialize Chapter Sortable
+            Sortable.create(container, {
+                handle: '.chapter-dragger',
+                animation: 150,
+                ghostClass: 'sortable-ghost',
+                onEnd: async function() {
+                    const newChapterOrder = Array.from(container.children).map(el => el.dataset.chapterName);
+                    const { error } = await supabaseClient
+                        .from('courses')
+                        .update({ chapters: newChapterOrder })
+                        .eq('id', currentCourse.id);
+                    
+                    if (!error) {
+                        // Refresh to update the 1. 2. 3. numbering
+                        await loadCourseData(currentCourse.id);
+                    }
+                }
+            });
         }
 
         async function loadItems(chIdx) {
@@ -178,7 +207,9 @@
             items?.forEach(item => {
                 const div = document.createElement('div');
                 div.className = 'lesson-item';
+                div.dataset.id = item.id; // Crucial for re-ordering
                 div.innerHTML = `
+                    <i class='bx bx-grid-vertical drag-handle lesson-dragger'></i>
                     <i class='bx ${item.type === 'quiz' ? 'bx-help-circle' : 'bx-file'} lesson-icon'></i>
                     <div class="lesson-details"><div class="title">${item.title}</div></div>
                     <div class="btn-group">
@@ -188,9 +219,31 @@
                 `;
                 list.appendChild(div);
             });
+
+            // Initialize Lesson Sortable
+            Sortable.create(list, {
+                handle: '.lesson-dragger',
+                animation: 150,
+                ghostClass: 'sortable-ghost',
+                onEnd: async function() {
+                    const lessonIds = Array.from(list.children).map(el => el.dataset.id);
+                    
+                    // Update order_index for all items in this chapter
+                    const updates = lessonIds.map((id, index) => {
+                        return supabaseClient
+                            .from('lessons')
+                            .update({ order_index: index })
+                            .eq('id', id);
+                    });
+
+                    await Promise.all(updates);
+                    // No need to full renderContent, but we can if we want to be safe
+                }
+            });
         }
 
-        // Modal Controls
+        // --- Rest of your existing Modal Logic (closeAllModals, openChapterModal, etc.) ---
+        
         const modal = document.getElementById('generic-modal');
         function closeAllModals() { modal.classList.remove('show'); }
 
@@ -233,9 +286,14 @@
                     type: 'lesson', course_id: currentCourse.id, chapter_index: chIdx
                 };
                 if (lessonId) await supabaseClient.from('lessons').update(payload).eq('id', lessonId);
-                else await supabaseClient.from('lessons').insert([payload]);
+                else {
+                    // Get current count to set order_index
+                    const { count } = await supabaseClient.from('lessons').select('*', { count: 'exact', head: true }).eq('course_id', currentCourse.id).eq('chapter_index', chIdx);
+                    payload.order_index = count || 0;
+                    await supabaseClient.from('lessons').insert([payload]);
+                }
                 
-                renderContent();
+                loadCourseData(currentCourse.id);
                 closeAllModals();
             };
         }
@@ -274,9 +332,13 @@
                     type: 'quiz', course_id: currentCourse.id, chapter_index: chIdx 
                 };
                 if (quizId) await supabaseClient.from('lessons').update(data).eq('id', quizId);
-                else await supabaseClient.from('lessons').insert([data]);
+                else {
+                    const { count } = await supabaseClient.from('lessons').select('*', { count: 'exact', head: true }).eq('course_id', currentCourse.id).eq('chapter_index', chIdx);
+                    data.order_index = count || 0;
+                    await supabaseClient.from('lessons').insert([data]);
+                }
                 
-                renderContent();
+                loadCourseData(currentCourse.id);
                 closeAllModals();
             };
         }
@@ -307,7 +369,7 @@
         async function deleteItem(id) { 
             if(confirm('Delete this item?')) {
                 await supabaseClient.from('lessons').delete().eq('id', id);
-                renderContent();
+                loadCourseData(currentCourse.id);
             }
         }
 

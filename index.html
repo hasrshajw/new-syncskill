@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Subjects</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <div class="sidebar">
+        <h2>CMS Admin</h2>
+        <nav>
+            <a href="index.html">Subjects</a>
+            <a href="#">Analytics</a>
+            <a href="#">Settings</a>
+        </nav>
+    </div>
+    <div class="main">
+        <h1>Course Management</h1>
+        
+        <div class="card">
+            <h3>Create New Subject</h3>
+            <input type="text" id="subName" placeholder="Subject Name (e.g. Java Programming)">
+            <input type="text" id="subFile" placeholder="Filename (e.g. java-course.html)">
+            <button onclick="createSubject()">Create Subject & Course Shell</button>
+        </div>
+
+        <div id="subjectList" class="grid"></div>
+    </div>
+
+    <script>
+        // CONFIGURATION: Replace with your actual keys
+        const SB_URL = "YOUR_SUPABASE_URL";
+        const SB_KEY = "YOUR_SUPABASE_ANON_KEY";
+        const supabase = supabase.createClient(SB_URL, SB_KEY);
+
+        async function createSubject() {
+            const name = document.getElementById('subName').value;
+            const filename = document.getElementById('subFile').value;
+
+            // 1. Create Course Record
+            const { data: course, error: cErr } = await supabase.from('courses').insert({ chapters: [] }).select().single();
+            
+            if (course) {
+                // 2. Create Subject Record linked to Course
+                await supabase.from('subjects').insert({
+                    name: name,
+                    filename: filename,
+                    course_id: course.id
+                });
+                location.reload();
+            }
+        }
+
+        async function loadSubjects() {
+            const { data } = await supabase.from('subjects').select('*');
+            const container = document.getElementById('subjectList');
+            container.innerHTML = data.map(sub => `
+                <div class="card">
+                    <h4>${sub.name}</h4>
+                    <p>File: ${sub.filename}</p>
+                    <div style="display:flex; gap:5px; flex-wrap:wrap">
+                        <button onclick="window.location.href='lessons.html?courseId=${sub.course_id}'">Content</button>
+                        <button class="secondary" onclick="window.location.href='exams.html?subjectId=${sub.id}'">Exams</button>
+                        <button class="secondary" onclick="window.location.href='code.html?subjectId=${sub.id}'">Code</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        loadSubjects();
+    </script>
+</body>
+</html>

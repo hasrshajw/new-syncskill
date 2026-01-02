@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Content</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <div class="sidebar">
+        <h2>CMS Admin</h2>
+        <nav>
+            <a href="index.html">← Back to Subjects</a>
+        </nav>
+    </div>
+    <div class="main">
+        <h1>Curriculum Builder</h1>
+        
+        <div class="card">
+            <h3>Add New Chapter</h3>
+            <input type="text" id="chapName" placeholder="Chapter Title">
+            <button onclick="addChapter()">Add Chapter</button>
+        </div>
+
+        <div id="curriculum"></div>
+    </div>
+
+    <script>
+        const SB_URL = "YOUR_SUPABASE_URL";
+        const SB_KEY = "YOUR_SUPABASE_ANON_KEY";
+        const supabase = supabase.createClient(SB_URL, SB_KEY);
+        
+        const params = new URLSearchParams(window.location.search);
+        const courseId = params.get('courseId');
+
+        async function addChapter() {
+            const name = document.getElementById('chapName').value;
+            const { data } = await supabase.from('courses').select('chapters').eq('id', courseId).single();
+            const newChapters = [...data.chapters, name];
+            await supabase.from('courses').update({ chapters: newChapters }).eq('id', courseId);
+            location.reload();
+        }
+
+        async function addLesson(chapIndex) {
+            const title = prompt("Lesson Title:");
+            if(!title) return;
+            await supabase.from('content').insert({
+                course_id: courseId,
+                chapter_index: chapIndex,
+                type: 'lesson',
+                title: title,
+                body: 'Edit content here...',
+                reading_time: '10 mins'
+            });
+            location.reload();
+        }
+
+        async function loadCurriculum() {
+            const { data: course } = await supabase.from('courses').select('*').eq('id', courseId).single();
+            const { data: contents } = await supabase.from('content').select('*').eq('course_id', courseId).order('order_index');
+
+            const container = document.getElementById('curriculum');
+            container.innerHTML = course.chapters.map((chap, idx) => {
+                const chapContent = contents.filter(c => c.chapter_index === idx);
+                return `
+                    <div class="card">
+                        <h3>Chapter ${idx + 1}: ${chap}</h3>
+                        <div id="content-${idx}">
+                            ${chapContent.map(c => `
+                                <div class="item-row">
+                                    <span>[${c.type.toUpperCase()}] ${c.title}</span>
+                                    <button class="secondary">Edit</button>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div style="margin-top:15px">
+                            <button onclick="addLesson(${idx})">+ Add Lesson</button>
+                            <button onclick="addQuiz(${idx})" class="secondary">+ Add Quiz</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        loadCurriculum();
+    </script>
+</body>
+</html>

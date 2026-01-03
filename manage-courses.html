@@ -152,7 +152,7 @@
                 </div>
                 <div class="form-field">
                     <label>Programming Language</label>
-                    <select id="course-lang" required>
+                    <select id="course-lang">
                         <option value="" disabled selected>Choose Language</option>
                         <option value="python">Python</option>
                         <option value="java">Java</option>
@@ -275,7 +275,7 @@
             const name = document.getElementById('course-name').value;
             const language = document.getElementById('course-lang').value;
             
-            if(!name || !language) return alert('Please fill Name and select a Language');
+            if(!name) return alert('Please enter a Course Name');
 
             const courseData = { name, language };
 

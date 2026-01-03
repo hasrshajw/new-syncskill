@@ -127,13 +127,16 @@
         </div>
     </div>
 
-    <!-- Supabase SDK -->
+<!-- Supabase SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <script>
-        const SUPABASE_URL = "YOUR_SUPABASE_PROJECT_URL";
-        const SUPABASE_KEY = "YOUR_SUPABASE_ANON_KEY";
-        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        // Supabase Configuration
+        const SUPABASE_URL = "https://knfypqztuiemawullipi.supabase.co";
+        const SUPABASE_KEY = "sb_publishable_yZhWBF9pFHHxn7jO-zr2Kw_-E-SSktb";
+        
+        // Changed variable name to supabaseClient to avoid SyntaxError
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
         const ADMIN_EMAIL = "harshavardhanjw@gmail.com";
 
@@ -141,7 +144,8 @@
         let currentAssignment = null;
 
         async function checkAuth() {
-            const { data: { session } } = await supabase.auth.getSession();
+            // Updated to use supabaseClient
+            const { data: { session } } = await supabaseClient.auth.getSession();
             if (session && session.user.email === ADMIN_EMAIL) {
                 const urlParams = new URLSearchParams(window.location.search);
                 currentCourseId = urlParams.get('courseId');
@@ -155,7 +159,7 @@
 
         async function loadAssignments() {
             const tbody = document.getElementById('assignments-tbody');
-            const { data: assignments } = await supabase
+            const { data: assignments } = await supabaseClient
                 .from('code_assignments')
                 .select('*')
                 .eq('course_id', currentCourseId)
@@ -185,7 +189,7 @@
         }
 
         async function toggleLock(id, isActive) { 
-            await supabase.from('code_assignments').update({ is_locked: !isActive }).eq('id', id); 
+            await supabaseClient.from('code_assignments').update({ is_locked: !isActive }).eq('id', id); 
         }
 
         async function openProblems(id, name) {
@@ -203,7 +207,7 @@
 
         async function loadProblems() {
             const container = document.getElementById('problems-container');
-            const { data: problems } = await supabase
+            const { data: problems } = await supabaseClient
                 .from('code_problems')
                 .select('*')
                 .eq('assignment_id', currentAssignment.id)
@@ -243,7 +247,7 @@
         async function saveProblem(e, id) {
             e.preventDefault();
             const fd = new FormData(e.target);
-            const { error } = await supabase.from('code_problems').update({
+            const { error } = await supabaseClient.from('code_problems').update({
                 title: fd.get('title'),
                 points: parseInt(fd.get('points')),
                 statement: fd.get('statement'),
@@ -257,13 +261,13 @@
 
         async function deleteProblem(id) { 
             if(confirm('Delete problem?')) {
-                await supabase.from('code_problems').delete().eq('id', id);
+                await supabaseClient.from('code_problems').delete().eq('id', id);
                 loadProblems();
             }
         }
 
         document.getElementById('add-problem-btn').onclick = async () => {
-            const { error } = await supabase.from('code_problems').insert([{
+            const { error } = await supabaseClient.from('code_problems').insert([{
                 title: 'New Problem', 
                 points: 10, 
                 statement: 'Enter problem description here...', 
@@ -283,7 +287,7 @@
         };
 
         async function editAssignment(id) {
-            const { data: d } = await supabase.from('code_assignments').select('*').eq('id', id).single();
+            const { data: d } = await supabaseClient.from('code_assignments').select('*').eq('id', id).single();
             if(d) {
                 document.getElementById('assignment-id').value = id;
                 document.getElementById('assignment-name').value = d.name;
@@ -304,8 +308,8 @@
             const data = { name, duration, is_locked, course_id: currentCourseId, deadline };
             
             let res;
-            if(id) res = await supabase.from('code_assignments').update(data).eq('id', id);
-            else res = await supabase.from('code_assignments').insert([data]);
+            if(id) res = await supabaseClient.from('code_assignments').update(data).eq('id', id);
+            else res = await supabaseClient.from('code_assignments').insert([data]);
             
             if(!res.error) {
                 modal.classList.remove('show');
@@ -317,7 +321,7 @@
 
         async function deleteAssignment(id) { 
             if(confirm('Delete assignment and all problems inside?')) {
-                await supabase.from('code_assignments').delete().eq('id', id);
+                await supabaseClient.from('code_assignments').delete().eq('id', id);
                 loadAssignments();
             }
         }

@@ -41,16 +41,22 @@
         th, td { padding: 1rem; text-align: left; border-bottom: 1px solid var(--border-color); }
         th { background: #f9fafb; font-size: 0.75rem; text-transform: uppercase; color: var(--text-secondary); }
 
-        .problem-card { background: var(--widget-bg); border: 1px solid var(--border-color); border-radius: 12px; margin-bottom: 1rem; overflow: hidden; }
-        .problem-header { padding: 1rem; cursor: pointer; display: flex; justify-content: space-between; font-weight: 600; background: #fff; }
-        .problem-body { max-height: 0; overflow: hidden; transition: max-height 0.3s; }
-        .problem-header.active + .problem-body { max-height: 2000px; border-top: 1px solid var(--border-color); }
+        .problem-card { background: var(--widget-bg); border: 1px solid var(--border-color); border-radius: 12px; margin-bottom: 1.5rem; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+        .problem-header { padding: 1.25rem; cursor: pointer; display: flex; justify-content: space-between; font-weight: 600; background: #fff; align-items: center; }
+        .problem-body { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; }
+        .problem-header.active + .problem-body { max-height: 3000px; border-top: 1px solid var(--border-color); }
         .problem-body-content { padding: 1.5rem; }
 
-        .form-field { margin-bottom: 1rem; }
-        .form-field label { display: block; margin-bottom: 4px; font-weight: 600; }
-        .form-field input, .form-field textarea { width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px; font-family: inherit; }
+        .form-field { margin-bottom: 1.25rem; }
+        .form-field label { display: block; margin-bottom: 6px; font-weight: 600; font-size: 0.85rem; color: var(--text-secondary); }
+        .form-field input, .form-field textarea, .form-field select { width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px; font-family: 'Courier New', Courier, monospace; font-size: 0.95rem; }
         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+        /* Test Case Styling */
+        .test-case-row { 
+            display: grid; grid-template-columns: 1fr 1fr 45px; gap: 10px; 
+            margin-bottom: 10px; background: #F9FAFB; padding: 12px; border-radius: 8px; border: 1px solid var(--border-color);
+        }
 
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; place-items: center; z-index: 1000; padding: 1rem; }
         .modal-overlay.show { display: grid; }
@@ -64,8 +70,6 @@
         input:checked + .slider:before { transform: translateX(20px); }
 
         #loading-overlay { position: fixed; inset: 0; background: #fff; z-index: 9999; display: flex; align-items: center; justify-content: center; font-weight: 700; }
-        
-        @media (max-width: 600px) { .form-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -77,9 +81,9 @@
     </header>
 
     <main class="container">
-        <!-- Assignments List View -->
+        <!-- Assignments List -->
         <div id="assignments-view" class="admin-view active">
-            <a href="manage-subjects.html" class="back-btn"><i class='bx bx-arrow-back'></i> Back to Courses</a>
+            <a href="manage-courses.html" class="back-btn"><i class='bx bx-arrow-back'></i> Back to Courses</a>
             <div class="admin-content-header">
                 <h2 id="page-title">Code Assignments</h2>
                 <button class="primary-btn" id="create-assignment-btn"><i class='bx bx-plus'></i> Create New</button>
@@ -92,26 +96,24 @@
             </div>
         </div>
 
-        <!-- Problems Editor View -->
+        <!-- Problems View -->
         <div id="problems-view" class="admin-view">
             <button class="back-btn" id="back-to-assignments-btn"><i class='bx bx-arrow-back'></i> Back to Assignments</button>
             <div class="admin-content-header">
                 <h2 id="problems-page-title">Problems</h2>
-                <div style="display:flex; gap:10px;">
-                    <button class="primary-btn" id="add-problem-btn"><i class='bx bx-plus'></i> Add Problem</button>
-                </div>
+                <button class="primary-btn" id="add-problem-btn"><i class='bx bx-plus'></i> Add Problem</button>
             </div>
             <div id="problems-container"></div>
         </div>
     </main>
 
-    <!-- Assignment Modal -->
+    <!-- Modal -->
     <div class="modal-overlay" id="assignment-modal">
         <div class="modal-content">
             <h3 id="assignment-modal-title" style="margin-bottom:1.5rem;">Assignment</h3>
             <form id="assignment-form">
                 <input type="hidden" id="assignment-id">
-                <div class="form-field"><label>Assignment Name</label><input type="text" id="assignment-name" placeholder="e.g. Java Logic Challenge" required></div>
+                <div class="form-field"><label>Assignment Name</label><input type="text" id="assignment-name" required></div>
                 <div class="form-grid">
                     <div class="form-field"><label>Duration (mins)</label><input type="number" id="assignment-duration" required></div>
                     <div class="form-field"><label>Deadline</label><input type="date" id="assignment-deadline"></div>
@@ -127,29 +129,33 @@
         </div>
     </div>
 
-<!-- Supabase SDK -->
+    <!-- Supabase SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <script>
-        // Supabase Configuration
         const SUPABASE_URL = "https://knfypqztuiemawullipi.supabase.co";
         const SUPABASE_KEY = "sb_publishable_yZhWBF9pFHHxn7jO-zr2Kw_-E-SSktb";
-        
-        // Changed variable name to supabaseClient to avoid SyntaxError
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
         const ADMIN_EMAIL = "harshavardhanjw@gmail.com";
-
         let currentCourseId = null;
         let currentAssignment = null;
 
+        // Templates for multi-language
+        const templates = {
+            javascript: "function solution(input) {\n    // Write your code here\n    return ;\n}",
+            python: "def solution(input):\n    # Write your code here\n    return ",
+            java: "public class Main {\n    public static void main(String[] args) {\n        // Your logic here\n    }\n}",
+            c: "#include <stdio.h>\n\nint main() {\n    // Your logic here\n    return 0;\n}",
+            html: "<!DOCTYPE html>\n<html>\n<body>\n    <h1>Hello</h1>\n</body>\n</html>"
+        };
+
         async function checkAuth() {
-            // Updated to use supabaseClient
             const { data: { session } } = await supabaseClient.auth.getSession();
             if (session && session.user.email === ADMIN_EMAIL) {
                 const urlParams = new URLSearchParams(window.location.search);
                 currentCourseId = urlParams.get('courseId');
-                if (!currentCourseId) return window.location.href = 'manage-subjects.html';
+                if (!currentCourseId) return window.location.href = 'manage-courses.html';
                 
                 document.getElementById('loading-overlay').style.display = 'none';
                 loadAssignments();
@@ -219,7 +225,7 @@
                 card.className = 'problem-card';
                 card.innerHTML = `
                     <div class="problem-header" onclick="this.classList.toggle('active')">
-                        <span>${p.title} (${p.points} pts)</span>
+                        <span>${p.title} (${p.points} pts) - <small>${p.language.toUpperCase()}</small></span>
                         <i class='bx bx-chevron-down'></i>
                     </div>
                     <div class="problem-body">
@@ -229,10 +235,27 @@
                                     <div class="form-field"><label>Title</label><input type="text" name="title" value="${p.title}" required></div>
                                     <div class="form-field"><label>Points</label><input type="number" name="points" value="${p.points}" required></div>
                                 </div>
+                                <div class="form-grid">
+                                    <div class="form-field">
+                                        <label>Language</label>
+                                        <select name="language" onchange="applyTemplate(this)">
+                                            <option value="javascript" ${p.language=='javascript'?'selected':''}>JavaScript</option>
+                                            <option value="java" ${p.language=='java'?'selected':''}>Java</option>
+                                            <option value="python" ${p.language=='python'?'selected':''}>Python</option>
+                                            <option value="c" ${p.language=='c'?'selected':''}>C</option>
+                                            <option value="html" ${p.language=='html'?'selected':''}>HTML</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-field"><label>Function Name</label><input type="text" name="function_name" value="${p.function_name}" required></div>
+                                </div>
                                 <div class="form-field"><label>Statement (HTML)</label><textarea name="statement" rows="3">${p.statement || ''}</textarea></div>
-                                <div class="form-field"><label>Function Name</label><input type="text" name="function_name" value="${p.function_name}" required></div>
-                                <div class="form-field"><label>Starter Code</label><textarea name="starter_code" rows="4">${p.starter_code || ''}</textarea></div>
-                                <div style="text-align:right">
+                                <div class="form-field"><label>Starter Code</label><textarea name="starter_code" rows="6" class="code-area">${p.starter_code || ''}</textarea></div>
+                                
+                                <h4>Test Cases (Auto-Grading)</h4>
+                                <div class="test-cases-list"></div>
+                                <button type="button" class="secondary-btn" onclick="addTestCaseUI(this)" style="margin-top:10px; width:100%">+ Add Test Case</button>
+
+                                <div style="text-align:right; margin-top:2rem; border-top:1px solid #eee; padding-top:1.5rem">
                                     <button type="submit" class="primary-btn">Update Problem</button>
                                     <button type="button" class="secondary-btn" onclick="deleteProblem('${p.id}')" style="color:red">Delete</button>
                                 </div>
@@ -240,22 +263,56 @@
                         </div>
                     </div>
                 `;
+                // Load existing test cases
+                const list = card.querySelector('.test-cases-list');
+                if(p.test_cases) p.test_cases.forEach(tc => addTestCaseUI(card.querySelector('.secondary-btn'), tc));
                 container.appendChild(card);
             });
+        }
+
+        function applyTemplate(select) {
+            const textarea = select.closest('form').querySelector('.code-area');
+            if(confirm("Replace current code with " + select.value + " template?")) {
+                textarea.value = templates[select.value];
+            }
+        }
+
+        function addTestCaseUI(btn, data = null) {
+            const container = btn.previousElementSibling;
+            const div = document.createElement('div');
+            div.className = 'test-case-row';
+            div.innerHTML = `
+                <div><label style="font-size:10px">Input</label><input type="text" class="tc-in" placeholder='e.g. "hi", 5' value='${data?.input || ""}'></div>
+                <div><label style="font-size:10px">Expected Output</label><input type="text" class="tc-out" placeholder='e.g. 10' value='${data?.output || ""}'></div>
+                <button type="button" class="remove-q-btn" onclick="this.parentElement.remove()" style="border:none; background:none; color:red; cursor:pointer; margin-top:15px"><i class='bx bx-trash'></i></button>
+            `;
+            container.appendChild(div);
         }
 
         async function saveProblem(e, id) {
             e.preventDefault();
             const fd = new FormData(e.target);
+            const card = e.target.closest('.problem-card');
+            
+            const testCases = [];
+            card.querySelectorAll('.test-case-row').forEach(row => {
+                testCases.push({
+                    input: row.querySelector('.tc-in').value,
+                    output: row.querySelector('.tc-out').value
+                });
+            });
+
             const { error } = await supabaseClient.from('code_problems').update({
                 title: fd.get('title'),
                 points: parseInt(fd.get('points')),
                 statement: fd.get('statement'),
                 function_name: fd.get('function_name'),
-                starter_code: fd.get('starter_code')
+                starter_code: fd.get('starter_code'),
+                language: fd.get('language'),
+                test_cases: testCases
             }).eq('id', id);
             
-            if(!error) alert('Updated!');
+            if(!error) alert('Problem & Test Cases Updated!');
             else alert(error.message);
         }
 
@@ -268,12 +325,14 @@
 
         document.getElementById('add-problem-btn').onclick = async () => {
             const { error } = await supabaseClient.from('code_problems').insert([{
-                title: 'New Problem', 
+                title: 'New Logic Problem', 
                 points: 10, 
-                statement: 'Enter problem description here...', 
+                statement: 'Describe the problem...', 
                 function_name: 'solution', 
-                starter_code: 'function solution() {\n\n}', 
-                assignment_id: currentAssignment.id
+                starter_code: templates.javascript,
+                language: 'javascript', 
+                assignment_id: currentAssignment.id,
+                test_cases: []
             }]);
             if(!error) loadProblems();
         };

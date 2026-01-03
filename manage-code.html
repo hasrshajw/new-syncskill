@@ -3,151 +3,165 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Code Assignments - Admin</title>
+    <title>Advanced Code Assignment Manager | Admin</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <style>
         :root { 
-            --body-bg: #F9FAFB; --widget-bg: #FFFFFF; --border-color: #E5E7EB; 
-            --text-primary: #002726; --text-secondary: #6B7280; --brand-purple: #6D28D9; 
-            --hover-bg: #F3F4F6; --danger-color: #EF4444; --success-color: #10B981; 
+            --body-bg: #F3F4F6; --widget-bg: #FFFFFF; --border-color: #E5E7EB; 
+            --text-primary: #111827; --text-secondary: #4B5563; --brand-purple: #6D28D9; 
+            --hover-bg: #F9FAFB; --danger-color: #EF4444; --success-color: #10B981; 
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'IBM Plex Sans', sans-serif; background-color: var(--body-bg); color: var(--text-primary); font-size: 14px; }
         
-        .header { 
-            background: var(--widget-bg); padding: 1rem 2rem; border-bottom: 1px solid var(--border-color);
-            display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100;
-        }
+        .header { background: var(--widget-bg); padding: 1rem 2rem; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
         .logo-img { height: 32px; }
 
-        .container { max-width: 1000px; margin: 0 auto; padding: 2rem 1rem; }
-        
+        .container { max-width: 1100px; margin: 0 auto; padding: 2rem 1rem; }
         .admin-view { display: none; } 
         .admin-view.active { display: block; }
         
-        .admin-content-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem; }
-        .admin-content-header h2 { font-size: 1.75rem; font-weight: 700; }
+        .page-title-area { margin-bottom: 2rem; }
+        .back-btn { display: inline-flex; align-items: center; gap: 8px; color: var(--brand-purple); font-weight: 600; text-decoration: none; cursor: pointer; margin-bottom: 0.5rem; }
+        .admin-content-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+        .admin-content-header h2 { font-size: 1.85rem; font-weight: 800; letter-spacing: -0.025em; }
 
-        .primary-btn, .secondary-btn { padding: 0.6rem 1.25rem; border-radius: 8px; font-weight: 600; cursor: pointer; border: none; display: inline-flex; align-items: center; gap: 0.5rem; }
-        .primary-btn { background-color: var(--brand-purple); color: white; }
-        .secondary-btn { background-color: var(--hover-bg); color: var(--text-primary); }
-        .back-btn { margin-bottom: 1rem; color: var(--brand-purple); font-weight: 600; text-decoration: none; cursor: pointer; display: inline-block; }
-
-        .table-wrap { background: var(--widget-bg); border-radius: 12px; border: 1px solid var(--border-color); overflow-x: auto; }
+        /* Tables & Lists */
+        .card-list { background: var(--widget-bg); border-radius: 12px; border: 1px solid var(--border-color); overflow: hidden; box-shadow: var(--shadow); }
         table { width: 100%; border-collapse: collapse; }
-        th, td { padding: 1rem; text-align: left; border-bottom: 1px solid var(--border-color); }
-        th { background: #f9fafb; font-size: 0.75rem; text-transform: uppercase; color: var(--text-secondary); }
+        th, td { padding: 1.25rem; text-align: left; border-bottom: 1px solid var(--border-color); }
+        th { background: #f9fafb; font-size: 0.75rem; text-transform: uppercase; color: var(--text-secondary); letter-spacing: 0.05em; }
 
-        .problem-card { background: var(--widget-bg); border: 1px solid var(--border-color); border-radius: 12px; margin-bottom: 1.5rem; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
-        .problem-header { padding: 1.25rem; cursor: pointer; display: flex; justify-content: space-between; font-weight: 600; background: #fff; align-items: center; }
-        .problem-body { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; }
-        .problem-header.active + .problem-body { max-height: 3000px; border-top: 1px solid var(--border-color); }
-        .problem-body-content { padding: 1.5rem; }
+        /* Problem Accordion */
+        .problem-card { background: var(--widget-bg); border: 1px solid var(--border-color); border-radius: 12px; margin-bottom: 1.25rem; overflow: hidden; box-shadow: var(--shadow); transition: all 0.3s ease; }
+        .problem-header { padding: 1.25rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; background: #fff; font-weight: 600; font-size: 1.1rem; }
+        .problem-header:hover { background: var(--hover-bg); }
+        .problem-header i { font-size: 1.5rem; transition: transform 0.3s; }
+        .problem-header.active i { transform: rotate(180deg); }
+        
+        .problem-body { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0, 1, 0, 1); }
+        .problem-header.active + .problem-body { max-height: 5000px; border-top: 1px solid var(--border-color); }
+        .problem-body-content { padding: 2rem; background: #fafafa; }
 
+        /* Form Controls */
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
         .form-field { margin-bottom: 1.25rem; }
-        .form-field label { display: block; margin-bottom: 6px; font-weight: 600; font-size: 0.85rem; color: var(--text-secondary); }
-        .form-field input, .form-field textarea, .form-field select { width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px; font-family: 'Courier New', Courier, monospace; font-size: 0.95rem; }
-        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .form-field label { display: block; margin-bottom: 6px; font-weight: 600; color: var(--text-secondary); font-size: 0.85rem; }
+        .form-field input, .form-field textarea, .form-field select { width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px; font-size: 1rem; outline: none; background: #fff; }
+        .form-field input:focus, .form-field textarea:focus { border-color: var(--brand-purple); box-shadow: 0 0 0 3px rgba(109, 40, 217, 0.1); }
+        .code-area { font-family: 'Fira Code', monospace; background: #1e293b !important; color: #f8fafc; line-height: 1.6; }
 
-        /* Test Case Styling */
-        .test-case-row { 
-            display: grid; grid-template-columns: 1fr 1fr 45px; gap: 10px; 
-            margin-bottom: 10px; background: #F9FAFB; padding: 12px; border-radius: 8px; border: 1px solid var(--border-color);
-        }
+        /* Test Cases */
+        .test-case-section { background: #fff; border: 1px solid var(--border-color); border-radius: 10px; padding: 1.5rem; margin-top: 1.5rem; }
+        .test-case-row { display: grid; grid-template-columns: 1fr 1fr 50px; gap: 1rem; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px dashed var(--border-color); align-items: end; }
+        .test-case-row:last-child { border-bottom: none; margin-bottom: 0; }
 
-        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; place-items: center; z-index: 1000; padding: 1rem; }
+        /* Buttons */
+        .btn { padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 700; cursor: pointer; border: none; display: inline-flex; align-items: center; gap: 8px; transition: all 0.2s; }
+        .btn-primary { background: var(--brand-purple); color: white; }
+        .btn-primary:hover { background: #5b21b6; transform: translateY(-1px); }
+        .btn-secondary { background: #fff; border: 1px solid var(--border-color); color: var(--text-primary); }
+        .btn-danger { color: var(--danger-color); background: #fef2f2; }
+        .btn-danger:hover { background: var(--danger-color); color: white; }
+
+        /* Modal */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: none; place-items: center; z-index: 1000; backdrop-filter: blur(4px); }
         .modal-overlay.show { display: grid; }
-        .modal-content { background: white; padding: 2rem; border-radius: 12px; width: 100%; max-width: 500px; }
+        .modal-content { background: white; padding: 2.5rem; border-radius: 16px; width: 95%; max-width: 550px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2); }
 
-        .switch { position: relative; display: inline-block; width: 40px; height: 20px; }
+        /* Status Toggle */
+        .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
         .switch input { opacity: 0; width: 0; height: 0; }
-        .slider { position: absolute; cursor: pointer; inset: 0; background: var(--danger-color); border-radius: 20px; transition: .4s; }
-        .slider:before { content: ""; position: absolute; height: 14px; width: 14px; left: 3px; bottom: 3px; background: white; border-radius: 50%; transition: .4s; }
+        .slider { position: absolute; cursor: pointer; inset: 0; background: #d1d5db; border-radius: 24px; transition: .4s; }
+        .slider:before { content: ""; position: absolute; height: 18px; width: 18px; left: 3px; bottom: 3px; background: white; border-radius: 50%; transition: .4s; }
         input:checked + .slider { background: var(--success-color); }
         input:checked + .slider:before { transform: translateX(20px); }
 
-        #loading-overlay { position: fixed; inset: 0; background: #fff; z-index: 9999; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+        #loading-overlay { position: fixed; inset: 0; background: #fff; z-index: 9999; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.2rem; }
     </style>
 </head>
 <body>
-    <div id="loading-overlay">Authenticating Admin...</div>
+    <div id="loading-overlay">Authenticating Admin Access...</div>
 
     <header class="header">
         <img src="https://ihtnas.com/assets/ihtnas-nav.png" alt="Logo" class="logo-img">
-        <span style="font-weight: 700; color: var(--text-secondary);">Code Assignment Admin</span>
+        <span style="font-weight: 800; color: var(--brand-purple); font-size: 1.1rem;">CodeLab Admin</span>
     </header>
 
     <main class="container">
-        <!-- Assignments List -->
+        <!-- 1. Assignments List -->
         <div id="assignments-view" class="admin-view active">
-            <a href="manage-courses.html" class="back-btn"><i class='bx bx-arrow-back'></i> Back to Courses</a>
-            <div class="admin-content-header">
-                <h2 id="page-title">Code Assignments</h2>
-                <button class="primary-btn" id="create-assignment-btn"><i class='bx bx-plus'></i> Create New</button>
+            <div class="page-title-area">
+                <a href="manage-courses.html" class="back-btn"><i class='bx bx-arrow-back'></i> All Courses</a>
+                <div class="admin-content-header">
+                    <h2>Code Assignments</h2>
+                    <button class="btn btn-primary" id="create-assignment-btn"><i class='bx bx-plus-circle'></i> New Assignment</button>
+                </div>
             </div>
-            <div class="table-wrap">
+            <div class="card-list">
                 <table>
-                    <thead><tr><th>Name</th><th>Duration</th><th>Deadline</th><th>Active</th><th>Actions</th></tr></thead>
+                    <thead><tr><th>Name</th><th>Time Limit</th><th>Due Date</th><th>Active</th><th>Management</th></tr></thead>
                     <tbody id="assignments-tbody"></tbody>
                 </table>
             </div>
         </div>
 
-        <!-- Problems View -->
+        <!-- 2. Problems Editor -->
         <div id="problems-view" class="admin-view">
-            <button class="back-btn" id="back-to-assignments-btn"><i class='bx bx-arrow-back'></i> Back to Assignments</button>
-            <div class="admin-content-header">
-                <h2 id="problems-page-title">Problems</h2>
-                <button class="primary-btn" id="add-problem-btn"><i class='bx bx-plus'></i> Add Problem</button>
+            <div class="page-title-area">
+                <button class="back-btn" id="back-to-list"><i class='bx bx-arrow-left'></i> Back to Assignments</button>
+                <div class="admin-content-header">
+                    <h2 id="problems-page-title">Manage Problems</h2>
+                    <button class="btn btn-primary" id="add-problem-btn"><i class='bx bx-plus'></i> Add New Problem</button>
+                </div>
             </div>
             <div id="problems-container"></div>
         </div>
     </main>
 
-    <!-- Modal -->
+    <!-- Assignment Modal -->
     <div class="modal-overlay" id="assignment-modal">
         <div class="modal-content">
-            <h3 id="assignment-modal-title" style="margin-bottom:1.5rem;">Assignment</h3>
+            <h2 id="modal-title" style="margin-bottom: 2rem;">Assignment Settings</h2>
             <form id="assignment-form">
                 <input type="hidden" id="assignment-id">
-                <div class="form-field"><label>Assignment Name</label><input type="text" id="assignment-name" required></div>
+                <div class="form-field"><label>Assignment Title</label><input type="text" id="assignment-name" placeholder="e.g. Data Structures Challenge 1" required></div>
                 <div class="form-grid">
-                    <div class="form-field"><label>Duration (mins)</label><input type="number" id="assignment-duration" required></div>
-                    <div class="form-field"><label>Deadline</label><input type="date" id="assignment-deadline"></div>
+                    <div class="form-field"><label>Duration (mins)</label><input type="number" id="assignment-duration" value="60" required></div>
+                    <div class="form-field"><label>Deadline (Optional)</label><input type="date" id="assignment-deadline"></div>
                 </div>
-                <div class="form-field" style="display:flex; align-items:center; gap:10px;">
-                    <input type="checkbox" id="assignment-locked" style="width:auto;"><label>Locked for students</label>
+                <div class="form-field" style="display:flex; align-items:center; gap:12px; background: #f9fafb; padding: 1rem; border-radius: 8px;">
+                    <label class="switch"><input type="checkbox" id="assignment-locked"><span class="slider"></span></label>
+                    <span style="font-weight: 600;">Lock assignment (Hidden from students)</span>
                 </div>
-                <div style="display:flex; gap:10px; margin-top:1.5rem;">
-                    <button type="button" class="primary-btn" id="save-assignment-btn" style="flex:1; justify-content:center;">Save</button>
-                    <button type="button" class="secondary-btn" onclick="this.closest('.modal-overlay').classList.remove('show')" style="flex:1; justify-content:center;">Cancel</button>
+                <div style="display:flex; gap:12px; margin-top:2.5rem;">
+                    <button type="button" class="btn btn-primary" id="save-assignment-btn" style="flex:2; justify-content:center;">Save Assignment</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeAssignmentModal()" style="flex:1; justify-content:center;">Cancel</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Supabase SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    
     <script>
         const SUPABASE_URL = "https://knfypqztuiemawullipi.supabase.co";
-        const SUPABASE_KEY = "sb_publishable_yZhWBF9pFHHxn7jO-zr2Kw_-E-SSktb";
+        const SUPABASE_KEY = "sb_publishable_yZhWBF9pFHHxn7jO-zr2Kw_-E-SSktb"; // Ensure this is correct!
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
         const ADMIN_EMAIL = "harshavardhanjw@gmail.com";
         let currentCourseId = null;
         let currentAssignment = null;
 
-        // Templates for multi-language
-        const templates = {
-            javascript: "function solution(input) {\n    // Write your code here\n    return ;\n}",
-            python: "def solution(input):\n    # Write your code here\n    return ",
-            java: "public class Main {\n    public static void main(String[] args) {\n        // Your logic here\n    }\n}",
-            c: "#include <stdio.h>\n\nint main() {\n    // Your logic here\n    return 0;\n}",
-            html: "<!DOCTYPE html>\n<html>\n<body>\n    <h1>Hello</h1>\n</body>\n</html>"
+        const CODE_TEMPLATES = {
+            javascript: "function solution(input) {\n    // Solve the problem here\n    return ;\n}",
+            python: "def solution(input):\n    # Solve the problem here\n    return ",
+            java: "public class Main {\n    public static void main(String[] args) {\n        // Your Java logic here\n    }\n}",
+            c: "#include <stdio.h>\n\nint main() {\n    // Your C logic here\n    return 0;\n}",
+            html: "<!DOCTYPE html>\n<html>\n<head>\n<style>\n\n</style>\n</head>\n<body>\n\n</body>\n</html>"
         };
 
         async function checkAuth() {
@@ -155,151 +169,151 @@
             if (session && session.user.email === ADMIN_EMAIL) {
                 const urlParams = new URLSearchParams(window.location.search);
                 currentCourseId = urlParams.get('courseId');
-                if (!currentCourseId) return window.location.href = 'manage-courses.html';
+                if (!currentCourseId) window.location.href = 'manage-courses.html';
                 
                 document.getElementById('loading-overlay').style.display = 'none';
-                loadAssignments();
+                fetchAssignments();
             } else { window.location.href = 'index.html'; }
         }
         checkAuth();
 
-        async function loadAssignments() {
-            const tbody = document.getElementById('assignments-tbody');
-            const { data: assignments } = await supabaseClient
+        async function fetchAssignments() {
+            const { data: assignments, error } = await supabaseClient
                 .from('code_assignments')
                 .select('*')
                 .eq('course_id', currentCourseId)
                 .order('created_at', { ascending: false });
 
+            const tbody = document.getElementById('assignments-tbody');
             tbody.innerHTML = '';
-            assignments?.forEach(data => {
+            assignments?.forEach(item => {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td style="font-weight:600">${data.name}</td>
-                    <td>${data.duration / 60}m</td>
-                    <td>${data.deadline ? new Date(data.deadline).toLocaleDateString() : 'None'}</td>
+                    <td style="font-weight:700">${item.name}</td>
+                    <td>${item.duration / 60} mins</td>
+                    <td>${item.deadline ? new Date(item.deadline).toLocaleDateString() : 'No Limit'}</td>
                     <td>
                         <label class="switch">
-                            <input type="checkbox" onchange="toggleLock('${data.id}', this.checked)" ${!data.is_locked ? 'checked' : ''}>
+                            <input type="checkbox" onchange="updateLock('${item.id}', this.checked)" ${!item.is_locked ? 'checked' : ''}>
                             <span class="slider"></span>
                         </label>
                     </td>
                     <td>
-                        <button class="primary-btn" style="padding:4px 8px" onclick="openProblems('${data.id}', '${data.name}')">Problems</button>
-                        <button onclick="editAssignment('${data.id}')" style="background:none; border:none; cursor:pointer; color:var(--brand-purple); font-weight:700; margin-left:10px;">Edit</button>
-                        <button onclick="deleteAssignment('${data.id}')" style="background:none; border:none; cursor:pointer; color:var(--danger-color); font-weight:700; margin-left:10px;">Delete</button>
+                        <button class="btn btn-primary" style="padding: 5px 12px; font-size: 12px" onclick="loadProblemsView('${item.id}', '${item.name}')"><i class='bx bx-code-alt'></i> Problems</button>
+                        <button onclick="editAssignment('${item.id}')" style="background:none; border:none; color:var(--brand-purple); cursor:pointer; font-size: 1.25rem; margin-left: 10px;"><i class='bx bx-edit'></i></button>
+                        <button onclick="deleteAssignment('${item.id}')" style="background:none; border:none; color:var(--danger-color); cursor:pointer; font-size: 1.25rem; margin-left: 10px;"><i class='bx bx-trash'></i></button>
                     </td>
                 `;
                 tbody.appendChild(tr);
             });
         }
 
-        async function toggleLock(id, isActive) { 
-            await supabaseClient.from('code_assignments').update({ is_locked: !isActive }).eq('id', id); 
+        async function updateLock(id, isUnlocked) {
+            await supabaseClient.from('code_assignments').update({ is_locked: !isUnlocked }).eq('id', id);
         }
 
-        async function openProblems(id, name) {
+        function loadProblemsView(id, name) {
             currentAssignment = { id, name };
-            document.getElementById('problems-page-title').textContent = `Problems: ${name}`;
+            document.getElementById('problems-page-title').innerText = `Challenge: ${name}`;
             document.getElementById('assignments-view').classList.remove('active');
             document.getElementById('problems-view').classList.add('active');
-            loadProblems();
+            fetchProblems();
         }
 
-        document.getElementById('back-to-assignments-btn').onclick = () => {
+        document.getElementById('back-to-list').onclick = () => {
             document.getElementById('problems-view').classList.remove('active');
             document.getElementById('assignments-view').classList.add('active');
         };
 
-        async function loadProblems() {
-            const container = document.getElementById('problems-container');
+        async function fetchProblems() {
             const { data: problems } = await supabaseClient
                 .from('code_problems')
                 .select('*')
                 .eq('assignment_id', currentAssignment.id)
                 .order('id', { ascending: true });
 
+            const container = document.getElementById('problems-container');
             container.innerHTML = '';
             problems?.forEach(p => {
                 const card = document.createElement('div');
                 card.className = 'problem-card';
                 card.innerHTML = `
                     <div class="problem-header" onclick="this.classList.toggle('active')">
-                        <span>${p.title} (${p.points} pts) - <small>${p.language.toUpperCase()}</small></span>
+                        <span>${p.title} (${p.points} Points) — ${p.language.toUpperCase()}</span>
                         <i class='bx bx-chevron-down'></i>
                     </div>
                     <div class="problem-body">
                         <div class="problem-body-content">
-                            <form onsubmit="saveProblem(event, '${p.id}')">
+                            <form onsubmit="handleProblemUpdate(event, '${p.id}')">
                                 <div class="form-grid">
-                                    <div class="form-field"><label>Title</label><input type="text" name="title" value="${p.title}" required></div>
-                                    <div class="form-field"><label>Points</label><input type="number" name="points" value="${p.points}" required></div>
+                                    <div class="form-field"><label>Problem Title</label><input type="text" name="title" value="${p.title}" required></div>
+                                    <div class="form-field"><label>Reward Points</label><input type="number" name="points" value="${p.points}" required></div>
                                 </div>
                                 <div class="form-grid">
                                     <div class="form-field">
-                                        <label>Language</label>
-                                        <select name="language" onchange="applyTemplate(this)">
+                                        <label>Target Language</label>
+                                        <select name="language" onchange="injectTemplate(this)">
                                             <option value="javascript" ${p.language=='javascript'?'selected':''}>JavaScript</option>
-                                            <option value="java" ${p.language=='java'?'selected':''}>Java</option>
                                             <option value="python" ${p.language=='python'?'selected':''}>Python</option>
+                                            <option value="java" ${p.language=='java'?'selected':''}>Java</option>
                                             <option value="c" ${p.language=='c'?'selected':''}>C</option>
-                                            <option value="html" ${p.language=='html'?'selected':''}>HTML</option>
+                                            <option value="html" ${p.language=='html'?'selected':''}>HTML/CSS</option>
                                         </select>
                                     </div>
-                                    <div class="form-field"><label>Function Name</label><input type="text" name="function_name" value="${p.function_name}" required></div>
+                                    <div class="form-field"><label>Function Name (for grading)</label><input type="text" name="function_name" value="${p.function_name}" required></div>
                                 </div>
-                                <div class="form-field"><label>Statement (HTML)</label><textarea name="statement" rows="3">${p.statement || ''}</textarea></div>
-                                <div class="form-field"><label>Starter Code</label><textarea name="starter_code" rows="6" class="code-area">${p.starter_code || ''}</textarea></div>
+                                <div class="form-field"><label>Problem Description (HTML Support)</label><textarea name="statement" rows="4">${p.statement || ''}</textarea></div>
+                                <div class="form-field"><label>Starter Code Boilerplate</label><textarea name="starter_code" rows="8" class="code-area">${p.starter_code || ''}</textarea></div>
                                 
-                                <h4>Test Cases (Auto-Grading)</h4>
-                                <div class="test-cases-list"></div>
-                                <button type="button" class="secondary-btn" onclick="addTestCaseUI(this)" style="margin-top:10px; width:100%">+ Add Test Case</button>
+                                <div class="test-case-section">
+                                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem">
+                                        <h4 style="font-weight:700">Test Cases (Auto-Grading)</h4>
+                                        <button type="button" class="btn btn-secondary" style="padding: 4px 10px; font-size: 11px" onclick="addTestCaseRow(this)">+ Add Test Case</button>
+                                    </div>
+                                    <div class="tc-list"></div>
+                                </div>
 
-                                <div style="text-align:right; margin-top:2rem; border-top:1px solid #eee; padding-top:1.5rem">
-                                    <button type="submit" class="primary-btn">Update Problem</button>
-                                    <button type="button" class="secondary-btn" onclick="deleteProblem('${p.id}')" style="color:red">Delete</button>
+                                <div style="display:flex; justify-content:flex-end; gap:12px; margin-top:2rem; border-top:1px solid #eee; padding-top:1.5rem">
+                                    <button type="submit" class="btn btn-primary">Update Problem</button>
+                                    <button type="button" class="btn btn-danger" onclick="deleteProblem('${p.id}')">Delete</button>
                                 </div>
                             </form>
                         </div>
                     </div>
                 `;
-                // Load existing test cases
-                const list = card.querySelector('.test-cases-list');
-                if(p.test_cases) p.test_cases.forEach(tc => addTestCaseUI(card.querySelector('.secondary-btn'), tc));
+                const list = card.querySelector('.tc-list');
+                p.test_cases?.forEach(tc => addTestCaseRow(card.querySelector('.btn-secondary'), tc));
                 container.appendChild(card);
             });
         }
 
-        function applyTemplate(select) {
-            const textarea = select.closest('form').querySelector('.code-area');
-            if(confirm("Replace current code with " + select.value + " template?")) {
-                textarea.value = templates[select.value];
+        function injectTemplate(select) {
+            const area = select.closest('form').querySelector('.code-area');
+            if(confirm("Change boilerplate to " + select.value + "? Existing code will be lost.")) {
+                area.value = CODE_TEMPLATES[select.value];
             }
         }
 
-        function addTestCaseUI(btn, data = null) {
-            const container = btn.previousElementSibling;
-            const div = document.createElement('div');
-            div.className = 'test-case-row';
-            div.innerHTML = `
-                <div><label style="font-size:10px">Input</label><input type="text" class="tc-in" placeholder='e.g. "hi", 5' value='${data?.input || ""}'></div>
-                <div><label style="font-size:10px">Expected Output</label><input type="text" class="tc-out" placeholder='e.g. 10' value='${data?.output || ""}'></div>
-                <button type="button" class="remove-q-btn" onclick="this.parentElement.remove()" style="border:none; background:none; color:red; cursor:pointer; margin-top:15px"><i class='bx bx-trash'></i></button>
+        function addTestCaseRow(btn, data = null) {
+            const container = btn.closest('.test-case-section').querySelector('.tc-list');
+            const row = document.createElement('div');
+            row.className = 'test-case-row';
+            row.innerHTML = `
+                <div class="form-field" style="margin:0"><label>Input Params</label><input type="text" class="t-in" value='${data?.input || ""}' placeholder='e.g. 5, "hello"'></div>
+                <div class="form-field" style="margin:0"><label>Expected Return</label><input type="text" class="t-out" value='${data?.output || ""}' placeholder='e.g. 10'></div>
+                <button type="button" onclick="this.parentElement.remove()" style="color:var(--danger-color); background:none; border:none; cursor:pointer; font-size: 1.5rem;"><i class='bx bx-x-circle'></i></button>
             `;
-            container.appendChild(div);
+            container.appendChild(row);
         }
 
-        async function saveProblem(e, id) {
+        async function handleProblemUpdate(e, id) {
             e.preventDefault();
             const fd = new FormData(e.target);
             const card = e.target.closest('.problem-card');
             
-            const testCases = [];
+            const tests = [];
             card.querySelectorAll('.test-case-row').forEach(row => {
-                testCases.push({
-                    input: row.querySelector('.tc-in').value,
-                    output: row.querySelector('.tc-out').value
-                });
+                tests.push({ input: row.querySelector('.t-in').value, output: row.querySelector('.t-out').value });
             });
 
             const { error } = await supabaseClient.from('code_problems').update({
@@ -309,87 +323,69 @@
                 function_name: fd.get('function_name'),
                 starter_code: fd.get('starter_code'),
                 language: fd.get('language'),
-                test_cases: testCases
+                test_cases: tests
             }).eq('id', id);
-            
-            if(!error) alert('Problem & Test Cases Updated!');
+
+            if(!error) alert('Problem Synchronized Successfully!');
+            else alert("Error: " + error.message);
+        }
+
+        document.getElementById('add-problem-btn').onclick = async () => {
+            const { error } = await supabaseClient.from('code_problems').insert([{
+                assignment_id: currentAssignment.id,
+                title: 'New Code Challenge',
+                points: 10,
+                language: 'javascript',
+                starter_code: CODE_TEMPLATES.javascript,
+                function_name: 'solution',
+                test_cases: []
+            }]);
+            if(!error) fetchProblems();
             else alert(error.message);
-        }
+        };
 
-        async function deleteProblem(id) { 
-            if(confirm('Delete problem?')) {
-                await supabaseClient.from('code_problems').delete().eq('id', id);
-                loadProblems();
-            }
-        }
+        // Modal Controls
+        const aModal = document.getElementById('assignment-modal');
+        function closeAssignmentModal() { aModal.classList.remove('show'); }
 
-document.getElementById('add-problem-btn').onclick = async () => {
-    const { data, error } = await supabaseClient.from('code_problems').insert([{
-        title: 'New Logic Problem', 
-        points: 10, 
-        statement: 'Describe the problem...', 
-        function_name: 'solution', 
-        starter_code: templates.javascript,
-        language: 'javascript', 
-        assignment_id: currentAssignment.id,
-        test_cases: [] // Ensure this is an empty array
-    }]).select(); // Adding .select() helps some versions of the client
-
-    if(!error) {
-        loadProblems();
-    } else {
-        console.error("Supabase Error:", error);
-        alert("Error creating problem: " + error.message + "\nDetails: " + error.details);
-    }
-};
-
-        // Modal Logic
-        const modal = document.getElementById('assignment-modal');
         document.getElementById('create-assignment-btn').onclick = () => {
             document.getElementById('assignment-form').reset();
             document.getElementById('assignment-id').value = '';
-            modal.classList.add('show');
+            document.getElementById('modal-title').innerText = 'New Code Assignment';
+            aModal.classList.add('show');
         };
 
         async function editAssignment(id) {
-            const { data: d } = await supabaseClient.from('code_assignments').select('*').eq('id', id).single();
-            if(d) {
-                document.getElementById('assignment-id').value = id;
-                document.getElementById('assignment-name').value = d.name;
-                document.getElementById('assignment-duration').value = d.duration / 60;
-                if(d.deadline) document.getElementById('assignment-deadline').value = d.deadline;
-                document.getElementById('assignment-locked').checked = d.is_locked;
-                modal.classList.add('show');
-            }
+            const { data } = await supabaseClient.from('code_assignments').select('*').eq('id', id).single();
+            document.getElementById('assignment-id').value = id;
+            document.getElementById('assignment-name').value = data.name;
+            document.getElementById('assignment-duration').value = data.duration / 60;
+            if(data.deadline) document.getElementById('assignment-deadline').value = data.deadline;
+            document.getElementById('assignment-locked').checked = data.is_locked;
+            document.getElementById('modal-title').innerText = 'Edit Assignment';
+            aModal.classList.add('show');
         }
 
         document.getElementById('save-assignment-btn').onclick = async () => {
             const id = document.getElementById('assignment-id').value;
-            const name = document.getElementById('assignment-name').value;
-            const duration = parseInt(document.getElementById('assignment-duration').value) * 60;
-            const deadline = document.getElementById('assignment-deadline').value || null;
-            const is_locked = document.getElementById('assignment-locked').checked;
+            const payload = {
+                name: document.getElementById('assignment-name').value,
+                duration: parseInt(document.getElementById('assignment-duration').value) * 60,
+                deadline: document.getElementById('assignment-deadline').value || null,
+                is_locked: document.getElementById('assignment-locked').checked,
+                course_id: currentCourseId
+            };
 
-            const data = { name, duration, is_locked, course_id: currentCourseId, deadline };
-            
             let res;
-            if(id) res = await supabaseClient.from('code_assignments').update(data).eq('id', id);
-            else res = await supabaseClient.from('code_assignments').insert([data]);
-            
-            if(!res.error) {
-                modal.classList.remove('show');
-                loadAssignments();
-            } else {
-                alert(res.error.message);
-            }
+            if(id) res = await supabaseClient.from('code_assignments').update(payload).eq('id', id);
+            else res = await supabaseClient.from('code_assignments').insert([payload]);
+
+            if(!res.error) { closeAssignmentModal(); fetchAssignments(); }
+            else alert(res.error.message);
         };
 
-        async function deleteAssignment(id) { 
-            if(confirm('Delete assignment and all problems inside?')) {
-                await supabaseClient.from('code_assignments').delete().eq('id', id);
-                loadAssignments();
-            }
-        }
+        async function deleteAssignment(id) { if(confirm('Permanently delete this assignment and all code problems inside?')) { await supabaseClient.from('code_assignments').delete().eq('id', id); fetchAssignments(); } }
+        async function deleteProblem(id) { if(confirm('Delete this problem?')) { await supabaseClient.from('code_problems').delete().eq('id', id); fetchProblems(); } }
     </script>
 </body>
 </html>

@@ -30,13 +30,11 @@
         .admin-content-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
         .admin-content-header h2 { font-size: 1.85rem; font-weight: 800; letter-spacing: -0.025em; }
 
-        /* Tables & Lists */
         .card-list { background: var(--widget-bg); border-radius: 12px; border: 1px solid var(--border-color); overflow: hidden; box-shadow: var(--shadow); }
         table { width: 100%; border-collapse: collapse; }
         th, td { padding: 1.25rem; text-align: left; border-bottom: 1px solid var(--border-color); }
         th { background: #f9fafb; font-size: 0.75rem; text-transform: uppercase; color: var(--text-secondary); letter-spacing: 0.05em; }
 
-        /* Problem Accordion */
         .problem-card { background: var(--widget-bg); border: 1px solid var(--border-color); border-radius: 12px; margin-bottom: 1.25rem; overflow: hidden; box-shadow: var(--shadow); transition: all 0.3s ease; }
         .problem-header { padding: 1.25rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; background: #fff; font-weight: 600; font-size: 1.1rem; }
         .problem-header:hover { background: var(--hover-bg); }
@@ -47,33 +45,24 @@
         .problem-header.active + .problem-body { max-height: 5000px; border-top: 1px solid var(--border-color); }
         .problem-body-content { padding: 2rem; background: #fafafa; }
 
-        /* Form Controls */
         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
         .form-field { margin-bottom: 1.25rem; }
         .form-field label { display: block; margin-bottom: 6px; font-weight: 600; color: var(--text-secondary); font-size: 0.85rem; }
         .form-field input, .form-field textarea, .form-field select { width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px; font-size: 1rem; outline: none; background: #fff; }
-        .form-field input:focus, .form-field textarea:focus { border-color: var(--brand-purple); box-shadow: 0 0 0 3px rgba(109, 40, 217, 0.1); }
         .code-area { font-family: 'Fira Code', monospace; background: #1e293b !important; color: #f8fafc; line-height: 1.6; }
 
-        /* Test Cases */
         .test-case-section { background: #fff; border: 1px solid var(--border-color); border-radius: 10px; padding: 1.5rem; margin-top: 1.5rem; }
         .test-case-row { display: grid; grid-template-columns: 1fr 1fr 50px; gap: 1rem; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px dashed var(--border-color); align-items: end; }
-        .test-case-row:last-child { border-bottom: none; margin-bottom: 0; }
 
-        /* Buttons */
         .btn { padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 700; cursor: pointer; border: none; display: inline-flex; align-items: center; gap: 8px; transition: all 0.2s; }
         .btn-primary { background: var(--brand-purple); color: white; }
-        .btn-primary:hover { background: #5b21b6; transform: translateY(-1px); }
         .btn-secondary { background: #fff; border: 1px solid var(--border-color); color: var(--text-primary); }
         .btn-danger { color: var(--danger-color); background: #fef2f2; }
-        .btn-danger:hover { background: var(--danger-color); color: white; }
 
-        /* Modal */
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: none; place-items: center; z-index: 1000; backdrop-filter: blur(4px); }
         .modal-overlay.show { display: grid; }
-        .modal-content { background: white; padding: 2.5rem; border-radius: 16px; width: 95%; max-width: 550px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2); }
+        .modal-content { background: white; padding: 2.5rem; border-radius: 16px; width: 95%; max-width: 550px; }
 
-        /* Status Toggle */
         .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
         .switch input { opacity: 0; width: 0; height: 0; }
         .slider { position: absolute; cursor: pointer; inset: 0; background: #d1d5db; border-radius: 24px; transition: .4s; }
@@ -81,7 +70,9 @@
         input:checked + .slider { background: var(--success-color); }
         input:checked + .slider:before { transform: translateX(20px); }
 
-        #loading-overlay { position: fixed; inset: 0; background: #fff; z-index: 9999; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.2rem; }
+        #loading-overlay { position: fixed; inset: 0; background: #fff; z-index: 9999; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+        
+        .lang-indicator { background: var(--brand-purple-light); color: var(--brand-purple); padding: 4px 12px; border-radius: 6px; font-weight: 700; text-transform: uppercase; font-size: 0.75rem; }
     </style>
 </head>
 <body>
@@ -93,7 +84,6 @@
     </header>
 
     <main class="container">
-        <!-- 1. Assignments List -->
         <div id="assignments-view" class="admin-view active">
             <div class="page-title-area">
                 <a href="manage-courses.html" class="back-btn"><i class='bx bx-arrow-back'></i> All Courses</a>
@@ -110,12 +100,14 @@
             </div>
         </div>
 
-        <!-- 2. Problems Editor -->
         <div id="problems-view" class="admin-view">
             <div class="page-title-area">
                 <button class="back-btn" id="back-to-list"><i class='bx bx-arrow-left'></i> Back to Assignments</button>
                 <div class="admin-content-header">
-                    <h2 id="problems-page-title">Manage Problems</h2>
+                    <div style="display:flex; align-items:center; gap:15px;">
+                        <h2 id="problems-page-title">Manage Problems</h2>
+                        <span id="course-lang-badge" class="lang-indicator">JS</span>
+                    </div>
                     <button class="btn btn-primary" id="add-problem-btn"><i class='bx bx-plus'></i> Add New Problem</button>
                 </div>
             </div>
@@ -149,19 +141,21 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
         const SUPABASE_URL = "https://knfypqztuiemawullipi.supabase.co";
-        const SUPABASE_KEY = "sb_publishable_yZhWBF9pFHHxn7jO-zr2Kw_-E-SSktb"; // Ensure this is correct!
+        const SUPABASE_KEY = "sb_publishable_yZhWBF9pFHHxn7jO-zr2Kw_-E-SSktb"; 
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
         const ADMIN_EMAIL = "harshavardhanjw@gmail.com";
         let currentCourseId = null;
         let currentAssignment = null;
+        let courseLanguage = "javascript"; // Default fallback
 
         const CODE_TEMPLATES = {
             javascript: "function solution(input) {\n    // Solve the problem here\n    return ;\n}",
             python: "def solution(input):\n    # Solve the problem here\n    return ",
             java: "public class Main {\n    public static void main(String[] args) {\n        // Your Java logic here\n    }\n}",
             c: "#include <stdio.h>\n\nint main() {\n    // Your C logic here\n    return 0;\n}",
-            html: "<!DOCTYPE html>\n<html>\n<head>\n<style>\n\n</style>\n</head>\n<body>\n\n</body>\n</html>"
+            cpp: "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Your C++ logic here\n    return 0;\n}",
+            html: "<!DOCTYPE html>\n<html>\n<body>\n\n</body>\n</html>"
         };
 
         async function checkAuth() {
@@ -171,6 +165,13 @@
                 currentCourseId = urlParams.get('courseId');
                 if (!currentCourseId) window.location.href = 'manage-courses.html';
                 
+                // Fetch course language
+                const { data: course } = await supabaseClient.from('courses').select('language').eq('id', currentCourseId).single();
+                if(course && course.language) {
+                    courseLanguage = course.language.toLowerCase();
+                    document.getElementById('course-lang-badge').innerText = courseLanguage;
+                }
+
                 document.getElementById('loading-overlay').style.display = 'none';
                 fetchAssignments();
             } else { window.location.href = 'index.html'; }
@@ -178,7 +179,7 @@
         checkAuth();
 
         async function fetchAssignments() {
-            const { data: assignments, error } = await supabaseClient
+            const { data: assignments } = await supabaseClient
                 .from('code_assignments')
                 .select('*')
                 .eq('course_id', currentCourseId)
@@ -239,7 +240,7 @@
                 card.className = 'problem-card';
                 card.innerHTML = `
                     <div class="problem-header" onclick="this.classList.toggle('active')">
-                        <span>${p.title} (${p.points} Points) — ${p.language.toUpperCase()}</span>
+                        <span>${p.title} (${p.points} Pts)</span>
                         <i class='bx bx-chevron-down'></i>
                     </div>
                     <div class="problem-body">
@@ -249,21 +250,15 @@
                                     <div class="form-field"><label>Problem Title</label><input type="text" name="title" value="${p.title}" required></div>
                                     <div class="form-field"><label>Reward Points</label><input type="number" name="points" value="${p.points}" required></div>
                                 </div>
-                                <div class="form-grid">
-                                    <div class="form-field">
-                                        <label>Target Language</label>
-                                        <select name="language" onchange="injectTemplate(this)">
-                                            <option value="javascript" ${p.language=='javascript'?'selected':''}>JavaScript</option>
-                                            <option value="python" ${p.language=='python'?'selected':''}>Python</option>
-                                            <option value="java" ${p.language=='java'?'selected':''}>Java</option>
-                                            <option value="c" ${p.language=='c'?'selected':''}>C</option>
-                                            <option value="html" ${p.language=='html'?'selected':''}>HTML/CSS</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-field"><label>Function Name (for grading)</label><input type="text" name="function_name" value="${p.function_name}" required></div>
-                                </div>
+                                <div class="form-field"><label>Function Name (for grading)</label><input type="text" name="function_name" value="${p.function_name}" required></div>
                                 <div class="form-field"><label>Problem Description (HTML Support)</label><textarea name="statement" rows="4">${p.statement || ''}</textarea></div>
-                                <div class="form-field"><label>Starter Code Boilerplate</label><textarea name="starter_code" rows="8" class="code-area">${p.starter_code || ''}</textarea></div>
+                                <div class="form-field">
+                                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 6px;">
+                                        <label style="margin:0">Starter Code (Target: ${courseLanguage.toUpperCase()})</label>
+                                        <button type="button" class="btn-secondary" style="padding:2px 8px; font-size:10px; border-radius:4px;" onclick="resetTemplate(this)">Reset to Template</button>
+                                    </div>
+                                    <textarea name="starter_code" rows="8" class="code-area">${p.starter_code || ''}</textarea>
+                                </div>
                                 
                                 <div class="test-case-section">
                                     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem">
@@ -287,10 +282,10 @@
             });
         }
 
-        function injectTemplate(select) {
-            const area = select.closest('form').querySelector('.code-area');
-            if(confirm("Change boilerplate to " + select.value + "? Existing code will be lost.")) {
-                area.value = CODE_TEMPLATES[select.value];
+        function resetTemplate(btn) {
+            const area = btn.closest('.form-field').querySelector('.code-area');
+            if(confirm("Reset code to default course template?")) {
+                area.value = CODE_TEMPLATES[courseLanguage] || CODE_TEMPLATES.javascript;
             }
         }
 
@@ -322,11 +317,11 @@
                 statement: fd.get('statement'),
                 function_name: fd.get('function_name'),
                 starter_code: fd.get('starter_code'),
-                language: fd.get('language'),
+                language: courseLanguage, // Use course-level language
                 test_cases: tests
             }).eq('id', id);
 
-            if(!error) alert('Problem Synchronized Successfully!');
+            if(!error) alert('Problem Synchronized!');
             else alert("Error: " + error.message);
         }
 
@@ -335,8 +330,8 @@
                 assignment_id: currentAssignment.id,
                 title: 'New Code Challenge',
                 points: 10,
-                language: 'javascript',
-                starter_code: CODE_TEMPLATES.javascript,
+                language: courseLanguage, // Fixed to course language
+                starter_code: CODE_TEMPLATES[courseLanguage] || CODE_TEMPLATES.javascript,
                 function_name: 'solution',
                 test_cases: []
             }]);
@@ -344,7 +339,6 @@
             else alert(error.message);
         };
 
-        // Modal Controls
         const aModal = document.getElementById('assignment-modal');
         function closeAssignmentModal() { aModal.classList.remove('show'); }
 
@@ -384,7 +378,7 @@
             else alert(res.error.message);
         };
 
-        async function deleteAssignment(id) { if(confirm('Permanently delete this assignment and all code problems inside?')) { await supabaseClient.from('code_assignments').delete().eq('id', id); fetchAssignments(); } }
+        async function deleteAssignment(id) { if(confirm('Permanently delete this assignment?')) { await supabaseClient.from('code_assignments').delete().eq('id', id); fetchAssignments(); } }
         async function deleteProblem(id) { if(confirm('Delete this problem?')) { await supabaseClient.from('code_problems').delete().eq('id', id); fetchProblems(); } }
     </script>
 </body>

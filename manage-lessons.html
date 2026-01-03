@@ -96,19 +96,24 @@
         </div>
     </div>
 
-    <!-- Supabase SDK -->
+<!-- Supabase SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <script>
-        const SUPABASE_URL = "YOUR_SUPABASE_PROJECT_URL";
-        const SUPABASE_KEY = "YOUR_SUPABASE_ANON_KEY";
-        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        // Supabase Configuration
+        const SUPABASE_URL = "https://knfypqztuiemawullipi.supabase.co";
+        // Fixed missing quote below
+        const SUPABASE_KEY = "sb_publishable_yZhWBF9pFHHxn7jO-zr2Kw_-E-SSktb";
+        
+        // Changed variable name to supabaseClient to avoid SyntaxError
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
         const ADMIN_EMAIL = "harshavardhanjw@gmail.com";
         let currentCourse = null;
 
         async function checkAuth() {
-            const { data: { session } } = await supabase.auth.getSession();
+            // Updated to use supabaseClient
+            const { data: { session } } = await supabaseClient.auth.getSession();
             if (session && session.user.email === ADMIN_EMAIL) {
                 const urlParams = new URLSearchParams(window.location.search);
                 const courseId = urlParams.get('courseId');
@@ -123,7 +128,7 @@
         checkAuth();
 
         async function loadCourseData(id) {
-            const { data, error } = await supabase.from('courses').select('*').eq('id', id).single();
+            const { data, error } = await supabaseClient.from('courses').select('*').eq('id', id).single();
             if (data) {
                 currentCourse = data;
                 document.getElementById('page-title').textContent = data.name;
@@ -161,7 +166,7 @@
 
         async function loadItems(chIdx) {
             const list = document.getElementById(`list-${chIdx}`);
-            const { data: items } = await supabase
+            const { data: items } = await supabaseClient
                 .from('lessons')
                 .select('*')
                 .eq('course_id', currentCourse.id)
@@ -200,7 +205,7 @@
                 let chapters = [...(currentCourse.chapters || [])];
                 if (idx !== null) chapters[idx] = name; else chapters.push(name);
                 
-                await supabase.from('courses').update({ chapters }).eq('id', currentCourse.id);
+                await supabaseClient.from('courses').update({ chapters }).eq('id', currentCourse.id);
                 loadCourseData(currentCourse.id);
                 closeAllModals();
             };
@@ -209,7 +214,7 @@
         async function openLessonModal(chIdx, lessonId = null) {
             let existing = null;
             if(lessonId) {
-                const { data } = await supabase.from('lessons').select('*').eq('id', lessonId).single();
+                const { data } = await supabaseClient.from('lessons').select('*').eq('id', lessonId).single();
                 existing = data;
             }
 
@@ -227,8 +232,8 @@
                     content: document.getElementById('l-content').value,
                     type: 'lesson', course_id: currentCourse.id, chapter_index: chIdx
                 };
-                if (lessonId) await supabase.from('lessons').update(payload).eq('id', lessonId);
-                else await supabase.from('lessons').insert([payload]);
+                if (lessonId) await supabaseClient.from('lessons').update(payload).eq('id', lessonId);
+                else await supabaseClient.from('lessons').insert([payload]);
                 
                 renderContent();
                 closeAllModals();
@@ -238,7 +243,7 @@
         async function openQuizModal(chIdx, quizId = null) {
             let existing = null;
             if(quizId) {
-                const { data } = await supabase.from('lessons').select('*').eq('id', quizId).single();
+                const { data } = await supabaseClient.from('lessons').select('*').eq('id', quizId).single();
                 existing = data;
             }
 
@@ -268,8 +273,8 @@
                     payload: questions, 
                     type: 'quiz', course_id: currentCourse.id, chapter_index: chIdx 
                 };
-                if (quizId) await supabase.from('lessons').update(data).eq('id', quizId);
-                else await supabase.from('lessons').insert([data]);
+                if (quizId) await supabaseClient.from('lessons').update(data).eq('id', quizId);
+                else await supabaseClient.from('lessons').insert([data]);
                 
                 renderContent();
                 closeAllModals();
@@ -301,7 +306,7 @@
 
         async function deleteItem(id) { 
             if(confirm('Delete this item?')) {
-                await supabase.from('lessons').delete().eq('id', id);
+                await supabaseClient.from('lessons').delete().eq('id', id);
                 renderContent();
             }
         }
@@ -309,7 +314,7 @@
         async function deleteChapter(idx) {
             if(confirm('Are you sure? Items inside this chapter will still exist in the database but won\'t be visible.')) {
                 let chapters = currentCourse.chapters.filter((_, i) => i !== idx);
-                await supabase.from('courses').update({ chapters }).eq('id', currentCourse.id);
+                await supabaseClient.from('courses').update({ chapters }).eq('id', currentCourse.id);
                 loadCourseData(currentCourse.id);
             }
         }

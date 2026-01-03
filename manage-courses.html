@@ -151,20 +151,22 @@
         </div>
     </div>
 
-    <!-- Include Supabase JS -->
+<!-- Include Supabase JS -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <script>
         // Supabase Configuration
-        const SUPABASE_URL = "YOUR_SUPABASE_PROJECT_URL";
-        const SUPABASE_KEY = "YOUR_SUPABASE_ANON_KEY";
-        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        const SUPABASE_URL = "https://knfypqztuiemawullipi.supabase.co";
+        const SUPABASE_KEY = "sb_publishable_yZhWBF9pFHHxn7jO-zr2Kw_-E-SSktbY";
+        
+        // CHANGED 'supabase' to 'supabaseClient' to avoid the declaration error
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
         const ADMIN_EMAIL = "harshavardhanjw@gmail.com";
 
         // Check Auth State
         async function checkAuth() {
-            const { data: { session } } = await supabase.auth.getSession();
+            const { data: { session } } = await supabaseClient.auth.getSession();
             if (session && session.user.email === ADMIN_EMAIL) {
                 document.getElementById('loading-overlay').style.display = 'none';
                 loadCourses();
@@ -177,7 +179,7 @@
         // Load Courses from Supabase
         async function loadCourses() {
             const grid = document.getElementById('courses-grid');
-            const { data: courses, error } = await supabase
+            const { data: courses, error } = await supabaseClient
                 .from('courses')
                 .select('*')
                 .order('name', { ascending: true });
@@ -234,7 +236,7 @@
 
         // Edit Course
         async function editCourse(id) {
-            const { data: course } = await supabase.from('courses').select('*').eq('id', id).single();
+            const { data: course } = await supabaseClient.from('courses').select('*').eq('id', id).single();
             if (course) {
                 document.getElementById('course-id').value = course.id;
                 document.getElementById('course-name').value = course.name;
@@ -247,7 +249,7 @@
         // Delete Course
         async function deleteCourse(id) {
             if(confirm('Delete this course? All lessons, exams, and content inside will be lost forever.')) {
-                const { error } = await supabase.from('courses').delete().eq('id', id);
+                const { error } = await supabaseClient.from('courses').delete().eq('id', id);
                 if (!error) loadCourses();
             }
         }
@@ -265,10 +267,10 @@
             let response;
             if(id) {
                 // Update
-                response = await supabase.from('courses').update(courseData).eq('id', id);
+                response = await supabaseClient.from('courses').update(courseData).eq('id', id);
             } else {
                 // Create
-                response = await supabase.from('courses').insert([courseData]);
+                response = await supabaseClient.from('courses').insert([courseData]);
             }
 
             if (response.error) {

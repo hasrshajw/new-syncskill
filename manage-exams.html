@@ -123,25 +123,30 @@
         </div>
     </div>
 
-    <!-- Supabase SDK -->
+<!-- Supabase SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <script>
-        const SUPABASE_URL = "YOUR_SUPABASE_PROJECT_URL";
-        const SUPABASE_KEY = "YOUR_SUPABASE_ANON_KEY";
-        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        // Supabase Configuration
+        const SUPABASE_URL = "https://knfypqztuiemawullipi.supabase.co";
+        // Fixed: Added missing opening quote below
+        const SUPABASE_KEY = "sb_publishable_yZhWBF9pFHHxn7jO-zr2Kw_-E-SSktb";
+        
+        // Changed variable name to supabaseClient to avoid collision
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
         const ADMIN_EMAIL = "harshavardhanjw@gmail.com";
         let currentCourseId = null;
 
         async function checkAuth() {
-            const { data: { session } } = await supabase.auth.getSession();
+            // Updated to use supabaseClient
+            const { data: { session } } = await supabaseClient.auth.getSession();
             if (session && session.user.email === ADMIN_EMAIL) {
                 const urlParams = new URLSearchParams(window.location.search);
                 currentCourseId = urlParams.get('courseId');
                 if (!currentCourseId) return window.location.href = 'manage-subjects.html';
                 
-                const { data: course } = await supabase.from('courses').select('name').eq('id', currentCourseId).single();
+                const { data: course } = await supabaseClient.from('courses').select('name').eq('id', currentCourseId).single();
                 if(course) document.getElementById('page-title').textContent = course.name + " Exams";
                 
                 document.getElementById('loading-overlay').style.display = 'none';
@@ -154,7 +159,7 @@
 
         async function loadExams() {
             const list = document.getElementById('exams-list');
-            const { data: exams, error } = await supabase
+            const { data: exams, error } = await supabaseClient
                 .from('exams')
                 .select('*')
                 .eq('course_id', currentCourseId)
@@ -185,12 +190,12 @@
         }
 
         async function toggleLock(id, isActive) {
-            await supabase.from('exams').update({ is_locked: !isActive }).eq('id', id);
+            await supabaseClient.from('exams').update({ is_locked: !isActive }).eq('id', id);
         }
 
         async function deleteExam(id) {
             if(confirm('Delete this exam permanently?')) {
-                await supabase.from('exams').delete().eq('id', id);
+                await supabaseClient.from('exams').delete().eq('id', id);
                 loadExams();
             }
         }
@@ -208,7 +213,7 @@
         };
 
         async function editExam(id) {
-            const { data: e } = await supabase.from('exams').select('*').eq('id', id).single();
+            const { data: e } = await supabaseClient.from('exams').select('*').eq('id', id).single();
             document.getElementById('exam-id').value = id;
             document.getElementById('exam-name').value = e.name;
             document.getElementById('exam-duration').value = e.duration / 60;
@@ -260,8 +265,8 @@
             const examData = { name, duration, course_id: currentCourseId, payload: questions, deadline };
             
             let res;
-            if(id) res = await supabase.from('exams').update(examData).eq('id', id);
-            else res = await supabase.from('exams').insert([{ ...examData, is_locked: true }]);
+            if(id) res = await supabaseClient.from('exams').update(examData).eq('id', id);
+            else res = await supabaseClient.from('exams').insert([{ ...examData, is_locked: true }]);
             
             if(!res.error) {
                 closeModal();

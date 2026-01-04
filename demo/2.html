@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Full Stack Web Development Career Track</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- 1. PREMIUM DESIGN TOKENS --- */
+        :root {
+            /* Palette */
+            --bg-body: #F9FAFB;
+            --bg-card: #FFFFFF;
+            --text-primary: #111827; /* Near Black */
+            --text-secondary: #4B5563; /* Cool Grey */
+            --text-tertiary: #9CA3AF;
+            --border-color: #E5E7EB;
+            
+            /* Accents */
+            --accent-black: #0F172A; 
+            --accent-green: #10B981; 
+            --accent-blue: #3B82F6;
+            --accent-bg-blue: #EFF6FF;
+            
+            /* Spacing */
+            --space-card-padding: 40px;
+            --section-gap: 80px;
+            
+            /* Elevation & Borders */
+            --shadow-card: 0 20px 40px -4px rgba(0, 0, 0, 0.08);
+            --shadow-sm: 0 2px 4px -1px rgba(0, 0, 0, 0.05);
+            --border-subtle: 1px solid rgba(0,0,0,0.08);
+            --radius-xl: 24px;
+            --radius-lg: 16px;
+            --radius-md: 12px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'IBM Plex Sans', sans-serif;
+            background-color: var(--bg-body);
+            background-image: radial-gradient(#E5E7EB 1px, transparent 1px);
+            background-size: 24px 24px;
+            color: var(--text-primary);
+            -webkit-font-smoothing: antialiased;
+            padding-bottom: 120px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1080px;
+            margin: 0 auto;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: var(--section-gap);
+        }
+
+        /* --- TYPOGRAPHY UTILITIES --- */
+        .section-header { margin-bottom: 40px; }
+        .section-header h2 { font-size: 32px; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 12px; color: var(--text-primary); }
+        .section-header p { font-size: 16px; color: var(--text-secondary); max-width: 600px; line-height: 1.6; }
+
+        /* --- 1. HERO CARD --- */
+        .card {
+            background: var(--bg-card);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-card);
+            border: 1px solid #FFFFFF;
+            padding: var(--space-card-padding);
+            display: flex; align-items: flex-start; gap: 48px;
+            position: relative; margin-top: 24px;
+        }
+
+        .visual-container {
+            width: 440px; min-width: 440px; height: 340px;
+            flex-shrink: 0; position: relative; border-radius: var(--radius-lg);
+            overflow: hidden; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05);
+        }
+        .visual-container img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+        .card:hover .visual-container img { transform: scale(1.03); }
+
+        .tag {
+            position: absolute; top: 16px; left: 16px;
+            background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(4px);
+            padding: 6px 14px; border-radius: 100px;
+            font-size: 12px; font-weight: 600; text-transform: uppercase;
+            color: var(--text-primary); box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            display: flex; align-items: center; gap: 6px;
+        }
+        .tag::before { content:''; width:6px; height:6px; background:var(--accent-green); border-radius:50%; }
+
+        .content { flex: 1; display: flex; flex-direction: column; min-height: 340px; justify-content: space-between; }
+        .header h1 { font-size: 38px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 12px; }
+        .header p { font-size: 16px; line-height: 1.6; color: var(--text-secondary); }
+
+        .specs {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+            padding: 28px 0; border-top: var(--border-subtle); border-bottom: var(--border-subtle);
+            margin-bottom: 28px;
+        }
+        .spec-item { display: flex; flex-direction: column; gap: 6px; }
+        .spec-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-tertiary); font-weight: 600; }
+        .spec-value { font-size: 15px; font-weight: 500; }
+
+        .footer { display: flex; align-items: center; justify-content: space-between; }
+        .mentor-preview { display: flex; align-items: center; gap: 14px; }
+        .mentor-preview img { width: 48px; height: 48px; border-radius: 12px; object-fit: cover; }
+        
+        .action-dock { display: flex; align-items: center; gap: 28px; }
+        .price-group { text-align: right; }
+        .price-prev { font-size: 13px; color: var(--text-tertiary); text-decoration: line-through; display: block; }
+        .price-curr { font-size: 26px; font-weight: 600; letter-spacing: -0.02em; }
+
+        .btn-onyx {
+            background-color: var(--accent-black); color: #fff;
+            padding: 0 36px; height: 52px; border-radius: 10px;
+            font-size: 15px; font-weight: 500; border: none; cursor: pointer;
+            transition: all 0.2s ease; display: flex; align-items: center; gap: 8px;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
+        }
+        .btn-onyx:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
+
+        /* --- 2. BRIDGING THE GAP (Positive Framing) --- */
+        .gap-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: center; }
+        .gap-content h3 { font-size: 24px; font-weight: 600; margin-bottom: 16px; }
+        .gap-content p { color: var(--text-secondary); line-height: 1.6; margin-bottom: 24px; }
+        
+        .feature-row { display: flex; gap: 16px; margin-bottom: 16px; align-items: flex-start; }
+        .check-icon { 
+            width: 24px; height: 24px; background: var(--accent-bg-blue); 
+            color: var(--accent-blue); border-radius: 50%; display: flex; 
+            align-items: center; justify-content: center; flex-shrink: 0; 
+        }
+        
+        .stat-card {
+            background: #fff; padding: 32px; border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm); border: var(--border-subtle);
+            text-align: center;
+        }
+        .stat-big { font-size: 48px; font-weight: 700; color: var(--accent-black); line-height: 1; margin-bottom: 8px; }
+        .stat-label { font-size: 14px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; }
+
+        /* --- 3. CURRICULUM ACCORDION --- */
+        .curriculum-wrapper { background: #fff; border-radius: var(--radius-xl); box-shadow: var(--shadow-sm); overflow: hidden; }
+        .module-item { border-bottom: 1px solid var(--border-color); }
+        .module-item:last-child { border-bottom: none; }
+        
+        .module-header {
+            padding: 24px 32px; cursor: pointer; display: flex; justify-content: space-between; align-items: center;
+            background: #fff; transition: background 0.2s;
+        }
+        .module-header:hover { background: #FAFAFA; }
+        .module-title { font-size: 18px; font-weight: 600; display: flex; gap: 12px; align-items: center; }
+        .module-number { color: var(--text-tertiary); font-weight: 400; font-size: 14px; }
+        
+        .module-body {
+            padding: 0 32px; max-height: 0; overflow: hidden;
+            transition: all 0.3s ease; background: #F9FAFB;
+        }
+        .module-item.active .module-body { padding-bottom: 24px; padding-top: 16px; max-height: 300px; }
+        
+        .tech-tags { display: flex; gap: 8px; margin-top: 12px; }
+        .tech-tag { 
+            font-size: 12px; background: #fff; border: 1px solid var(--border-color);
+            padding: 4px 10px; border-radius: 6px; color: var(--text-secondary); font-weight: 500;
+        }
+
+        /* --- 4. PROJECTS (Visual Grid) --- */
+        .projects-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+        .project-card {
+            background: #fff; border-radius: var(--radius-lg); overflow: hidden;
+            border: var(--border-subtle); transition: transform 0.3s ease;
+        }
+        .project-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-card); }
+        .project-thumb { height: 160px; background: #F3F4F6; position: relative; display: flex; align-items: center; justify-content: center; color: #CBD5E1; }
+        .project-info { padding: 20px; }
+        .project-info h4 { font-size: 16px; font-weight: 600; margin-bottom: 6px; }
+        .project-info p { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+
+        /* --- 5. CAREER SERVICES --- */
+        .career-section { 
+            background: var(--accent-black); color: #fff; 
+            border-radius: var(--radius-xl); padding: 48px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .career-text h2 { color: #fff; margin-bottom: 12px; }
+        .career-text p { color: #94A3B8; max-width: 500px; }
+        .career-list { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 24px; }
+        .career-item { display: flex; gap: 12px; align-items: center; font-size: 15px; font-weight: 500; }
+        .career-icon { color: var(--accent-green); }
+
+        /* --- 6. TRUST & CERT --- */
+        .trust-row { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+        .cert-box {
+            background: #fff; padding: 32px; border-radius: var(--radius-lg);
+            border: 1px solid #E2E8F0; display: flex; flex-direction: column; gap: 16px;
+        }
+        .nsdc-header { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+        .nsdc-badge { background: #DCFCE7; color: #166534; font-size: 11px; font-weight: 700; padding: 4px 8px; border-radius: 4px; }
+
+        /* --- 7. FAQ --- */
+        .faq-grid { display: grid; gap: 16px; }
+        .faq-item { background: #fff; border-radius: var(--radius-md); border: var(--border-subtle); overflow: hidden; }
+        .faq-question { padding: 20px; font-weight: 500; cursor: pointer; display: flex; justify-content: space-between; }
+        .faq-answer { padding: 0 20px; max-height: 0; overflow: hidden; color: var(--text-secondary); font-size: 14px; transition: all 0.3s ease; }
+        .faq-item.active .faq-answer { padding-bottom: 20px; max-height: 200px; }
+
+        /* --- MOBILE RESPONSIVE --- */
+        @media (max-width: 960px) {
+            body { padding: 16px; }
+            .container { padding: 0; gap: 60px; }
+            
+            .card { flex-direction: column; padding: 20px; gap: 24px; }
+            .visual-container { width: 100%; min-width: 0; height: auto; aspect-ratio: 16/9; }
+            .header h1 { font-size: 28px; }
+            .specs { grid-template-columns: 1fr 1fr; }
+            .spec-item:nth-child(3) { display: none; }
+            .footer { display: none; } /* Hide desktop footer */
+
+            .gap-grid, .projects-grid, .trust-row { grid-template-columns: 1fr; }
+            .career-section { flex-direction: column; text-align: left; align-items: flex-start; padding: 32px; gap: 32px; }
+            .career-list { grid-template-columns: 1fr; }
+
+            /* Sticky Mobile CTA */
+            .sticky-cta {
+                position: fixed; bottom: 16px; left: 16px; right: 16px;
+                background: #fff; padding: 16px;
+                border-radius: 16px;
+                box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+                display: flex !important; justify-content: space-between; align-items: center;
+                border: 1px solid var(--border-color);
+                z-index: 100;
+            }
+        }
+
+        @media (min-width: 961px) { .sticky-cta { display: none; } }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- 1. HERO SECTION -->
+        <article class="card">
+            <div class="visual-container">
+                <div class="tag">Next Batch: Jan 15</div>
+                <img src="https://images.unsplash.com/photo-1531403009284-440f080d1e12?q=80&w=2070&auto=format&fit=crop" alt="Coding Workstation">
+            </div>
+
+            <div class="content">
+                <div class="header">
+                    <h1>Full Stack Web Development</h1>
+                    <p>The practical layer your degree was missing. Master the MERN stack, build a deployment-ready portfolio, and crack industry interviews.</p>
+                </div>
+
+                <div class="specs">
+                    <div class="spec-item">
+                        <div class="spec-label">Duration</div>
+                        <span class="spec-value">12 Weeks</span>
+                    </div>
+                    <div class="spec-item">
+                        <div class="spec-label">Schedule</div>
+                        <span class="spec-value">Sat & Sun (Live)</span>
+                    </div>
+                    <div class="spec-item">
+                        <div class="spec-label">Access</div>
+                        <span class="spec-value">Lifetime</span>
+                    </div>
+                </div>
+
+                <div class="footer">
+                    <div class="mentor-preview">
+                        <img src="https://ui-avatars.com/api/?name=Vaibhav+S&background=0F172A&color=fff" alt="Mentor">
+                        <div class="mentor-info">
+                            <h4>Vaibhav Sisinty</h4>
+                            <p>Ex-Uber, Founder</p>
+                        </div>
+                    </div>
+                    <div class="action-dock">
+                        <div class="price-group">
+                            <span class="price-prev">₹12,499</span>
+                            <span class="price-curr">₹2,499</span>
+                        </div>
+                        <button class="btn-onyx">
+                            Enroll Now
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- 2. BRIDGING THE GAP (Positive Psychology) -->
+        <section>
+            <div class="gap-grid">
+                <div class="gap-content">
+                    <h3>Unlock the full potential of your B.Tech</h3>
+                    <p>Academia builds your foundation in logic and theory. We provide the industrial layer of practical application, bridging the gap between "knowing" and "doing."</p>
+                    
+                    <div class="feature-row">
+                        <div class="check-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+                        <span>Move from Textbook Theory to <strong>Live Deployment</strong></span>
+                    </div>
+                    <div class="feature-row">
+                        <div class="check-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+                        <span>Replace generic projects with a <strong>Git-verified Portfolio</strong></span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-big">15+</div>
+                    <div class="stat-label">Companies Hiring MERN Developers</div>
+                    <p style="font-size: 13px; color: var(--text-tertiary); margin-top: 12px;">(Startups to MNCs prefer full-stack skills)</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. CURRICULUM -->
+        <section>
+            <div class="section-header">
+                <h2>The Industrial Syllabus</h2>
+                <p>Designed by engineers from Google & Amazon to focus on what actually matters in 2024.</p>
+            </div>
+            
+            <div class="curriculum-wrapper">
+                <div class="module-item active" onclick="toggleAccordion(this)">
+                    <div class="module-header">
+                        <div class="module-title"><span class="module-number">01</span> Frontend Architecture</div>
+                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                    </div>
+                    <div class="module-body">
+                        <p>Go beyond HTML. Learn semantic structure, Tailwind CSS for rapid UI, and Javascript ES6+ logic.</p>
+                        <div class="tech-tags">
+                            <span class="tech-tag">HTML5</span><span class="tech-tag">Tailwind</span><span class="tech-tag">ES6+</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="module-item" onclick="toggleAccordion(this)">
+                    <div class="module-header">
+                        <div class="module-title"><span class="module-number">02</span> React Ecosystem</div>
+                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                    </div>
+                    <div class="module-body">
+                        <p>Master Components, Props, State, and Hooks. Build Single Page Applications (SPAs) that feel like mobile apps.</p>
+                        <div class="tech-tags">
+                            <span class="tech-tag">React JS</span><span class="tech-tag">Redux</span><span class="tech-tag">Router</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="module-item" onclick="toggleAccordion(this)">
+                    <div class="module-header">
+                        <div class="module-title"><span class="module-number">03</span> Backend & Database</div>
+                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                    </div>
+                    <div class="module-body">
+                        <p>Build your own APIs. Handle user authentication (JWT), connect databases, and manage server logic.</p>
+                        <div class="tech-tags">
+                            <span class="tech-tag">Node.js</span><span class="tech-tag">Express</span><span class="tech-tag">MongoDB</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. PROJECTS (Visual Proof) -->
+        <section>
+            <div class="section-header">
+                <h2>Build things that work</h2>
+                <p>You won't just watch videos. You will ship code. These projects go on your Resume.</p>
+            </div>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="project-thumb">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                    </div>
+                    <div class="project-info">
+                        <h4>Netflix Clone</h4>
+                        <p>A streaming UI with API integration to fetch movies dynamically.</p>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-thumb">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+                    </div>
+                    <div class="project-info">
+                        <h4>E-Commerce App</h4>
+                        <p>Full cart functionality, payment gateway dummy, and user auth.</p>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-thumb">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                    </div>
+                    <div class="project-info">
+                        <h4>Real-time Chat</h4>
+                        <p>WebSockets implementation for instant messaging capabilities.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. CAREER LAUNCHPAD -->
+        <section class="career-section">
+            <div class="career-text">
+                <h2>Career Launchpad</h2>
+                <p>We don't leave you after the last class. Our placement support team helps position you for the best opportunities.</p>
+                <div class="career-list">
+                    <div class="career-item"><span class="career-icon">✓</span> ATS Resume Building</div>
+                    <div class="career-item"><span class="career-icon">✓</span> LinkedIn Optimization</div>
+                    <div class="career-item"><span class="career-icon">✓</span> Mock HR Interviews</div>
+                    <div class="career-item"><span class="career-icon">✓</span> Technical Round Prep</div>
+                </div>
+            </div>
+            <!-- Optional Illustration/Icon on right for desktop -->
+            <div style="background: rgba(255,255,255,0.1); width: 120px; height: 120px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+            </div>
+        </section>
+
+        <!-- 6. TRUST & CERTIFICATES -->
+        <section class="trust-row">
+            <div class="cert-box">
+                <div class="nsdc-header">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    <h4>Government Recognized</h4>
+                </div>
+                <p style="color: var(--text-secondary); font-size: 14px; line-height: 1.6;">
+                    This course is aligned with NSDC (National Skill Development Corporation) standards.
+                </p>
+                <div>
+                    <span class="nsdc-badge">NSDC Partner</span>
+                </div>
+            </div>
+            <div class="cert-box">
+                <div class="nsdc-header">
+                    <img src="https://ui-avatars.com/api/?name=Suraj+Kumar&background=000&color=fff" style="width: 32px; height: 32px; border-radius: 50%;" alt="">
+                    <h4>Expert Mentorship</h4>
+                </div>
+                <p style="color: var(--text-secondary); font-size: 14px; line-height: 1.6;">
+                    Learn directly from <strong>Suraj Kumar</strong>, who has shipped products at Google and Amazon.
+                </p>
+                <a href="#" style="color: var(--text-primary); font-size: 14px; font-weight: 600; text-decoration: underline;">View Mentor Profile</a>
+            </div>
+        </section>
+
+        <!-- 7. FAQ -->
+        <section>
+            <div class="section-header">
+                <h2>Common Questions</h2>
+            </div>
+            <div class="faq-grid">
+                <div class="faq-item" onclick="toggleFaq(this)">
+                    <div class="faq-question">Do I need prior coding knowledge? <span>+</span></div>
+                    <div class="faq-answer">No. We start from the absolute basics of HTML and move up. Logical thinking is the only requirement.</div>
+                </div>
+                <div class="faq-item" onclick="toggleFaq(this)">
+                    <div class="faq-question">What if I miss a live class? <span>+</span></div>
+                    <div class="faq-answer">Every session is recorded and uploaded to your dashboard within 24 hours. You have lifetime access.</div>
+                </div>
+                <div class="faq-item" onclick="toggleFaq(this)">
+                    <div class="faq-question">Will I get a certificate? <span>+</span></div>
+                    <div class="faq-answer">Yes, upon completion of the capstone project, you receive a verifiable NSDC-aligned certification.</div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- MOBILE STICKY DOCK -->
+    <div class="sticky-cta">
+        <div class="price-group">
+            <span class="price-prev">₹12,499</span>
+            <span class="price-curr">₹2,499</span>
+        </div>
+        <button class="btn-onyx">Enroll Now</button>
+    </div>
+
+    <script>
+        function toggleAccordion(element) {
+            const allModules = document.querySelectorAll('.module-item');
+            allModules.forEach(mod => {
+                if(mod !== element) mod.classList.remove('active');
+            });
+            element.classList.toggle('active');
+        }
+
+        function toggleFaq(element) {
+            element.classList.toggle('active');
+            const icon = element.querySelector('.faq-question span');
+            if(element.classList.contains('active')) icon.innerText = '-';
+            else icon.innerText = '+';
+        }
+    </script>
+
+</body>
+</html>

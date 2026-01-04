@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Full Stack Specialization | Professional Track</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- 1. DESIGN TOKENS --- */
+        :root {
+            /* Palette */
+            --bg-body: #F8FAFC;
+            --bg-card: #FFFFFF;
+            --text-primary: #0F172A;
+            --text-secondary: #475569;
+            --text-tertiary: #94A3B8;
+            --border-color: #E2E8F0;
+            
+            /* Brand Accents */
+            --brand-primary: #0F172A; /* Onyx */
+            --brand-accent: #2563EB;  /* Royal Blue */
+            --bg-accent-light: #EFF6FF;
+            --success-green: #059669;
+            
+            /* Layout */
+            --max-width: 1140px;
+            --radius-xl: 20px;
+            --radius-lg: 12px;
+            --radius-md: 8px;
+            
+            /* Depth */
+            --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            --shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+        }
+
+        /* --- 2. GLOBAL RESET --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'IBM Plex Sans', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-primary);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            padding-bottom: 120px; /* Mobile Dock Space */
+        }
+
+        .container {
+            width: 100%;
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 48px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 80px;
+        }
+
+        h1, h2, h3, h4 { letter-spacing: -0.02em; line-height: 1.2; }
+        
+        .section-head { margin-bottom: 40px; max-width: 700px; }
+        .section-head h2 { font-size: 32px; font-weight: 700; margin-bottom: 12px; color: var(--brand-primary); }
+        .section-head p { font-size: 16px; color: var(--text-secondary); line-height: 1.6; }
+
+        /* --- 3. COMPONENT: BUTTONS --- */
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+            padding: 12px 28px; border-radius: var(--radius-md); font-weight: 600; font-size: 15px;
+            transition: all 0.2s ease; cursor: pointer; border: none;
+        }
+        .btn-primary {
+            background-color: var(--brand-primary); color: #fff;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 16px rgba(15, 23, 42, 0.2); }
+        .btn-outline {
+            background-color: transparent; border: 1px solid var(--border-color); color: var(--text-primary);
+        }
+        .btn-outline:hover { background-color: #fff; border-color: var(--text-secondary); }
+
+        /* --- 4. HERO SECTION --- */
+        .hero-grid {
+            display: grid; grid-template-columns: 1.2fr 1fr; gap: 48px; align-items: center;
+            background: var(--bg-card); padding: 48px; border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-card); border: 1px solid #fff;
+        }
+        
+        .hero-content h1 { font-size: 42px; font-weight: 700; margin-bottom: 16px; }
+        .hero-content .subtitle { font-size: 18px; color: var(--text-secondary); margin-bottom: 32px; }
+        
+        .hero-metrics { display: flex; gap: 32px; margin-bottom: 32px; padding: 20px 0; border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); }
+        .metric strong { display: block; font-size: 20px; font-weight: 700; }
+        .metric span { font-size: 13px; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; }
+
+        .hero-visual {
+            position: relative; border-radius: var(--radius-lg); overflow: hidden;
+            box-shadow: var(--shadow-card); aspect-ratio: 4/3;
+        }
+        .hero-visual img { width: 100%; height: 100%; object-fit: cover; }
+        .hero-tag {
+            position: absolute; top: 20px; left: 20px; background: rgba(255,255,255,0.95);
+            padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 700;
+            color: var(--brand-primary); box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        /* --- 5. TECH STACK GRID (New Detail) --- */
+        .stack-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+        .stack-card {
+            background: #fff; padding: 20px; border-radius: var(--radius-lg); border: 1px solid var(--border-color);
+            display: flex; flex-direction: column; align-items: center; text-align: center; gap: 12px;
+            transition: transform 0.2s;
+        }
+        .stack-card:hover { transform: translateY(-4px); border-color: var(--brand-primary); }
+        .stack-icon { width: 40px; height: 40px; object-fit: contain; }
+        .stack-name { font-weight: 600; font-size: 15px; }
+        .stack-desc { font-size: 12px; color: var(--text-secondary); }
+
+        /* --- 6. COMPARISON TABLE (Contextual Logic) --- */
+        .comparison-wrapper { overflow-x: auto; background: #fff; border-radius: var(--radius-xl); box-shadow: var(--shadow-card); padding: 32px; border: 1px solid var(--border-color); }
+        .comp-table { width: 100%; border-collapse: collapse; min-width: 600px; }
+        .comp-table th { text-align: left; padding: 20px; font-size: 16px; border-bottom: 2px solid var(--border-color); color: var(--text-secondary); }
+        .comp-table th.highlight { color: var(--brand-accent); font-weight: 700; border-bottom-color: var(--brand-accent); }
+        .comp-table td { padding: 20px; border-bottom: 1px solid var(--border-color); font-size: 15px; color: var(--text-secondary); }
+        .comp-table tr:last-child td { border-bottom: none; }
+        .check-icon { color: var(--success-green); width: 20px; height: 20px; vertical-align: middle; }
+        .cross-icon { color: var(--text-tertiary); width: 20px; height: 20px; vertical-align: middle; }
+        .table-row-highlight { background-color: #F8FAFC; }
+
+        /* --- 7. CURRICULUM (Existing Enhanced) --- */
+        .module-item { 
+            background: #fff; border: 1px solid var(--border-color); border-radius: var(--radius-lg); margin-bottom: 16px; overflow: hidden;
+        }
+        .module-head { padding: 20px 24px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: 600; }
+        .module-head:hover { background-color: #F8FAFC; }
+        .module-body { display: none; padding: 0 24px 24px; color: var(--text-secondary); font-size: 14px; line-height: 1.6; }
+        .module-item.active .module-body { display: block; }
+        .module-item.active .module-head { color: var(--brand-accent); }
+        .tech-pill { display: inline-block; background: var(--bg-body); padding: 4px 10px; border-radius: 6px; font-size: 12px; margin-right: 6px; margin-top: 10px; font-weight: 500; }
+
+        /* --- 8. SCHEDULE (Day in Life) --- */
+        .schedule-box {
+            background: var(--brand-primary); color: #fff; padding: 40px; border-radius: var(--radius-xl);
+            background-image: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+        }
+        .timeline { display: flex; flex-direction: column; gap: 24px; margin-top: 32px; }
+        .time-slot { display: flex; gap: 24px; }
+        .time { font-weight: 700; color: #94A3B8; min-width: 80px; font-size: 14px; }
+        .activity h4 { font-size: 16px; margin-bottom: 4px; color: #fff; }
+        .activity p { font-size: 14px; color: #CBD5E1; }
+
+        /* --- 9. FAQ SECTION --- */
+        .faq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+        .faq-item { background: #fff; padding: 24px; border-radius: var(--radius-lg); border: 1px solid var(--border-color); }
+        .faq-item h4 { font-size: 16px; margin-bottom: 8px; font-weight: 600; }
+        .faq-item p { font-size: 14px; color: var(--text-secondary); }
+
+        /* --- 10. MOBILE DOCK --- */
+        .mobile-dock {
+            display: none; position: fixed; bottom: 0; left: 0; right: 0;
+            background: #fff; padding: 16px 20px; box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+            border-top: 1px solid var(--border-color); z-index: 100;
+            align-items: center; justify-content: space-between;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 900px) {
+            .container { padding: 24px 16px; gap: 60px; }
+            .hero-grid { grid-template-columns: 1fr; padding: 24px; }
+            .hero-visual { order: -1; aspect-ratio: 16/9; }
+            .hero-content h1 { font-size: 32px; }
+            
+            .stack-grid { grid-template-columns: repeat(2, 1fr); }
+            .faq-grid { grid-template-columns: 1fr; }
+            
+            /* Table Scroll */
+            .comparison-wrapper { padding: 16px; }
+            
+            .mobile-dock { display: flex; }
+            .desktop-only { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- 1. HERO SECTION -->
+    <header class="hero-grid">
+        <div class="hero-content">
+            <h1>Web Development <br><span style="color: var(--brand-accent);">Specialization</span></h1>
+            <p class="subtitle">Designed for B.Tech students. Don't just learn syntax; learn how to build, deploy, and scale enterprise applications.</p>
+            
+            <div class="hero-metrics">
+                <div class="metric">
+                    <span>Duration</span>
+                    <strong>12 Weeks</strong>
+                </div>
+                <div class="metric">
+                    <span>Format</span>
+                    <strong>Live Classes</strong>
+                </div>
+                <div class="metric">
+                    <span>Certificate</span>
+                    <strong>NSDC Verified</strong>
+                </div>
+            </div>
+
+            <div class="desktop-only" style="display: flex; gap: 20px; align-items: center;">
+                <button class="btn btn-primary">Enroll Now - ₹2,499</button>
+                <span style="font-size: 14px; color: var(--text-secondary);">Next Batch: <strong>This Saturday</strong></span>
+            </div>
+        </div>
+        
+        <div class="hero-visual">
+            <div class="hero-tag">Placement Support Included</div>
+            <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=2070&auto=format&fit=crop" alt="Students coding">
+        </div>
+    </header>
+
+    <!-- 2. TECH STACK (The Tools You Master) -->
+    <section>
+        <div class="section-head">
+            <h2>The "Hired" Tech Stack</h2>
+            <p>We don't teach outdated tools. This is the exact stack used by startups and unicorns like Swiggy, Uber, and Cred.</p>
+        </div>
+        <div class="stack-grid">
+            <!-- Frontend -->
+            <div class="stack-card">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg" class="stack-icon" alt="React">
+                <div class="stack-name">React JS</div>
+                <div class="stack-desc">Industry Standard UI</div>
+            </div>
+            <!-- Backend -->
+            <div class="stack-card">
+                <img src="https://img.icons8.com/color/48/nodejs.png" class="stack-icon" alt="Node">
+                <div class="stack-name">Node.js</div>
+                <div class="stack-desc">High Perf Backend</div>
+            </div>
+            <!-- Database -->
+            <div class="stack-card">
+                <img src="https://img.icons8.com/color/48/mongodb.png" class="stack-icon" alt="Mongo">
+                <div class="stack-name">MongoDB</div>
+                <div class="stack-desc">NoSQL Database</div>
+            </div>
+            <!-- Tools -->
+            <div class="stack-card">
+                <img src="https://img.icons8.com/ios-filled/50/000000/github.png" class="stack-icon" alt="Git">
+                <div class="stack-name">Git & GitHub</div>
+                <div class="stack-desc">Version Control</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. COMPARISON (Logic) -->
+    <section>
+        <div class="section-head">
+            <h2>Why you need this Specialization</h2>
+            <p>College degrees provide the theoretical foundation. We provide the practical application required to crack interviews.</p>
+        </div>
+        <div class="comparison-wrapper">
+            <table class="comp-table">
+                <thead>
+                    <tr>
+                        <th style="width: 40%;">Parameter</th>
+                        <th>Standard College Curriculum</th>
+                        <th class="highlight">Our Specialization</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Focus Area</strong></td>
+                        <td>Theoretical Concepts</td>
+                        <td><strong>Application & Deployment</strong></td>
+                    </tr>
+                    <tr class="table-row-highlight">
+                        <td><strong>Coding Environment</strong></td>
+                        <td>Pen & Paper / Turbo C++</td>
+                        <td><strong>VS Code & GitHub</strong></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Project Type</strong></td>
+                        <td>Library Management System (Basic)</td>
+                        <td><strong>Live E-Commerce & Social Apps</strong></td>
+                    </tr>
+                    <tr class="table-row-highlight">
+                        <td><strong>Instructors</strong></td>
+                        <td>Academic Professors</td>
+                        <td><strong>Ex-Google/Amazon Engineers</strong></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Outcome</strong></td>
+                        <td>Degree Certificate</td>
+                        <td><strong>Deployment-Ready Portfolio</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- 4. WEEKLY SCHEDULE (Day in the Life) -->
+    <section class="schedule-box">
+        <h2 style="color: #fff; margin-bottom: 8px;">Your Weekend Schedule</h2>
+        <p style="color: #CBD5E1;">Classes are held on Saturdays & Sundays to accommodate your college schedule.</p>
+        
+        <div class="timeline">
+            <div class="time-slot">
+                <div class="time">7:00 PM</div>
+                <div class="activity">
+                    <h4>Concept Breakdown</h4>
+                    <p>Instructor explains the logic (e.g., How React Hooks work) using real-world analogies.</p>
+                </div>
+            </div>
+            <div class="time-slot">
+                <div class="time">7:45 PM</div>
+                <div class="activity">
+                    <h4>Live Coding</h4>
+                    <p>Open VS Code. We build a feature live. You code along with the mentor.</p>
+                </div>
+            </div>
+            <div class="time-slot">
+                <div class="time">8:30 PM</div>
+                <div class="activity">
+                    <h4>Break & Debugging</h4>
+                    <p>Short break followed by resolving errors students are facing in real-time.</p>
+                </div>
+            </div>
+            <div class="time-slot">
+                <div class="time">9:00 PM</div>
+                <div class="activity">
+                    <h4>Assignment & Q&A</h4>
+                    <p>Project task assigned for the week. Open floor for career and code questions.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. CURRICULUM ACCORDION -->
+    <section>
+        <div class="section-head">
+            <h2>Step-by-Step Curriculum</h2>
+        </div>
+        <div class="module-list">
+            <div class="module-item active" onclick="toggleModule(this)">
+                <div class="module-head">
+                    <span>Module 1: The Modern Frontend</span>
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                </div>
+                <div class="module-body">
+                    <p>Learn how to structure enterprise-grade websites. Move away from basic CSS to Tailwind and responsive design systems.</p>
+                    <span class="tech-pill">HTML5</span><span class="tech-pill">Tailwind CSS</span><span class="tech-pill">Git</span>
+                </div>
+            </div>
+            <div class="module-item" onclick="toggleModule(this)">
+                <div class="module-head">
+                    <span>Module 2: JavaScript Intelligence</span>
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                </div>
+                <div class="module-body">
+                    <p>Master ES6+, Async/Await, Promises, and DOM manipulation. This is the logic layer of your applications.</p>
+                    <span class="tech-pill">ES6+</span><span class="tech-pill">DOM</span><span class="tech-pill">APIs</span>
+                </div>
+            </div>
+            <div class="module-item" onclick="toggleModule(this)">
+                <div class="module-head">
+                    <span>Module 3: React & State Management</span>
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                </div>
+                <div class="module-body">
+                    <p>Build Single Page Applications (SPAs). Learn Hooks, Context API, and how to manage complex data flow.</p>
+                    <span class="tech-pill">React</span><span class="tech-pill">Redux</span><span class="tech-pill">Router</span>
+                </div>
+            </div>
+            <div class="module-item" onclick="toggleModule(this)">
+                <div class="module-head">
+                    <span>Module 4: Backend & Database</span>
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                </div>
+                <div class="module-body">
+                    <p>Create your own APIs. Connect your frontend to MongoDB and handle user authentication (Login/Signup).</p>
+                    <span class="tech-pill">Node.js</span><span class="tech-pill">Express</span><span class="tech-pill">MongoDB</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. FAQ (Objection Handling) -->
+    <section>
+        <div class="section-head">
+            <h2>Common Questions</h2>
+        </div>
+        <div class="faq-grid">
+            <div class="faq-item">
+                <h4>I am from a Non-CS branch (Civil/Mech). Can I join?</h4>
+                <p>Absolutely. 40% of our successful students come from non-tech backgrounds. We start from zero (Installation) and go to Hero (Deployment).</p>
+            </div>
+            <div class="faq-item">
+                <h4>What if I miss a live class?</h4>
+                <p>All sessions are recorded in HD and uploaded to your dashboard within 12 hours. You have lifetime access to these recordings.</p>
+            </div>
+            <div class="faq-item">
+                <h4>Do I need a powerful laptop?</h4>
+                <p>No. Any basic laptop (Windows/Mac) with 4GB RAM is sufficient. We teach you how to optimize your environment.</p>
+            </div>
+            <div class="faq-item">
+                <h4>Will this help with campus placements?</h4>
+                <p>Yes. Recruiters prioritize students who have "deployed projects" over those who just have grades. This course gives you those projects.</p>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+<!-- MOBILE STICKY DOCK -->
+<div class="mobile-dock">
+    <div style="display: flex; flex-direction: column;">
+        <span style="font-size: 12px; color: var(--text-tertiary); text-decoration: line-through;">₹12,499</span>
+        <span style="font-size: 20px; font-weight: 700; color: var(--brand-primary);">₹2,499</span>
+    </div>
+    <button class="btn btn-primary" style="padding: 10px 24px;">Enroll Now</button>
+</div>
+
+<script>
+    function toggleModule(element) {
+        // Toggle the clicked module
+        element.classList.toggle('active');
+        
+        // Optional: Close others
+        const siblings = element.parentElement.children;
+        for (let sib of siblings) {
+            if (sib !== element) sib.classList.remove('active');
+        }
+    }
+</script>
+
+</body>
+</html>

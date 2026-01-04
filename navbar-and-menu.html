@@ -46,21 +46,28 @@
             overflow: hidden;
         }
 
-        /* Logo Styling */
+        /* Logo Styling - Updated for Images */
         .brand-logo {
-            font-size: 24px;
-            font-weight: 800;
-            color: var(--brand-primary);
-            letter-spacing: -1px;
+            display: flex;
+            align-items: center;
             text-decoration: none;
             transition: all 0.3s;
-            white-space: nowrap;
         }
+        .brand-logo img {
+            height: 32px; /* Adjusted to fit header */
+            width: auto;
+            display: block;
+        }
+
         .mini-logo {
             display: none;
-            font-size: 28px;
-            font-weight: 900;
-            color: var(--brand-primary);
+            align-items: center;
+            justify-content: center;
+        }
+        .mini-logo img {
+            height: 32px; /* Adjusted to fit collapsed state */
+            width: auto;
+            display: block;
         }
 
         /* SVG Icons Styling */
@@ -207,7 +214,7 @@
 
         /* Show mini logo and open svg */
         .d-sidebar.collapsed .mini-logo, 
-        .d-sidebar.collapsed .btn-open-svg { display: block; }
+        .d-sidebar.collapsed .btn-open-svg { display: flex; } /* Changed to flex for centering */
         .btn-open-svg { display: none; } /* Hidden by default in expanded */
 
         .d-sidebar.collapsed .d-sidebar-header {
@@ -297,8 +304,15 @@
     <div class="page-desktop">
         <aside class="d-sidebar" id="sidebar">
             <div class="d-sidebar-header">
-                <a href="#" class="brand-logo">SyncSkill</a>
-                <span class="mini-logo">S</span>
+                <!-- Main Logo Image -->
+                <a href="#" class="brand-logo">
+                    <img src="./logo.png" alt="SyncSkill">
+                </a>
+                
+                <!-- Collapsed Logo Image -->
+                <span class="mini-logo">
+                    <img src="./logo-small.png" alt="S">
+                </span>
                 
                 <button class="sidebar-toggle" id="sidebar-toggle-btn">
                     <!-- Close SVG (Panel-Left-Close) -->
@@ -367,14 +381,18 @@
             <button class="m-menu-btn" id="m-open-drawer">
                 <div class="m-menu-lines"><span></span></div>
             </button>
-            <a href="#" class="brand-logo">SyncSkill</a>
+            <a href="#" class="brand-logo">
+                <img src="./logo.png" alt="SyncSkill">
+            </a>
             <div style="width:40px;"></div>
         </header>
 
         <div class="m-overlay" id="m-overlay">
             <div class="m-drawer">
                 <div class="m-drawer-header">
-                    <span class="brand-logo">SyncSkill</span>
+                    <span class="brand-logo">
+                        <img src="./logo.png" alt="SyncSkill">
+                    </span>
                     <button class="m-drawer-close" id="m-close-drawer">
                         <div class="m-drawer-close-icon"></div>
                     </button>

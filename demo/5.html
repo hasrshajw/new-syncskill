@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Full Stack Web Development Fellowship</title>
+    
+    <!-- FONTS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=Vazirmatn:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- GLOBAL RESET & VARIABLES --- */
+        :root {
+            /* Premium Card Tokens */
+            --bg-body: #FFFFFF;
+            --bg-card: #FFFFFF;
+            --text-primary: #111827;
+            --text-secondary: #4B5563;
+            --text-tertiary: #9CA3AF;
+            --accent-black: #0F172A; 
+            --accent-green: #10B981;
+            --radius-xl: 24px;
+            --radius-lg: 16px;
+            --shadow-card: 0 25px 50px -12px rgba(0, 0, 0, 0.08);
+            
+            /* Section Colors */
+            --col-dark: #002726;
+            --col-purple: #7C5DFA;
+            --col-purple-dark: #6a1b9a;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'IBM Plex Sans', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-primary);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+        img, svg { display: block; }
+        button { cursor: pointer; font-family: inherit; }
+
+        /* --- UTILITY CLASSES (Mimicking Tailwind/Provided code) --- */
+        .w-full { width: 100%; }
+        .max-w-container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+        .flex { display: flex; }
+        .flex-col { flex-direction: column; }
+        .items-center { align-items: center; }
+        .justify-between { justify-content: space-between; }
+        .grid { display: grid; }
+        .hidden { display: none; }
+        .text-center { text-align: center; }
+        
+        @media (min-width: 768px) {
+            .md\:flex-row { flex-direction: row; }
+            .md\:grid-cols-2 { grid-template-columns: 1fr 1fr; }
+            .md\:grid-cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+            .md\:block { display: block; }
+        }
+
+        /* --- SECTION 1: EXECUTIVE TECH CARD (HERO) --- */
+        /* Updated for Web Dev Theme */
+        .hero-wrapper {
+            padding: 48px 24px;
+            display: flex;
+            justify-content: center;
+            background-image: radial-gradient(#E5E7EB 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+
+        .tech-card {
+            background: var(--bg-card);
+            width: 100%;
+            max-width: 1080px;
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-card);
+            border: 1px solid rgba(0,0,0,0.06);
+            padding: 40px;
+            display: flex;
+            align-items: flex-start;
+            gap: 48px;
+            position: relative;
+        }
+
+        .visual-container {
+            width: 440px;
+            min-width: 440px; 
+            height: 340px;
+            flex-shrink: 0;
+            position: relative;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05);
+        }
+
+        .visual-container img {
+            width: 100%; height: 100%; object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        .tech-card:hover .visual-container img { transform: scale(1.03); }
+
+        .tag {
+            position: absolute; top: 16px; left: 16px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(4px);
+            padding: 6px 14px;
+            border-radius: 100px;
+            font-size: 12px; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 0.05em;
+            color: var(--text-primary);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            display: flex; align-items: center; gap: 6px;
+        }
+        .tag::before { content:''; width:6px; height:6px; background:#22C55E; border-radius:50%; }
+
+        .card-content {
+            flex: 1; display: flex; flex-direction: column;
+            min-height: 340px; justify-content: space-between;
+        }
+
+        .card-header h1 {
+            font-size: 34px; font-weight: 600; letter-spacing: -0.03em;
+            line-height: 1.1; margin-bottom: 12px; color: var(--text-primary);
+        }
+        .card-header p {
+            font-size: 16px; line-height: 1.6; color: var(--text-secondary);
+        }
+
+        .specs {
+            display: grid; grid-template-columns: repeat(3, 1fr);
+            gap: 24px; padding: 28px 0;
+            border-top: 1px solid rgba(0,0,0,0.06);
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+            margin-bottom: 28px;
+        }
+
+        .spec-item { display: flex; flex-direction: column; gap: 6px; }
+        .spec-label {
+            font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em;
+            color: var(--text-tertiary); font-weight: 600;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .spec-value { font-size: 15px; font-weight: 500; color: var(--text-primary); }
+        .icon-sm { width: 14px; height: 14px; opacity: 0.6; }
+
+        .card-footer { display: flex; align-items: center; justify-content: space-between; }
+        .mentor-group { display: flex; align-items: center; gap: 14px; }
+        .mentor-group img {
+            width: 48px; height: 48px; border-radius: 12px; object-fit: cover;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .mentor-info h4 { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+        .mentor-info p { font-size: 12px; color: var(--text-secondary); }
+
+        .action-dock { display: flex; align-items: center; gap: 28px; }
+        .price-group { text-align: right; }
+        .price-prev { font-size: 13px; color: var(--text-tertiary); text-decoration: line-through; display: block; }
+        .price-curr { font-size: 26px; font-weight: 600; letter-spacing: -0.02em; color: var(--text-primary); }
+        
+        .btn-onyx {
+            background-color: var(--accent-black); color: #fff;
+            padding: 0 36px; height: 52px; border-radius: 10px;
+            font-size: 15px; font-weight: 500; border: none;
+            display: flex; align-items: center; gap: 8px;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
+            transition: all 0.2s ease;
+        }
+        .btn-onyx:hover { transform: translateY(-2px); background-color: #000; }
+
+        @media (max-width: 960px) {
+            .hero-wrapper { padding: 16px; }
+            .tech-card { flex-direction: column; padding: 20px; gap: 24px; max-width: 440px; }
+            .visual-container { min-width: 0; width: 100%; height: auto; aspect-ratio: 16/9; }
+            .card-content { min-height: auto; width: 100%; }
+            .card-header h1 { font-size: 26px; }
+            .specs { grid-template-columns: 1fr 1fr; gap: 16px; }
+            .spec-item:nth-child(3) { display: none; }
+            .card-footer { flex-direction: column; align-items: flex-start; gap: 24px; width: 100%; }
+            .action-dock { width: 100%; background: #F9FAFB; border: 1px solid #E5E7EB; border-radius: 16px; padding: 16px; justify-content: space-between; }
+            .price-group { text-align: left; }
+            .btn-onyx { flex: 1; justify-content: center; height: 48px; padding: 0; }
+        }
+
+        /* --- SECTION 2: DARK PROMO (ASPIRATION) --- */
+        .sec-promo { background-color: #1C1D1F; color: #FFFFFF; padding: 64px 0; }
+        .promo-grid { 
+            display: flex; flex-direction: column; gap: 32px; 
+            max-width: 1200px; margin: 0 auto; padding: 0 24px; 
+        }
+        .promo-content h2 {
+            font-size: clamp(2rem, 4vw, 3rem); font-weight: 700; line-height: 1.1; margin-bottom: 16px;
+        }
+        .promo-content p { font-size: 1.125rem; color: #D1D7DC; max-width: 60ch; }
+        
+        .included-card {
+            background: #fff; color: #1C1D1F; border-radius: 20px; padding: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .included-list { display: flex; flex-direction: column; gap: 16px; margin-top: 16px; }
+        .included-item { display: flex; align-items: center; gap: 12px; font-weight: 500; }
+        .included-icon { color: var(--col-purple); width: 24px; height: 24px; }
+        
+        @media (min-width: 992px) {
+            .promo-grid { display: grid; grid-template-columns: 1.5fr 1fr; align-items: center; gap: 64px; }
+        }
+
+        /* --- SECTION 3: PILL GRID (SKILLS) --- */
+        .sec-skills { padding: 48px 24px; max-width: 1300px; margin: 0 auto; }
+        .sec-heading { font-size: 1.75rem; font-weight: 700; color: var(--col-dark); margin-bottom: 24px; }
+        .pills-grid { display: flex; flex-wrap: wrap; gap: 12px; }
+        .skill-pill {
+            display: flex; align-items: center; gap: 12px;
+            background: #F7F9FA; border: 1px solid #E5E7EB;
+            padding: 12px 20px; border-radius: 12px;
+            transition: all 0.2s ease;
+        }
+        .skill-pill:hover { transform: translateY(-2px); border-color: var(--col-purple); background: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        .pill-icon { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: #F0EFFD; border-radius: 8px; color: var(--col-purple); }
+
+        /* --- SECTION 4: CURRICULUM ACCORDION & MENTORS --- */
+        .sec-curriculum { padding: 64px 0; background: #fff; }
+        .accordion-item { border: 1px solid rgba(0,39,38,0.2); border-radius: 16px; margin-bottom: 16px; overflow: hidden; }
+        .accordion-btn { 
+            width: 100%; display: flex; align-items: center; justify-content: space-between; 
+            padding: 24px; background: none; border: none; text-align: left;
+        }
+        .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; padding: 0 24px; color: var(--text-secondary); }
+        .accordion-content p { padding-bottom: 24px; }
+        .rotate-180 { transform: rotate(180deg); }
+
+        .mentors-grid { display: grid; grid-template-columns: 1fr; gap: 24px; margin-top: 32px; }
+        @media (min-width: 768px) { .mentors-grid { grid-template-columns: 1fr 1fr; } }
+        
+        .mentor-card { display: flex; align-items: center; gap: 16px; }
+        .mentor-img { width: 60px; height: 60px; border-radius: 12px; object-fit: cover; }
+
+        /* --- SECTION 5: OUTCOMES (3 CARDS) --- */
+        .sec-outcomes { padding: 48px 24px; max-width: 1300px; margin: 0 auto; }
+        .cards-grid { display: grid; grid-template-columns: 1fr; gap: 24px; }
+        @media(min-width: 992px) { .cards-grid { grid-template-columns: 1fr 1fr 1fr; } }
+        
+        .outcome-card {
+            background: #fff; border: 1px solid #E5E7EB; border-radius: 16px; padding: 28px;
+            position: relative; overflow: hidden; display: flex; flex-direction: column;
+        }
+        .outcome-card h3 { font-size: 1.25rem; font-weight: 700; margin-bottom: 8px; color: var(--col-dark); position: relative; z-index: 2; }
+        .outcome-card p { font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 16px; position: relative; z-index: 2; flex: 1; }
+        .outcome-card::before {
+            content: attr(data-index); font-family: 'Vazirmatn', sans-serif;
+            position: absolute; font-size: 140px; font-weight: 700; color: #F3F4F6;
+            bottom: -30px; right: -10px; z-index: 1; line-height: 1;
+        }
+        .outcome-link { color: var(--col-purple); font-weight: 600; font-size: 0.9rem; position: relative; z-index: 2; }
+
+        /* --- SECTION 6: CERTIFICATE & NSDC --- */
+        .sec-cert { background: #fffaf1; padding: 64px 24px; border-radius: 24px; margin: 24px; }
+        .cert-container { max-width: 1100px; margin: 0 auto; }
+        .cert-flex { display: flex; flex-direction: column; gap: 40px; }
+        @media(min-width: 992px) { 
+            .cert-flex { flex-direction: row; align-items: center; } 
+            .cert-text { flex: 1; }
+            .cert-img { flex: 1; }
+        }
+
+        /* --- SECTION 7: FINAL CTA --- */
+        .sec-cta-final { background: #fff; padding: 48px 24px; border-top: 1px solid #E5E7EB; }
+        .cta-box {
+            max-width: 900px; margin: 0 auto; 
+            display: flex; flex-direction: column; align-items: center; text-align: center; gap: 24px;
+            background: #fff; border: 1px solid #D1D7DC; border-radius: 16px; padding: 32px;
+        }
+        @media(min-width: 768px) { .cta-box { flex-direction: row; text-align: left; } }
+
+        .cta-btn-lg {
+            background-color: var(--col-purple-dark); color: #fff; padding: 14px 32px;
+            border-radius: 8px; font-weight: 700; border: none; font-size: 1rem;
+            transition: background 0.2s; white-space: nowrap;
+        }
+        .cta-btn-lg:hover { background-color: #4a148c; }
+
+    </style>
+</head>
+<body>
+
+    <!-- SVG SPRITE -->
+    <svg style="display: none;">
+        <symbol id="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></symbol>
+        <symbol id="icon-code" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></symbol>
+        <symbol id="icon-db" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></symbol>
+        <symbol id="icon-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"></path></symbol>
+    </svg>
+
+    <!-- SECTION 1: THE HOOK (Executive Tech Card) -->
+    <!-- Psychology: High-value perception, exclusivity, premium feel -->
+    <section class="hero-wrapper">
+        <article class="tech-card">
+            <div class="visual-container">
+                <div class="tag">Fellowship Program</div>
+                <!-- Image: Coding Environment -->
+                <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1200&auto=format&fit=crop" alt="Coding Setup">
+            </div>
+
+            <div class="card-content">
+                <div class="card-header">
+                    <h1>Full Stack Web Development Fellowship</h1>
+                    <p>Master the MERN Stack. Build real-world projects. Transform from a student into a deployable software engineer in 12 weeks.</p>
+                </div>
+
+                <div class="specs">
+                    <div class="spec-item">
+                        <div class="spec-label">
+                            <svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                            Start Date
+                        </div>
+                        <span class="spec-value">Feb 15, 2026</span>
+                    </div>
+                    <div class="spec-item">
+                        <div class="spec-label">
+                            <svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                            Format
+                        </div>
+                        <span class="spec-value">Live + Recorded</span>
+                    </div>
+                    <div class="spec-item">
+                        <div class="spec-label">
+                            <svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                            Placement
+                        </div>
+                        <span class="spec-value">Assistance Included</span>
+                    </div>
+                </div>
+
+                <div class="card-footer">
+                    <div class="mentor-group">
+                        <img src="https://ui-avatars.com/api/?name=Hitesh+Choudhary&background=0F172A&color=fff&size=128" alt="Mentor">
+                        <div class="mentor-info">
+                            <h4>Hitesh Choudhary</h4>
+                            <p>Ex-Google, Tech Lead</p>
+                        </div>
+                    </div>
+
+                    <div class="action-dock">
+                        <div class="price-group">
+                            <span class="price-prev">₹12,999</span>
+                            <span class="price-curr">₹4,999</span>
+                        </div>
+                        <button class="btn-onyx">
+                            Apply Now
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </section>
+
+    <!-- SECTION 2: THE "WHY" (Aspiration & Career Anxiety) -->
+    <!-- Psychology: Contrast mode triggers attention. Addresses "Jobless" fear. -->
+    <section class="sec-promo">
+        <div class="promo-grid">
+            <div class="promo-content">
+                <h2>Don't just graduate.<br>Get Hired.</h2>
+                <p>The tech industry doesn't care about your college grades. They care about your code. Break into a high-paying cloud or dev career with a portfolio that speaks for itself.</p>
+            </div>
+            <div class="included-card">
+                <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 12px;">What makes you hireable?</h3>
+                <div class="included-list">
+                    <div class="included-item"><svg class="included-icon"><use href="#icon-check"></use></svg> 5+ Real World Projects</div>
+                    <div class="included-item"><svg class="included-icon"><use href="#icon-check"></use></svg> GitHub Profile Review</div>
+                    <div class="included-item"><svg class="included-icon"><use href="#icon-check"></use></svg> Mock Interviews</div>
+                    <div class="included-item"><svg class="included-icon"><use href="#icon-check"></use></svg> NSDC Certification</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 3: THE "WHAT" (Tech Stack Skills) -->
+    <!-- Psychology: Quick visual confirmation. "They teach what connects to jobs." -->
+    <section class="sec-skills">
+        <h2 class="sec-heading">Skills that matter in 2026</h2>
+        <div class="pills-grid">
+            <div class="skill-pill">
+                <div class="pill-icon"><svg width="20" height="20"><use href="#icon-code"></use></svg></div>
+                <span>React.js</span>
+            </div>
+            <div class="skill-pill">
+                <div class="pill-icon"><svg width="20" height="20"><use href="#icon-db"></use></svg></div>
+                <span>Node.js</span>
+            </div>
+            <div class="skill-pill">
+                <div class="pill-icon"><svg width="20" height="20"><use href="#icon-db"></use></svg></div>
+                <span>MongoDB</span>
+            </div>
+            <div class="skill-pill">
+                <div class="pill-icon"><svg width="20" height="20"><use href="#icon-code"></use></svg></div>
+                <span>Express</span>
+            </div>
+            <div class="skill-pill">
+                <div class="pill-icon"><svg width="20" height="20"><use href="#icon-code"></use></svg></div>
+                <span>Tailwind CSS</span>
+            </div>
+            <div class="skill-pill">
+                <div class="pill-icon"><svg width="20" height="20"><use href="#icon-code"></use></svg></div>
+                <span>System Design</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 4: THE "HOW" (Curriculum & Roadmap) -->
+    <!-- Psychology: Logic and Structure. "This is a serious course." -->
+    <section class="sec-curriculum">
+        <div class="max-w-container">
+            <div class="flex flex-col lg:flex-row gap-10">
+                
+                <!-- Left: Accordion -->
+                <div class="w-full lg:w-3/5">
+                    <h2 class="sec-heading">Your 12-Week Roadmap</h2>
+                    
+                    <div class="accordion-item">
+                        <button class="accordion-btn" data-accordion>
+                            <div><p style="font-size: 0.8rem; font-weight: 600; color:var(--text-tertiary);">WEEKS 1-3</p><h3 style="font-weight: 600;">The Foundation: HTML5, CSS3 & JS</h3></div>
+                            <svg width="24" height="24"><use href="#icon-chevron"></use></svg>
+                        </button>
+                        <div class="accordion-content"><p>Master the building blocks of the web. Learn responsive design, Flexbox, Grid, and modern ES6+ JavaScript concepts that are essential for React.</p></div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <button class="accordion-btn" data-accordion>
+                            <div><p style="font-size: 0.8rem; font-weight: 600; color:var(--text-tertiary);">WEEKS 4-6</p><h3 style="font-weight: 600;">Frontend Mastery: React.js & Redux</h3></div>
+                            <svg width="24" height="24"><use href="#icon-chevron"></use></svg>
+                        </button>
+                        <div class="accordion-content"><p>Stop using jQuery. Learn how modern SPAs work. Components, Hooks, State Management with Redux Toolkit, and connecting to APIs.</p></div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <button class="accordion-btn" data-accordion>
+                            <div><p style="font-size: 0.8rem; font-weight: 600; color:var(--text-tertiary);">WEEKS 7-9</p><h3 style="font-weight: 600;">Backend Engineering: Node.js & Mongo</h3></div>
+                            <svg width="24" height="24"><use href="#icon-chevron"></use></svg>
+                        </button>
+                        <div class="accordion-content"><p>Build your own APIs. Understand HTTP methods, authentication (JWT), connecting to MongoDB, and structuring a scalable backend.</p></div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <button class="accordion-btn" data-accordion>
+                            <div><p style="font-size: 0.8rem; font-weight: 600; color:var(--text-tertiary);">WEEKS 10-12</p><h3 style="font-weight: 600;">Capstone Project & Deployment</h3></div>
+                            <svg width="24" height="24"><use href="#icon-chevron"></use></svg>
+                        </button>
+                        <div class="accordion-content"><p>Build a full e-commerce or dashboard app. Deploy to AWS/Vercel. Code reviews and final polish for your portfolio.</p></div>
+                    </div>
+
+                </div>
+
+                <!-- Right: Social Proof/Stats -->
+                <div class="w-full lg:w-2/5">
+                    <div style="background: #fff; border: 1px solid rgba(0,0,0,0.1); border-radius: 16px; padding: 32px; position: sticky; top: 24px;">
+                        <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 8px;">6.5M+ Learners</h3>
+                        <p style="color: var(--text-secondary); margin-bottom: 24px;">have transformed their careers.</p>
+                        
+                        <div class="mentors-grid" style="margin-top: 0; display: flex; flex-direction: column; gap: 20px;">
+                            <h4 style="font-size: 0.9rem; text-transform: uppercase; color: var(--text-tertiary); font-weight: 700;">Your Mentors</h4>
+                            <div class="mentor-card">
+                                <img src="https://ui-avatars.com/api/?name=Sanket+Singh&background=random" class="mentor-img" alt="Sanket">
+                                <div><div style="font-weight: 700;">Sanket Singh</div><div style="font-size: 0.85rem; color: var(--text-secondary);">Ex-LinkedIn, Software Engineer</div></div>
+                            </div>
+                            <div class="mentor-card">
+                                <img src="https://ui-avatars.com/api/?name=Tanay+Pratap&background=random" class="mentor-img" alt="Tanay">
+                                <div><div style="font-weight: 700;">Tanay Pratap</div><div style="font-size: 0.85rem; color: var(--text-secondary);">Ex-Microsoft, Founder</div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 5: THE "EDGE" (Cards) -->
+    <!-- Psychology: Addressing practical needs (Interview, Exams) -->
+    <section class="sec-outcomes">
+        <div class="cards-grid">
+            <div class="outcome-card" data-index="1">
+                <h3>Build a Portfolio</h3>
+                <p>Don't just watch videos. Create 3 major projects that you can show during interviews.</p>
+                <a href="#" class="outcome-link">View Projects &gt;</a>
+            </div>
+            <div class="outcome-card" data-index="2">
+                <h3>System Design</h3>
+                <p>Learn how to architect scalable apps, a crucial topic for high-paying product roles.</p>
+                <a href="#" class="outcome-link">View Syllabus &gt;</a>
+            </div>
+            <div class="outcome-card" data-index="3">
+                <h3>Interview Prep</h3>
+                <p>Mock interviews with industry experts to help you crack technical rounds.</p>
+                <a href="#" class="outcome-link">Learn More &gt;</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 6: VALIDATION (NSDC) -->
+    <!-- Psychology: Trust. "It's Government certified." -->
+    <section class="max-w-container">
+        <div class="sec-cert">
+            <div class="cert-flex">
+                <div class="cert-text">
+                    <h3 style="color: var(--col-purple); font-weight: 700; letter-spacing: 1px; font-size: 0.9rem; margin-bottom: 8px;">GOVERNMENT RECOGNIZED</h3>
+                    <h2 style="font-size: 2rem; font-weight: 700; color: var(--col-dark); margin-bottom: 16px;">Earn NSDC Certification</h2>
+                    <p style="color: var(--text-secondary); margin-bottom: 24px;">
+                        The National Skill Development Corporation (NSDC), under the Government of India, recognizes this program. Boost your CV with a certificate that employers trust.
+                    </p>
+                    <ul style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px;">
+                        <li style="display: flex; align-items: center; gap: 10px;"><svg width="20" height="20" style="color:green;"><use href="#icon-check"></use></svg> Valid across India</li>
+                        <li style="display: flex; align-items: center; gap: 10px;"><svg width="20" height="20" style="color:green;"><use href="#icon-check"></use></svg> LinkedIn shareable</li>
+                    </ul>
+                </div>
+                <div class="cert-img" style="background: white; padding: 16px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+                    <img src="https://d31bwppm8yl9g2.cloudfront.net/learner/website/nsdc.webp" alt="NSDC Certificate Sample" style="width: 100%; height: auto;">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 7: FINAL CTA -->
+    <!-- Psychology: Urgency and final push. -->
+    <section class="sec-cta-final">
+        <div class="cta-box">
+            <div style="background: #f2c35a; width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+            </div>
+            <div style="flex: 1;">
+                <h2 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 8px;">Ready to become a Developer?</h2>
+                <p style="color: var(--text-secondary);">Join 1.5M+ learners. 30-Day Money-Back Guarantee. No questions asked.</p>
+            </div>
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
+                <div style="display: flex; align-items: baseline; gap: 8px;">
+                    <span style="font-size: 1.5rem; font-weight: 700;">₹4,999</span>
+                    <span style="text-decoration: line-through; color: var(--text-tertiary);">₹12,999</span>
+                </div>
+                <button class="cta-btn-lg">Enroll Now</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- SCRIPTS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Accordion Logic
+            const accordions = document.querySelectorAll('[data-accordion]');
+            accordions.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const content = btn.nextElementSibling;
+                    const icon = btn.querySelector('svg');
+                    
+                    if (content.style.maxHeight) {
+                        content.style.maxHeight = null;
+                        icon.classList.remove('rotate-180');
+                    } else {
+                        // Close others (optional)
+                        document.querySelectorAll('.accordion-content').forEach(el => el.style.maxHeight = null);
+                        document.querySelectorAll('[data-accordion] svg').forEach(el => el.classList.remove('rotate-180'));
+                        
+                        content.style.maxHeight = content.scrollHeight + "px";
+                        icon.classList.add('rotate-180');
+                    }
+                });
+            });
+
+            // Card Hover Effect Logic (Optional Enhancement)
+            const cards = document.querySelectorAll('.outcome-card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    card.style.borderColor = '#7C5DFA';
+                });
+                card.addEventListener('mouseleave', () => {
+                    card.style.borderColor = '#E5E7EB';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

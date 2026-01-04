@@ -115,12 +115,18 @@
             z-index: 100;
         }
 
-        .d-sidebar-header {
-            height: var(--header-height-desktop);
+.d-sidebar-header {
+            /* Changed from fixed height to auto to accommodate new padding */
+            height: auto; 
+            min-height: var(--header-height-desktop); 
+            
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 20px;
+            
+            /* UPDATED PADDING: 30px Top, 20px Sides, 10px Bottom */
+            padding: 30px 20px 10px 20px; 
+            
             transition: all 0.3s;
         }
 

@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Full Stack Career Accelerator</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- 1. PREMIUM DESIGN TOKENS --- */
+        :root {
+            /* Palette */
+            --bg-body: #F3F4F6;
+            --bg-card: #FFFFFF;
+            --text-primary: #111827; /* Near Black */
+            --text-secondary: #4B5563; /* Cool Grey */
+            --text-tertiary: #9CA3AF;
+            
+            /* Accents */
+            --accent-black: #0F172A; 
+            --accent-green: #10B981;
+            --accent-purple: #7C3AED;
+            
+            /* Spacing */
+            --space-section: 80px;
+            --space-card: 40px;
+            
+            /* Elevation & borders */
+            --shadow-card: 0 25px 50px -12px rgba(0, 0, 0, 0.08);
+            --shadow-float: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --border-subtle: 1px solid rgba(0,0,0,0.06);
+            --radius-xl: 24px;
+            --radius-lg: 16px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'IBM Plex Sans', sans-serif;
+            background-color: var(--bg-body);
+            background-image: radial-gradient(#E5E7EB 1px, transparent 1px);
+            background-size: 24px 24px;
+            color: var(--text-primary);
+            -webkit-font-smoothing: antialiased;
+            line-height: 1.5;
+            padding-bottom: 120px; /* Space for mobile dock */
+        }
+
+        h1, h2, h3, h4 { letter-spacing: -0.02em; line-height: 1.2; }
+        
+        .container {
+            width: 100%;
+            max-width: 1080px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* --- GLOBAL COMPONENTS --- */
+        .badge {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: rgba(16, 185, 129, 0.1);
+            color: #047857;
+            padding: 6px 12px;
+            border-radius: 100px;
+            font-size: 12px; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 0.05em;
+        }
+        .badge::before { content:''; width:6px; height:6px; background:#10B981; border-radius:50%; }
+
+        .section-header { margin-bottom: 40px; max-width: 700px; }
+        .section-header h2 { font-size: 32px; font-weight: 600; margin-bottom: 12px; }
+        .section-header p { font-size: 16px; color: var(--text-secondary); }
+
+        .btn-onyx {
+            background-color: var(--accent-black);
+            color: #fff;
+            padding: 0 32px;
+            height: 52px;
+            border-radius: 10px;
+            font-size: 15px; font-weight: 500;
+            border: none; cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+            text-decoration: none;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
+        }
+        .btn-onyx:hover {
+            transform: translateY(-2px);
+            background-color: #000;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+
+        .card-base {
+            background: var(--bg-card);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-card);
+            border: 1px solid #FFFFFF;
+            padding: var(--space-card);
+        }
+
+        /* --- HERO --- */
+        .hero-section { padding: 60px 0; }
+        .hero-card { display: flex; align-items: flex-start; gap: 48px; }
+        .hero-visual {
+            width: 440px; min-width: 440px; height: 400px;
+            border-radius: var(--radius-lg); overflow: hidden; position: relative;
+            box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05);
+        }
+        .hero-visual img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
+        .hero-card:hover .hero-visual img { transform: scale(1.03); }
+        .hero-content { flex: 1; display: flex; flex-direction: column; justify-content: center; height: 400px; }
+        .hero-title { font-size: 42px; font-weight: 600; margin: 16px 0; color: var(--text-primary); }
+        .hero-subtitle { font-size: 18px; color: var(--text-secondary); margin-bottom: 32px; font-weight: 300; }
+        .stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; padding-top: 32px; border-top: var(--border-subtle); }
+        .stat-item h4 { font-size: 24px; font-weight: 600; }
+        .stat-item p { font-size: 13px; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; }
+
+        /* --- MARQUEE (Social Proof) --- */
+        .marquee-section { overflow: hidden; padding: 20px 0; margin-bottom: 40px; }
+        .marquee-content { display: flex; gap: 48px; animation: scroll 20s linear infinite; width: max-content; }
+        .brand-logo { 
+            font-size: 24px; font-weight: 700; color: #cbd5e1; 
+            text-transform: uppercase; letter-spacing: -0.05em;
+        }
+        @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+        /* --- REALITY CHECK --- */
+        .reality-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 80px; }
+        .reality-card { background: #fff; padding: 32px; border-radius: var(--radius-lg); border: var(--border-subtle); }
+        .icon-box { width: 48px; height: 48px; background: #F3F4F6; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; color: var(--accent-black); }
+        
+        /* --- PROJECTS SECTION (Portfolio) --- */
+        .project-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px; margin-bottom: 80px; }
+        .project-card {
+            background: #fff; border-radius: var(--radius-lg); overflow: hidden;
+            border: var(--border-subtle); transition: transform 0.3s ease;
+        }
+        .project-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-float); }
+        .project-img { height: 240px; width: 100%; background: #e2e8f0; position: relative; }
+        .project-img img { width: 100%; height: 100%; object-fit: cover; }
+        .project-body { padding: 24px; }
+        .project-tags { display: flex; gap: 8px; margin-bottom: 12px; }
+        .tag-pill { font-size: 11px; padding: 4px 8px; background: #F3F4F6; border-radius: 4px; color: var(--text-secondary); font-weight: 600; }
+
+        /* --- TECH STACK GRID --- */
+        .tech-grid { 
+            display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; margin-bottom: 80px;
+        }
+        .tech-item {
+            background: #fff; padding: 20px; border-radius: 12px; border: var(--border-subtle);
+            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
+            transition: border-color 0.2s;
+        }
+        .tech-item:hover { border-color: #cbd5e1; }
+        .tech-icon { width: 32px; height: 32px; background: #f1f5f9; border-radius: 50%; }
+        .tech-label { font-size: 13px; font-weight: 500; color: var(--text-secondary); }
+
+        /* --- CURRICULUM --- */
+        .curriculum-wrapper { background: #fff; border-radius: var(--radius-xl); padding: var(--space-card); margin-bottom: 80px; box-shadow: var(--shadow-float); }
+        .module-item { border-bottom: var(--border-subtle); padding: 24px 0; }
+        .module-item:last-child { border-bottom: none; }
+        .module-header { display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+        .module-title { display: flex; gap: 16px; align-items: center; }
+        .module-number { font-size: 12px; font-weight: 700; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.1em; }
+        .module-name { font-size: 18px; font-weight: 500; color: var(--text-primary); }
+        .module-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; color: var(--text-secondary); font-size: 15px; padding-left: 50px; }
+        .active .module-content { max-height: 200px; padding-top: 12px; }
+        .icon-chevron { transition: transform 0.3s ease; width: 20px; height: 20px; color: var(--text-tertiary); }
+        .active .icon-chevron { transform: rotate(180deg); }
+
+        /* --- COMPARISON TABLE --- */
+        .comparison-wrapper { background: #fff; border-radius: var(--radius-xl); overflow: hidden; margin-bottom: 80px; border: var(--border-subtle); }
+        .comp-row { display: grid; grid-template-columns: 1.5fr 1fr 1fr; padding: 24px; border-bottom: 1px solid #f1f5f9; align-items: center; }
+        .comp-head { background: #f8fafc; font-weight: 600; color: var(--text-secondary); font-size: 14px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .comp-cell-feat { font-weight: 500; color: var(--text-primary); }
+        .comp-cell { text-align: center; color: var(--text-secondary); font-size: 15px; }
+        .comp-cell.check { color: var(--accent-green); }
+        .comp-cell.cross { color: #ef4444; }
+        .comp-highlight { background: #f0fdf4; border-radius: 8px; padding: 12px 0; font-weight: 600; color: var(--accent-black); }
+
+        /* --- MENTORS --- */
+        .mentor-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 80px; }
+        .mentor-card { background: #fff; border-radius: var(--radius-lg); padding: 24px; display: flex; align-items: center; gap: 20px; border: var(--border-subtle); }
+        .mentor-img { width: 80px; height: 80px; border-radius: 16px; object-fit: cover; background: #eee; }
+
+        /* --- CERTIFICATION --- */
+        .cert-section {
+            background: var(--accent-black); color: #fff; border-radius: var(--radius-xl); padding: 48px;
+            display: flex; align-items: center; justify-content: space-between; gap: 48px; margin-bottom: 80px;
+            position: relative; overflow: hidden;
+        }
+        .cert-content { flex: 1; position: relative; z-index: 2; }
+        .cert-image { width: 300px; border-radius: 12px; border: 4px solid rgba(255,255,255,0.1); transform: rotate(-3deg); transition: transform 0.3s ease; }
+        .cert-section:hover .cert-image { transform: rotate(0deg) scale(1.02); }
+
+        /* --- FAQ --- */
+        .faq-wrapper { max-width: 800px; margin: 0 auto 80px auto; }
+        .faq-item { background: #fff; border-radius: 12px; margin-bottom: 16px; border: var(--border-subtle); overflow: hidden; }
+        .faq-question { padding: 20px; font-weight: 500; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+        .faq-answer { padding: 0 20px 20px 20px; color: var(--text-secondary); font-size: 15px; line-height: 1.6; display: none; }
+        .faq-item.active .faq-answer { display: block; }
+
+        /* --- DOCK --- */
+        .action-dock-wrapper { position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%); z-index: 100; width: 90%; max-width: 600px; }
+        .action-dock {
+            background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(12px); padding: 12px 12px 12px 24px;
+            border-radius: 100px; box-shadow: 0 20px 40px rgba(0,0,0,0.15); border: 1px solid rgba(255,255,255,0.5);
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .dock-price { display: flex; flex-direction: column; line-height: 1; }
+        .dock-price-val { font-size: 20px; font-weight: 700; color: var(--text-primary); }
+        .dock-price-strike { font-size: 12px; text-decoration: line-through; color: var(--text-tertiary); margin-left: 6px; }
+
+        /* --- MOBILE --- */
+        @media (max-width: 960px) {
+            .hero-card { flex-direction: column; width: 100%; gap: 24px; padding: 24px; }
+            .hero-visual { width: 100%; min-width: 0; height: auto; aspect-ratio: 16/9; }
+            .hero-title { font-size: 28px; }
+            .reality-grid, .mentor-grid, .project-grid { grid-template-columns: 1fr; }
+            .tech-grid { grid-template-columns: repeat(3, 1fr); }
+            .cert-section { flex-direction: column; padding: 32px; text-align: center; }
+            .cert-image { width: 100%; transform: none; margin-top: 24px; }
+            .comp-row { grid-template-columns: 1fr 1fr; gap: 10px; }
+            .comp-cell:nth-child(2) { display: none; } /* Hide traditional on mobile */
+            .action-dock-wrapper { bottom: 16px; width: calc(100% - 32px); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. HERO (The Hook) -->
+    <section class="container hero-section">
+        <article class="card-base hero-card">
+            <div class="hero-visual">
+                <div style="position: absolute; top: 16px; left: 16px; z-index: 10;" class="badge">Next Batch: Jan 20</div>
+                <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?q=80&w=1470&auto=format&fit=crop" alt="Coding Setup">
+            </div>
+            <div class="hero-content">
+                <div class="badge">Full Stack Specialization</div>
+                <h1 class="hero-title">Don't just graduate.<br>Become a Developer.</h1>
+                <p class="hero-subtitle">The B.Tech degree gives you the theory. We give you the MERN stack skills, the GitHub portfolio, and the interview confidence to crack ₹10LPA+ jobs.</p>
+                <div class="stat-grid">
+                    <div class="stat-item"><h4>100%</h4><p>Live Coding</p></div>
+                    <div class="stat-item"><h4>40+</h4><p>Projects</p></div>
+                    <div class="stat-item"><h4>12</h4><p>Weeks</p></div>
+                </div>
+            </div>
+        </article>
+    </section>
+
+    <!-- 2. PLACEMENT MARQUEE (Social Proof) -->
+    <section class="marquee-section">
+        <div class="container" style="text-align: center; margin-bottom: 20px;">
+            <p style="font-size: 13px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-tertiary); font-weight: 700;">Our Alumni work at</p>
+        </div>
+        <div class="marquee-content">
+            <!-- Duplicated for seamless scroll -->
+            <span class="brand-logo">Amazon</span><span class="brand-logo">Cred</span><span class="brand-logo">Swiggy</span><span class="brand-logo">Zomato</span><span class="brand-logo">Razorpay</span><span class="brand-logo">Microsoft</span><span class="brand-logo">Uber</span>
+            <span class="brand-logo">Amazon</span><span class="brand-logo">Cred</span><span class="brand-logo">Swiggy</span><span class="brand-logo">Zomato</span><span class="brand-logo">Razorpay</span><span class="brand-logo">Microsoft</span><span class="brand-logo">Uber</span>
+        </div>
+    </section>
+
+    <!-- 3. REALITY CHECK (The Anxiety) -->
+    <section class="container">
+        <div class="section-header">
+            <h2>Why most B.Tech students fail interviews</h2>
+            <p>The industry has changed. Recruiters don't care about your CGPA if you can't push code to GitHub. We fix the three biggest gaps.</p>
+        </div>
+        <div class="reality-grid">
+            <div class="reality-card">
+                <div class="icon-box"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 2v7.31"/><path d="M14 2v7.31"/><path d="M22 13h-3.5c-1.38 0-2.5 1.12-2.5 2.5V22h6v-9z"/><path d="M2 13h6v9H2v-9z"/></svg></div>
+                <h3>Theory vs. Practice</h3>
+                <p>College teaches syntax on a whiteboard. We teach you how to build scalable APIs and deploy them on AWS.</p>
+            </div>
+            <div class="reality-card">
+                <div class="icon-box"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+                <h3>Empty Portfolios</h3>
+                <p>A resume without links is useless. You will build Netflix & Airbnb clones that prove you can code real applications.</p>
+            </div>
+            <div class="reality-card">
+                <div class="icon-box"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/></svg></div>
+                <h3>No Network</h3>
+                <p>Stop applying blindly. Get mentored by engineers from Amazon and Microsoft who know exactly how to clear HR rounds.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. PROJECT SPOTLIGHT (Evidence) -->
+    <section class="container">
+        <div class="section-header">
+            <h2>You will build things that matter</h2>
+            <p>No toy projects. These are full-stack applications you can put on your resume immediately.</p>
+        </div>
+        <div class="project-grid">
+            <div class="project-card">
+                <div class="project-img">
+                    <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=1000&auto=format&fit=crop" alt="Streaming App">
+                </div>
+                <div class="project-body">
+                    <div class="project-tags">
+                        <span class="tag-pill">React</span><span class="tag-pill">Node.js</span><span class="tag-pill">MongoDB</span>
+                    </div>
+                    <h3>OTT Streaming Platform</h3>
+                    <p style="font-size: 14px; color: var(--text-secondary); margin-top: 8px;">A complete Netflix clone with user authentication, payment gateway integration, and video streaming capabilities.</p>
+                </div>
+            </div>
+            <div class="project-card">
+                <div class="project-img">
+                    <img src="https://images.unsplash.com/photo-1556742049-0cfed4f7a07d?q=80&w=1000&auto=format&fit=crop" alt="E-commerce">
+                </div>
+                <div class="project-body">
+                    <div class="project-tags">
+                        <span class="tag-pill">Redux</span><span class="tag-pill">Express</span><span class="tag-pill">Stripe</span>
+                    </div>
+                    <h3>Modern E-Commerce Engine</h3>
+                    <p style="font-size: 14px; color: var(--text-secondary); margin-top: 8px;">Build a shopping cart system with real-time inventory management, admin dashboard, and secure checkout.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. CURRICULUM (The Solution) -->
+    <section class="container">
+        <div class="section-header">
+            <h2>The Full Stack Roadmap</h2>
+            <p>From "Hello World" to deploying a full-scale application.</p>
+        </div>
+        <div class="curriculum-wrapper">
+            <div class="module-item active">
+                <div class="module-header" onclick="toggleAccordion(this)">
+                    <div class="module-title"><span class="module-number">Mod 01</span><span class="module-name">Frontend Mastery (React & Tailwind)</span></div>
+                    <svg class="icon-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </div>
+                <div class="module-content"><p>Forget basic HTML. Learn Modern JavaScript (ES6+), React Hooks, Redux for state management, and build responsive UIs using Tailwind CSS.</p></div>
+            </div>
+            <div class="module-item">
+                <div class="module-header" onclick="toggleAccordion(this)">
+                    <div class="module-title"><span class="module-number">Mod 02</span><span class="module-name">Backend Architecture (Node & Express)</span></div>
+                    <svg class="icon-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </div>
+                <div class="module-content"><p>Learn how servers work. Build RESTful APIs, handle authentication (JWT), and structure your backend code like a senior engineer.</p></div>
+            </div>
+            <div class="module-item">
+                <div class="module-header" onclick="toggleAccordion(this)">
+                    <div class="module-title"><span class="module-number">Mod 03</span><span class="module-name">Database Engineering (MongoDB)</span></div>
+                    <svg class="icon-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </div>
+                <div class="module-content"><p>Data is everything. Master NoSQL databases, schema design with Mongoose, and data aggregation pipelines.</p></div>
+            </div>
+            <div class="module-item">
+                <div class="module-header" onclick="toggleAccordion(this)">
+                    <div class="module-title"><span class="module-number">Mod 04</span><span class="module-name">System Design & Deployment</span></div>
+                    <svg class="icon-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </div>
+                <div class="module-content"><p>Take it live. Learn Docker basics, CI/CD pipelines, and how to deploy your applications on AWS/Vercel so the world can see them.</p></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. TECH STACK (Keywords) -->
+    <section class="container">
+        <div class="section-header">
+            <h2>Tools you will master</h2>
+        </div>
+        <div class="tech-grid">
+            <div class="tech-item"><div class="tech-icon"></div><span class="tech-label">React</span></div>
+            <div class="tech-item"><div class="tech-icon"></div><span class="tech-label">Node.js</span></div>
+            <div class="tech-item"><div class="tech-icon"></div><span class="tech-label">Mongo</span></div>
+            <div class="tech-item"><div class="tech-icon"></div><span class="tech-label">Redux</span></div>
+            <div class="tech-item"><div class="tech-icon"></div><span class="tech-label">Tailwind</span></div>
+            <div class="tech-item"><div class="tech-icon"></div><span class="tech-label">Git/Hub</span></div>
+        </div>
+    </section>
+
+    <!-- 7. MENTORS (Authority) -->
+    <section class="container">
+        <div class="section-header">
+            <h2>Learn from the best</h2>
+            <p>Your professors have degrees. Your mentors have jobs at top product companies.</p>
+        </div>
+        <div class="mentor-grid">
+            <div class="mentor-card">
+                <img src="https://ui-avatars.com/api/?name=Arjun+Mehta&background=0F172A&color=fff&size=128" alt="Mentor" class="mentor-img">
+                <div class="mentor-info">
+                    <h4>Arjun Mehta</h4>
+                    <p>SDE-II at Amazon</p>
+                    <div class="badge" style="background: #FFF; border: 1px solid #eee;">Ex-Swiggy</div>
+                </div>
+            </div>
+            <div class="mentor-card">
+                <img src="https://ui-avatars.com/api/?name=Sarah+Khan&background=7C3AED&color=fff&size=128" alt="Mentor" class="mentor-img">
+                <div class="mentor-info">
+                    <h4>Sarah Khan</h4>
+                    <p>Frontend Lead at Cred</p>
+                    <div class="badge" style="background: #FFF; border: 1px solid #eee;">React Expert</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 8. COMPARISON (Logic) -->
+    <section class="container">
+        <div class="section-header">
+            <h2>Is this worth it?</h2>
+        </div>
+        <div class="comparison-wrapper">
+            <div class="comp-row comp-head">
+                <div>Feature</div>
+                <div style="text-align:center;">Traditional College</div>
+                <div style="text-align:center;">Career Accelerator</div>
+            </div>
+            <div class="comp-row">
+                <div class="comp-cell-feat">Curriculum</div>
+                <div class="comp-cell">Outdated (2015 syllabus)</div>
+                <div class="comp-highlight" style="text-align:center;">Industry Relevant (2024)</div>
+            </div>
+            <div class="comp-row">
+                <div class="comp-cell-feat">Practical Learning</div>
+                <div class="comp-cell cross">Theory Exams Only</div>
+                <div class="comp-highlight" style="text-align:center;">40+ Live Projects</div>
+            </div>
+            <div class="comp-row">
+                <div class="comp-cell-feat">Career Support</div>
+                <div class="comp-cell cross">Generic Placement Cell</div>
+                <div class="comp-highlight" style="text-align:center;">1:1 Mock Interviews</div>
+            </div>
+             <div class="comp-row">
+                <div class="comp-cell-feat">Certification</div>
+                <div class="comp-cell">College Degree</div>
+                <div class="comp-highlight" style="text-align:center;">NSDC Govt. Certified</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 9. CERTIFICATION (Trust) -->
+    <section class="container">
+        <div class="cert-section">
+            <div class="cert-content">
+                <div class="badge" style="background:rgba(255,255,255,0.2); color:white; margin-bottom:12px;">Government Recognized</div>
+                <h2>Earn NSDC Certification</h2>
+                <p>This isn't just a course; it's a career credential. Get certified by the National Skill Development Corporation (Govt of India). Add a verified badge to your LinkedIn that recruiters respect.</p>
+            </div>
+            <img src="https://d31bwppm8yl9g2.cloudfront.net/learner/website/nsdc.webp" alt="Certificate" class="cert-image">
+        </div>
+    </section>
+
+    <!-- 10. FAQ (Objections) -->
+    <section class="container">
+        <div class="section-header" style="text-align: center; margin: 0 auto 40px auto;">
+            <h2>Common Questions</h2>
+        </div>
+        <div class="faq-wrapper">
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    Will this help me if I have a low CGPA?
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </div>
+                <div class="faq-answer">
+                    Absolutely. Startups and product companies prioritize skills and portfolio over CGPA. If you can show them a working Airbnb clone, they won't ask for your marks.
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    I am from a non-CS background (Mech/Civil). Can I join?
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </div>
+                <div class="faq-answer">
+                    Yes. 30% of our successful placements come from non-CS backgrounds. We start from zero (JavaScript basics) and take you to advanced levels.
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    What happens if I miss a live class?
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </div>
+                <div class="faq-answer">
+                    All sessions are recorded and uploaded to your dashboard within 2 hours. You have lifetime access to these recordings.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 11. DOCK (Urgency) -->
+    <div class="action-dock-wrapper">
+        <div class="action-dock">
+            <div class="dock-price">
+                <span style="font-size: 11px; color: var(--text-tertiary); text-transform: uppercase; font-weight: 600;">Batch Closing Soon</span>
+                <div>
+                    <span class="dock-price-val">₹4,999</span>
+                    <span class="dock-price-strike">₹12,000</span>
+                </div>
+            </div>
+            <button class="btn-onyx">
+                Enroll Now
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function toggleAccordion(header) {
+            const allItems = document.querySelectorAll('.module-item');
+            const parent = header.parentElement;
+            if(parent.classList.contains('active')) {
+                parent.classList.remove('active');
+                return;
+            }
+            allItems.forEach(item => item.classList.remove('active'));
+            parent.classList.add('active');
+        }
+
+        function toggleFaq(header) {
+            const item = header.parentElement;
+            item.classList.toggle('active');
+        }
+    </script>
+
+</body>
+</html>

@@ -14,8 +14,8 @@
             --text-sub: #6b7280;
             --header-height-desktop: 70px;
             --sidebar-width: 260px;
-            --sidebar-collapsed-width: 80px;
-            --row-height: 48px;
+            --sidebar-collapsed-width: 90px; /* Slightly wider for 45px icons aesthetics */
+            --row-height: 52px; /* Increased row height slightly for breathing room */
             --sidebar-bg: #ffffff;
             --header-bg: #ffffff;
             --page-bg: #f4f5f7;
@@ -25,7 +25,7 @@
             --active-bg: #f0faf4; 
             --hover-bg: #f3f4f6;
             --border-subtle: #e5e7eb;
-            --radius-md: 8px;
+            --radius-md: 10px;
             --shadow-premium: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
             --tooltip-bg: #1f2937;
             --danger-color: #ef4444;
@@ -47,26 +47,30 @@
             overflow: hidden;
         }
 
-        /* Logo Styling */
+        /* ============= LOGO STYLING ============= */
         .brand-logo {
             display: flex;
             align-items: center;
             text-decoration: none;
             transition: all 0.3s;
         }
+        
+        /* UPDATED: Logo Height 45px */
         .brand-logo img {
-            height: 40px; /* Increased Logo Size */
+            height: 45px; 
             width: auto;
             display: block;
         }
 
         .mini-logo {
-            display: none;
+            display: none; /* Hidden by default */
             align-items: center;
             justify-content: center;
         }
+        
+        /* UPDATED: Small Logo Height 45px */
         .mini-logo img {
-            height: 36px;
+            height: 45px;
             width: auto;
             display: block;
         }
@@ -123,15 +127,17 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            /* Top: 32px, Right: 24px, Bottom: 10px, Left: 24px */
-            padding: 32px 24px 10px 24px;
+            
+            /* UPDATED: Top 30px, Bottom 30px (Gap) */
+            padding: 30px 24px 30px 24px; 
+            
             transition: all 0.3s;
         }
 
         .d-sidebar-inner {
             flex: 1;
-            /* Top Padding creates the GAP between Logo and Menu */
-            padding: 40px 14px 10px 14px; 
+            /* UPDATED: Top Padding for Menu 10px */
+            padding: 10px 16px; 
             display: flex;
             flex-direction: column;
             overflow-y: auto;
@@ -147,26 +153,27 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 4px;
-            border-radius: 6px;
+            padding: 6px;
+            border-radius: 8px;
+            transition: 0.2s;
         }
-        .sidebar-toggle:hover { background: var(--hover-bg); }
+        .sidebar-toggle:hover { background: var(--hover-bg); color: var(--text-color); }
 
         /* Navigation Links */
         .nav-item {
+            position: relative; /* Needed for tooltip anchoring */
             display: flex;
             align-items: center;
             height: var(--row-height);
-            padding: 0 12px;
-            margin: 4px 0;
+            padding: 0 16px;
+            margin: 6px 0;
             border-radius: var(--radius-md);
-            gap: 12px;
+            gap: 14px;
             cursor: pointer;
             color: var(--text-color);
             text-decoration: none;
             transition: background 0.2s, color 0.2s;
             white-space: nowrap;
-            position: relative; /* For tooltip positioning */
         }
         .nav-item:hover { background: var(--hover-bg); }
         .nav-item.active { 
@@ -180,15 +187,15 @@
         /* Desktop Profile Section */
         .d-account-section {
             margin-top: auto;
-            padding: 16px 12px;
+            padding: 24px 16px;
             border-top: 1px solid var(--border-subtle);
             cursor: pointer;
         }
         .account-card { display: flex; align-items: center; gap: 12px; }
-        .account-avatar { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--border-subtle); object-fit: cover; flex-shrink: 0; }
+        .account-avatar { width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--border-subtle); object-fit: cover; flex-shrink: 0; }
         .account-text { display: flex; flex-direction: column; overflow: hidden; transition: opacity 0.2s; }
-        .account-name { font-size: 14px; font-weight: 600; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; }
-        .account-email { font-size: 12px; color: var(--text-sub); white-space: nowrap; text-overflow: ellipsis; overflow: hidden; }
+        .account-name { font-size: 15px; font-weight: 700; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; }
+        .account-email { font-size: 13px; color: var(--text-sub); white-space: nowrap; text-overflow: ellipsis; overflow: hidden; }
 
         /* Desktop Main Wrapper */
         .d-main-wrapper {
@@ -198,94 +205,96 @@
             overflow: hidden;
         }
         .d-topbar {
-            height: var(--header-height-desktop);
+            height: 80px; /* Slightly taller header */
             background: var(--header-bg);
             border-bottom: 1px solid var(--border-subtle);
             padding: 0 40px;
             display: flex;
             align-items: center;
             font-weight: 700;
-            font-size: 18px;
+            font-size: 20px;
         }
         .d-content { flex: 1; padding: 40px; overflow-y: auto; }
 
         /* ============= DESKTOP COLLAPSED STATE ============= */
         .d-sidebar.collapsed { width: var(--sidebar-collapsed-width); }
         
-        /* Hide elements when collapsed */
+        /* 1. Hide Standard Elements */
         .d-sidebar.collapsed .brand-logo, 
         .d-sidebar.collapsed .account-text,
         .d-sidebar.collapsed .btn-close-svg { display: none; }
 
-        /* Show mini logo and open svg */
+        /* 2. Show Collapsed Elements */
         .d-sidebar.collapsed .mini-logo, 
         .d-sidebar.collapsed .btn-open-svg { display: flex; }
-        .btn-open-svg { display: none; } 
+        .btn-open-svg { display: none; }
 
-        /* Adjust Header in Collapsed Mode */
+        /* 3. Header Adjustment */
         .d-sidebar.collapsed .d-sidebar-header {
             flex-direction: column;
-            gap: 20px; /* Space between mini logo and toggle button */
-            padding: 32px 0 10px 0; /* Maintain Top Padding */
+            height: auto;
+            padding: 30px 0 20px 0; /* Top padding maintained */
+            gap: 30px; /* Space between Logo and Toggle Button */
         }
 
-        /* Allow tooltips to overflow sidebar in collapsed mode */
-        .d-sidebar.collapsed .d-sidebar-inner {
-            overflow: visible; 
-            padding-top: 40px; /* Maintain gap */
-        }
-        
-        /* Center icons */
+        /* 4. Center Navigation Items */
         .d-sidebar.collapsed .nav-item { 
             justify-content: center; 
             padding: 0; 
         }
 
-        /* ============= TOOLTIP LOGIC (HOVER WHEN COLLAPSED) ============= */
+        /* 5. Center Profile */
+        .d-sidebar.collapsed .d-account-section { 
+            display: flex; 
+            justify-content: center; 
+            padding: 24px 0; 
+        }
+
+        /* 6. TOOLTIP LOGIC (Crucial Part) */
         
-        /* Hide label by default in collapsed, but prepare it for hover */
+        /* By default in collapsed mode, hide the label */
         .d-sidebar.collapsed .nav-label {
-            display: block; 
+            display: none;
+        }
+
+        /* Fix clipping issue: allow content to spill out when collapsed */
+        .d-sidebar.collapsed .d-sidebar-inner {
+            overflow: visible; 
+        }
+
+        /* On Hover logic */
+        .d-sidebar.collapsed .nav-item:hover .nav-label {
+            display: block;
             position: absolute;
-            left: 100%; /* Push outside right */
+            left: 100%; /* Position to the right of the item */
             top: 50%;
             transform: translateY(-50%);
-            background: var(--tooltip-bg);
+            
+            background-color: var(--tooltip-bg);
             color: #fff;
             padding: 8px 12px;
             border-radius: 6px;
             font-size: 13px;
             font-weight: 500;
             white-space: nowrap;
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-            z-index: 999;
-            box-shadow: var(--shadow-premium);
-            transition: all 0.2s ease-in-out;
-            margin-left: 10px; /* Gap between icon and tooltip */
+            z-index: 1000;
+            margin-left: 12px; /* Gap between icon and tooltip */
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            pointer-events: none; /* Let clicks pass through if needed */
         }
 
-        /* Triangle arrow for tooltip */
-        .d-sidebar.collapsed .nav-label::before {
+        /* Tooltip Arrow */
+        .d-sidebar.collapsed .nav-item:hover .nav-label::before {
             content: "";
             position: absolute;
+            left: -6px;
             top: 50%;
-            left: -4px;
             transform: translateY(-50%);
-            border-width: 4px;
+            border-width: 6px 6px 6px 0;
             border-style: solid;
             border-color: transparent var(--tooltip-bg) transparent transparent;
         }
 
-        /* Show tooltip on hover */
-        .d-sidebar.collapsed .nav-item:hover .nav-label {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        /* Profile Centering in Collapsed */
-        .d-sidebar.collapsed .d-account-section { display: flex; justify-content: center; padding: 16px 0; }
 
         /* ============= MOBILE LAYOUT ============= */
         .page-mobile { display: none; flex-direction: column; height: 100vh; }
@@ -321,7 +330,7 @@
         .m-overlay.open .m-drawer { transform: translateX(0); }
 
         .m-drawer-header {
-            height: 72px; padding: 0 16px; border-bottom: 1px solid var(--border-subtle);
+            height: 80px; padding: 0 20px; border-bottom: 1px solid var(--border-subtle);
             display: flex; align-items: center; justify-content: space-between;
         }
         .m-drawer-close { width: 40px; height: 40px; border-radius: 10px; border: 1px solid #e5e7eb; display: flex; align-items: center; justify-content: center; }
@@ -332,11 +341,10 @@
         .m-drawer-close-icon::before { transform: rotate(45deg); }
         .m-drawer-close-icon::after { transform: rotate(-45deg); }
 
-        .m-drawer-nav { padding: 20px 8px; flex: 1; overflow-y: auto; }
+        .m-drawer-nav { padding: 20px 12px; flex: 1; overflow-y: auto; }
         
-        /* Mobile Profile Fix */
         .m-account-section {
-            padding: 16px; border-top: 1px solid var(--border-subtle);
+            padding: 20px; border-top: 1px solid var(--border-subtle);
             background: #fff;
         }
 
@@ -356,6 +364,7 @@
             .page-desktop { display: none; }
             .page-mobile { display: flex; }
             .profile-popup { bottom: 100px; left: 50%; transform: translateX(-50%); }
+            .brand-logo img { height: 36px; } /* Slightly smaller for mobile header */
         }
     </style>
 </head>
@@ -431,7 +440,7 @@
             <header class="d-topbar">Overview</header>
             <main class="d-content">
                 <h1>Welcome to Dashboard</h1>
-                <p style="margin-top: 10px; color: #6b7280;">Sidebar is fully collapsible. Hover over icons when collapsed to see tooltips.</p>
+                <p style="margin-top: 10px; color: #6b7280;">Sidebar is fully collapsible. Use the button next to the logo.</p>
             </main>
         </div>
     </div>

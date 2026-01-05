@@ -23,7 +23,7 @@
         :root {
             --brand-primary: #2FBF71;      
             --brand-dark: #0E5F3A;   
-            --brand-black: #002726; /* Your requested dark color */
+            --brand-black: #002726; 
             --brand-light: #EBF9F1;      
             --text-main: #111827;          
             --text-muted: #6B7280;         
@@ -34,7 +34,7 @@
             --radius-xl: 32px;
             --radius-lg: 20px;
             --shadow-premium: 0 20px 40px -12px rgba(14, 95, 58, 0.08);
-            --border-heavy: 2px solid #E5E7EB; /* Increased border weight */
+            --border-heavy: 2px solid #E5E7EB; 
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -58,14 +58,14 @@
             padding: 80px 0; 
             margin-bottom: 80px;
             overflow: hidden; 
-            border-bottom: 1px solid var(--brand-primary); /* Line at the end of hero section */
+            border-bottom: 1px solid var(--brand-primary); 
         }
 
         .card {
-            background: var(--bg-page);
+            background: var(--brand-black); 
             border-radius: var(--radius-xl);
             box-shadow: var(--shadow-premium);
-            border: var(--border-heavy); /* Increased to 2px */
+            border: 2px solid rgba(255, 255, 255, 0.1); 
             padding: 48px;
             display: flex;
             align-items: center;
@@ -82,7 +82,7 @@
             position: relative; 
             border-radius: var(--radius-lg); 
             overflow: hidden; 
-            border: 1px solid rgba(0, 0, 0, 0.08); 
+            border: 1px solid rgba(255, 255, 255, 0.1); 
         }
 
         .visual-container img {
@@ -101,18 +101,18 @@
             align-self: stretch; 
         }
         
-        .header h1 { font-size: 42px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 16px; color: var(--text-main); }
-        .header p { font-size: 18px; color: var(--text-muted); max-width: 600px; }
+        .header h1 { font-size: 42px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 16px; color: #FFFFFF; }
+        .header p { font-size: 18px; color: rgba(255, 255, 255, 0.7); max-width: 600px; }
 
         .specs {
             display: grid; 
             grid-template-columns: repeat(3, 1fr); 
-            justify-items: center; /* Centering items in grid cells */
-            text-align: center;    /* Centering text within items */
+            justify-items: center; 
+            text-align: center;    
             gap: 20px;
             padding: 24px 0; 
-            border-top: 1px solid rgba(0,0,0,0.05); 
-            border-bottom: 1px solid rgba(0,0,0,0.05);
+            border-top: 1px solid rgba(255, 255, 255, 0.1); 
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             margin: 24px 0;
         }
         .spec-item { display: flex; flex-direction: column; gap: 6px; width: 100%; }
@@ -120,22 +120,23 @@
             font-size: 11px; 
             text-transform: uppercase; 
             letter-spacing: 0.08em; 
-            color: var(--text-muted); 
+            color: rgba(255, 255, 255, 0.5); 
             font-weight: 700; 
             display: flex; 
             align-items: center; 
             gap: 8px; 
-            justify-content: center; /* Centers label content */
+            justify-content: center; 
         }
         .icon-sm { width: 18px; height: 18px; color: var(--brand-primary); flex-shrink: 0; }
-        .spec-value { font-size: 16px; font-weight: 600; color: var(--text-main); }
+        .spec-value { font-size: 16px; font-weight: 600; color: #FFFFFF; }
 
         .footer { display: flex; align-items: center; justify-content: flex-end; }
         .action-dock { display: flex; align-items: center; gap: 32px; }
-        .price-curr { font-size: 32px; font-weight: 700; color: var(--text-main); line-height: 1.1; }
-        .price-prev { font-size: 14px; color: var(--text-muted); text-decoration: line-through; display: block; }
-        .price-subtext { font-size: 12px; color: var(--text-muted); display: block; margin-top: 4px; }
+        .price-curr { font-size: 32px; font-weight: 700; color: #FFFFFF; line-height: 1.1; }
+        .price-prev { font-size: 14px; color: rgba(255, 255, 255, 0.4); text-decoration: line-through; display: block; }
+        .price-subtext { font-size: 12px; color: rgba(255, 255, 255, 0.5); display: block; margin-top: 4px; }
         
+        /* Universal Button Style */
         .btn-onyx {
             background-color: var(--brand-primary); color: #FFFFFF; padding: 0 40px; height: 60px; border-radius: 14px;
             font-size: 16px; font-weight: 600; border: none; cursor: pointer; transition: all 0.3s ease;
@@ -143,7 +144,7 @@
         }
         .btn-onyx:hover { 
             transform: translateY(-2px); 
-            background-color: var(--brand-black); /* Hover color changed to #002726 */
+            background-color: var(--brand-black); 
             box-shadow: 0 10px 25px rgba(0, 39, 38, 0.2); 
         }
 
@@ -154,7 +155,7 @@
         .cards-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
         .outcome-card {
             background: #fff; 
-            border: var(--border-heavy); /* Increased to 2px */
+            border: var(--border-heavy); 
             border-radius: 16px; padding: 28px;
             position: relative; overflow: hidden; display: flex; flex-direction: column;
             transition: all 0.2s ease;
@@ -186,6 +187,75 @@
         .skill-pill span { font-size: 1rem; font-weight: 500; color: var(--text-muted); }
         .skill-pill:hover { transform: translateY(-2px); border-color: var(--brand-primary); background: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
 
+        /* --- SECTION 4: PROMO SECTION (NEW) --- */
+        .sec-promo { 
+            background-color: var(--brand-light); 
+            color: var(--text-main); 
+            padding: 80px 0; 
+            border-top: 1px solid var(--brand-primary);
+        }
+
+        .promo-grid { 
+            display: grid; 
+            grid-template-columns: 1.4fr 1fr; 
+            align-items: center; 
+            gap: 80px; 
+            max-width: var(--inner-width); 
+            margin: 0 auto; 
+            padding: 0 24px; 
+        }
+
+        .promo-content h2 {
+            font-size: clamp(2rem, 5vw, 3.2rem); 
+            font-weight: 700; 
+            line-height: 1.1; 
+            margin-bottom: 16px;
+            letter-spacing: -0.02em;
+            color: var(--text-main);
+        }
+
+        .promo-content p { 
+            font-size: 1.1rem; 
+            color: var(--text-muted); 
+            max-width: 60ch; 
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .cta-price-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+
+        .price-now { font-size: 1.8rem; font-weight: 700; color: var(--text-main); }
+        .price-strike { font-size: 1.1rem; color: var(--text-muted); text-decoration: line-through; margin-left: 8px; }
+
+        .guarantee-text {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            display: block;
+        }
+        
+        .included-card {
+            background: #ffffff; 
+            border-radius: 24px; 
+            padding: 32px;
+            box-shadow: var(--shadow-premium);
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .included-card h3 { font-size: 1.25rem; font-weight: 700; margin-bottom: 20px; }
+        .included-list { display: flex; flex-direction: column; gap: 16px; }
+        .included-item { display: flex; align-items: center; gap: 12px; font-weight: 600; font-size: 1rem; color: var(--text-main); }
+        .included-icon { color: var(--brand-primary); width: 24px; height: 24px; flex-shrink: 0; }
+        .custom-cert path { fill: var(--brand-primary); }
+
+        .cta-desktop { display: block; }
+        .cta-mobile-bottom { display: none; }
+
         /* --- RESPONSIVE --- */
         
         @media (max-width: 1100px) {
@@ -193,47 +263,42 @@
             .visual-container { flex-basis: 350px; }
             .header h1 { font-size: 32px; }
             .cards-grid { grid-template-columns: 1fr 1fr; }
+            .promo-grid { gap: 40px; }
         }
 
         @media (max-width: 768px) {
-            .hero-section { padding: 40px 0; margin-bottom: 40px; }
+            .hero-section { padding: 40px 0; margin-bottom: 40px; background-color: var(--brand-black); border-bottom: none; }
             .container-hero { padding: 0; }
-            .card { 
-                flex-direction: column; 
-                padding: 0 16px; 
-                gap: 24px; 
-                border-radius: 0; 
-                border: none; 
-                box-shadow: none; 
-                background: transparent;
-            }
+            .card { flex-direction: column; padding: 0 16px; gap: 24px; border-radius: 0; border: none; box-shadow: none; background: transparent; }
             .visual-container { width: calc(100% - 24px); margin: 0 12px; flex-basis: auto; border-radius: 16px; }
-            
-            .header h1 { font-size: 26px; line-height: 1.2; }
-            .header p { font-size: 16px; }
-            .specs { grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0; padding: 20px 0; }
+            .header h1 { font-size: 26px; color: #FFFFFF; }
+            .header p { font-size: 16px; color: rgba(255, 255, 255, 0.7); }
+            .specs { grid-template-columns: 1fr 1fr; border-color: rgba(255, 255, 255, 0.1); }
+            .spec-value { color: #FFFFFF; }
             .hide-mobile { display: none; }
             
-            .action-dock { width: 100%; flex-direction: column; background: #FFF; padding: 16px; border-radius: 16px; gap: 16px; border: 1px solid #EEE; }
-            .price-group { text-align: center; }
+            .action-dock { width: 100%; flex-direction: column; background: rgba(255, 255, 255, 0.05); padding: 16px; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.1); }
+            .price-curr { color: #FFFFFF; }
             .btn-onyx { width: 100%; justify-content: center; height: 54px; }
 
             .container-inner { padding: 0 16px; }
             .cards-grid { grid-template-columns: 1fr; }
-            .section-title { font-size: 26px; margin-bottom: 24px; }
-            .outcome-card::before { font-size: 200px; bottom: -28px; }
-
-            /* Slightly decrease skill-pill size on mobile */
-            .skill-pill { padding: 8px 14px; gap: 8px; }
-            .skill-pill span { font-size: 0.85rem; }
-            .pill-icon { width: 28px; height: 28px; }
-            .pill-icon svg { width: 15px; height: 15px; }
+            .section-title { font-size: 26px; }
+            
+            /* Promo Responsive */
+            .sec-promo { padding: 40px 0; }
+            .promo-grid { grid-template-columns: 1fr; gap: 32px; padding: 0 16px; }
+            .cta-desktop { display: none; }
+            .cta-mobile-bottom { display: block; margin-top: 8px; }
+            .promo-content p { margin-bottom: 0; }
+            .cta-price-wrapper { justify-content: center; text-align: center; }
+            .guarantee-text { text-align: center; }
         }
     </style>
 </head>
 <body>
 
-    <!-- HERO SECTION -->
+    <!-- SECTION 1: HERO -->
     <section class="hero-section">
         <div class="container-hero">
             <article class="card">
@@ -289,7 +354,7 @@
         </div>
     </section>
 
-    <!-- OUTCOMES SECTION -->
+    <!-- SECTION 2: OUTCOMES -->
     <section class="sec-outcomes">
         <div class="container-inner">
             <h2 class="section-title">What you'll learn</h2>
@@ -313,7 +378,7 @@
         </div>
     </section>
 
-    <!-- SKILLS SECTION -->
+    <!-- SECTION 3: SKILLS -->
     <section class="sec-skills">
         <div class="container-inner">
             <div class="pills-grid">
@@ -354,6 +419,66 @@
                     <span>System Design</span>
                 </a>
             </div>
+        </div>
+    </section>
+
+    <!-- SECTION 4: PROMO SECTION -->
+    <section class="sec-promo">
+        <div class="promo-grid">
+            
+            <!-- Left Side: Text -->
+            <div class="promo-content">
+                <h2>Break into a full stack web development career.</h2>
+                <p>Get the skills, structure, and hands-on experience to launch your career.</p>
+                
+                <!-- Desktop CTA -->
+                <div class="cta-container cta-desktop">
+                    <div class="cta-price-wrapper">
+                        <button class="btn-onyx">Get started</button>
+                        <div>
+                            <span class="price-now">₹4,999</span>
+                            <span class="price-strike">₹12,000</span>
+                        </div>
+                    </div>
+                    <small class="guarantee-text">30-Day Money-Back Guarantee</small>
+                </div>
+            </div>
+
+            <!-- Right Side: Features Card -->
+            <div class="included-card">
+                <h3>What makes you hireable?</h3>
+                <div class="included-list">
+                    <div class="included-item">
+                        <div class="included-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 10.5 8 13l2 2.5"/><path d="m14 10.5 2 2.5-2 2.5"/><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2z"/></svg></div>
+                        <span>5+ Real World Projects</span>
+                    </div>
+                    <div class="included-item">
+                        <div class="included-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="7" r="4"/><path d="M10.3 15H7a4 4 0 0 0-4 4v2"/><circle cx="17" cy="17" r="3"/><path d="m21 21-1.9-1.9"/></svg></div>
+                        <span>GitHub Profile Review</span>
+                    </div>
+                    <div class="included-item">
+                        <div class="included-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 10a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 14.286V4a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/><path d="M20 9a2 2 0 0 1 2 2v10.286a.71.71 0 0 1-1.212.502l-2.202-2.202A2 2 0 0 0 17.172 19H10a2 2 0 0 1-2-2v-1"/></svg></div>
+                        <span>Mock Interviews</span>
+                    </div>
+                    <div class="included-item">
+                        <div class="included-icon custom-cert"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M128,136a8,8,0,0,1-8,8H72a8,8,0,0,1,0-16h48A8,8,0,0,1,128,136Zm-8-40H72a8,8,0,0,0,0,16h48a8,8,0,0,0,0-16Zm112,65.47V224A8,8,0,0,1,220,231l-24-13.74L172,231A8,8,0,0,1,160,224V200H40a16,16,0,0,1-16-16V56A16,16,0,0,1,40,40H216a16,16,0,0,1,16,16V86.53a51.88,51.88,0,0,1,0,74.94ZM160,184V161.47A52,52,0,0,1,216,76V56H40V184Zm56-12a51.88,51.88,0,0,1-40,0v38.22l16-9.16a8,8,0,0,1,7.94,0l16,9.16Zm16-48a36,36,0,1,0-36,36A36,36,0,0,0,232,124Z"></path></svg></div>
+                        <span>NSDC Certification</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mobile Bottom CTA -->
+            <div class="cta-container cta-mobile-bottom">
+                <div class="cta-price-wrapper">
+                    <button class="btn-onyx">Get started</button>
+                    <div>
+                        <span class="price-now">₹4,999</span>
+                        <span class="price-strike">₹12,000</span>
+                    </div>
+                </div>
+                <small class="guarantee-text">30-Day Money-Back Guarantee</small>
+            </div>
+
         </div>
     </section>
 

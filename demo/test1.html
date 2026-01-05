@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Course Enrollment, Outcomes & Skills</title>
+    <title>Full Stack Web Development - Mentorship</title>
     
     <!-- FONTS -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,24 +21,19 @@
         }
 
         :root {
-            /* Hero Palette */
             --brand-primary: #2FBF71;      
-            --brand-dark: #0E5F3A;         
+            --brand-dark: #0E5F3A;   
+            --brand-light: #EBF9F1;      
             --text-main: #111827;          
             --text-muted: #6B7280;         
             --bg-page: #FFFFFF;            
             
-            /* Shared Colors (Outcomes & Skills) */
-            --text-secondary: #4B5563;
-            --col-dark: #002726;
-            --col-purple: #7C5DFA;
-            
-            /* Sizing */
             --container-width: 1280px;
-            --inner-width: 1150px; /* Width for Sections 2 and 3 */
+            --inner-width: 1150px; 
             --radius-xl: 32px;
             --radius-lg: 20px;
             --shadow-premium: 0 20px 40px -12px rgba(14, 95, 58, 0.08);
+            --border-default: 1px solid #E5E7EB;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -48,32 +43,44 @@
             background-color: #FDFDFD;
             color: var(--text-main);
             line-height: 1.5;
-            padding: 60px 0;
             -webkit-font-smoothing: antialiased;
         }
 
-        /* Common Layout Helpers */
-        .container-hero { max-width: var(--container-width); margin: 0 auto; }
-        .container-inner { max-width: var(--inner-width); margin: 0 auto; }
+        /* Layout Helpers */
+        .container-hero { max-width: var(--container-width); margin: 0 auto; padding: 0 24px; }
+        .container-inner { max-width: var(--inner-width); margin: 0 auto; padding: 0 24px; }
+        a { text-decoration: none; color: inherit; display: block; }
 
-        /* --- SECTION 1: HERO CARD --- */
-        .hero-wrapper { margin-bottom: 80px; }
+        /* --- SECTION 1: HERO --- */
+        .hero-section { 
+            background-color: var(--brand-light); 
+            padding: 80px 0; 
+            margin-bottom: 80px;
+            overflow: hidden; 
+        }
+
         .card {
             background: var(--bg-page);
             border-radius: var(--radius-xl);
             box-shadow: var(--shadow-premium);
-            border: 1px solid #E5E7EB;
-            padding: 56px;
+            border: var(--border-default);
+            padding: 48px;
             display: flex;
             align-items: center;
             gap: 60px;
             position: relative;
+            width: 100%;
         }
 
         .visual-container {
-            width: 520px; min-width: 520px; aspect-ratio: 520 / 400; 
-            flex-shrink: 0; position: relative; border-radius: var(--radius-lg); 
-            overflow: hidden; border: 1px solid rgba(0, 0, 0, 0.08); 
+            width: 480px; 
+            flex-basis: 480px; 
+            flex-shrink: 1;    
+            aspect-ratio: 520 / 400; 
+            position: relative; 
+            border-radius: var(--radius-lg); 
+            overflow: hidden; 
+            border: 1px solid rgba(0, 0, 0, 0.08); 
         }
 
         .visual-container img {
@@ -83,19 +90,31 @@
         }
         .card:hover .visual-container img { transform: scale(1.04); }
 
-        .content { flex: 1; display: flex; flex-direction: column; justify-content: space-between; align-self: stretch; }
-        .header h1 { font-size: 42px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 16px; }
+        .content { 
+            flex: 1; 
+            min-width: 0; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: space-between; 
+            align-self: stretch; 
+        }
+        
+        .header h1 { font-size: 42px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 16px; color: var(--text-main); }
         .header p { font-size: 18px; color: var(--text-muted); max-width: 600px; }
 
         .specs {
-            display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px;
-            padding: 32px 0; border-top: 1px solid rgba(0,0,0,0.05); border-bottom: 1px solid rgba(0,0,0,0.05);
-            margin: 32px 0;
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 20px;
+            padding: 24px 0; 
+            border-top: 1px solid rgba(0,0,0,0.05); 
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            margin: 24px 0;
         }
         .spec-item { display: flex; flex-direction: column; gap: 6px; }
-        .spec-label { font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); font-weight: 600; display: flex; align-items: center; gap: 8px; }
-        .icon-sm { width: 16px; height: 16px; color: var(--brand-primary); }
-        .spec-value { font-size: 16px; font-weight: 600; }
+        .spec-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); font-weight: 700; display: flex; align-items: center; gap: 8px; }
+        .icon-sm { width: 18px; height: 18px; color: var(--brand-primary); flex-shrink: 0; }
+        .spec-value { font-size: 16px; font-weight: 600; color: var(--text-main); }
 
         .footer { display: flex; align-items: center; justify-content: flex-end; }
         .action-dock { display: flex; align-items: center; gap: 32px; }
@@ -106,7 +125,7 @@
         .btn-onyx {
             background-color: var(--brand-primary); color: #FFFFFF; padding: 0 40px; height: 60px; border-radius: 14px;
             font-size: 16px; font-weight: 600; border: none; cursor: pointer; transition: all 0.3s ease;
-            display: flex; align-items: center; gap: 10px;
+            display: flex; align-items: center; gap: 10px; font-family: inherit; white-space: nowrap;
         }
         .btn-onyx:hover { transform: translateY(-2px); background-color: var(--brand-dark); box-shadow: 0 10px 25px rgba(47, 191, 113, 0.2); }
 
@@ -116,17 +135,20 @@
         
         .cards-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
         .outcome-card {
-            background: #fff; border: 1px solid #E5E7EB; border-radius: 16px; padding: 28px;
+            background: #fff; border: var(--border-default); border-radius: 16px; padding: 28px;
             position: relative; overflow: hidden; display: flex; flex-direction: column;
+            transition: all 0.2s ease;
         }
-        .outcome-card h3 { font-size: 1.25rem; font-weight: 700; margin-bottom: 8px; color: var(--col-dark); position: relative; z-index: 2; }
-        .outcome-card p { font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 16px; position: relative; z-index: 2; flex: 1; }
+        .outcome-card h3 { font-size: 1.25rem; font-weight: 700; margin-bottom: 8px; color: var(--text-main); position: relative; z-index: 2; }
+        .outcome-card p { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 16px; position: relative; z-index: 2; flex: 1; }
+        
         .outcome-card::before {
             content: attr(data-index); font-family: 'Udemy Sans Bold', sans-serif; position: absolute; 
-            font-size: 200px; font-weight: 700; color: #f2efff; bottom: -30px; right: 15px; z-index: 1; line-height: 1; pointer-events: none;
+            font-size: 200px; font-weight: 700; color: #F0FAF4; bottom: -30px; right: 15px; z-index: 1; line-height: 1; pointer-events: none;
         }
-        .outcome-link { color: var(--col-purple); font-weight: 600; font-size: 0.9rem; position: relative; z-index: 2; text-decoration: none; }
-        .outcome-link:hover { text-decoration: underline; }
+        
+        .outcome-link { color: var(--brand-primary); font-weight: 600; font-size: 0.9rem; position: relative; z-index: 2; }
+        .outcome-card:hover { transform: translateY(-2px); border-color: var(--brand-primary); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
 
         /* --- SECTION 3: SKILLS --- */
         .sec-skills { padding: 0 0 80px 0; }
@@ -134,53 +156,69 @@
         
         .skill-pill {
             display: flex; align-items: center; gap: 12px; background: #F7F9FA; 
-            border: 1px solid #E5E7EB; padding: 12px 20px; border-radius: 12px; transition: all 0.2s ease; cursor: default;
+            border: var(--border-default); padding: 12px 20px; border-radius: 12px; transition: all 0.2s ease;
         }
         .pill-icon { 
             width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; 
-            background: #F0EFFD; border-radius: 8px; color: var(--col-purple); flex-shrink: 0;
+            background: var(--brand-light); border-radius: 8px; color: var(--brand-primary); flex-shrink: 0;
         }
         .pill-icon svg { width: 18px; height: 18px; stroke-width: 2.5; fill: none; stroke: currentColor; }
-        .skill-pill span { font-size: 1rem; font-weight: 500; color: var(--text-secondary); }
-
-        .skill-pill:hover { 
-            transform: translateY(-2px); border-color: var(--col-purple); 
-            background: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.05); 
-        }
+        .skill-pill span { font-size: 1rem; font-weight: 500; color: var(--text-muted); }
+        .skill-pill:hover { transform: translateY(-2px); border-color: var(--brand-primary); background: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
 
         /* --- RESPONSIVE --- */
+        
         @media (max-width: 1100px) {
-            .container-hero, .container-inner { padding: 0 24px; }
+            .card { gap: 30px; padding: 32px; }
+            .visual-container { flex-basis: 350px; }
+            .header h1 { font-size: 32px; }
             .cards-grid { grid-template-columns: 1fr 1fr; }
         }
 
         @media (max-width: 768px) {
-            body { padding: 20px 0; }
-            .card { flex-direction: column; padding: 24px; gap: 24px; }
-            .visual-container { width: 100%; min-width: 0; }
-            .header h1 { font-size: 22px; }
-            .specs { grid-template-columns: 1fr 1fr; gap: 20px; }
-            .hide-mobile { display: none; }
-            .action-dock { width: 100%; flex-direction: column; background: #F9FAFB; padding: 16px; border-radius: 16px; gap: 16px; }
-            .price-group { text-align: center; }
-            .btn-onyx { width: 100%; justify-content: center; }
-
-            .cards-grid { grid-template-columns: 1fr; }
-            .section-title { font-size: 26px; }
-            .outcome-card::before { font-size: 200px; bottom: -28px; }
+            .hero-section { padding: 40px 0; margin-bottom: 40px; }
+            .container-hero { padding: 0; }
+            .card { 
+                flex-direction: column; 
+                padding: 0 16px; 
+                gap: 24px; 
+                border-radius: 0; 
+                border: none; 
+                box-shadow: none; 
+                background: transparent;
+            }
+            .visual-container { width: calc(100% - 24px); margin: 0 12px; flex-basis: auto; border-radius: 16px; }
             
-            .skill-pill { padding: 8px 12px; gap: 8px; }
-            .pill-icon { width: 26px; height: 26px; }
-            .pill-icon svg { width: 14px; height: 14px; }
-            .skill-pill span { font-size: 0.85rem; }
+            .header h1 { font-size: 26px; line-height: 1.2; }
+            .header p { font-size: 16px; }
+            
+            /* UPDATED SPECS FOR MOBILE */
+            .specs { 
+                grid-template-columns: repeat(3, 1fr); 
+                gap: 12px; 
+                margin: 20px 0; 
+                padding: 16px 0; 
+            }
+            .spec-label { font-size: 9px; gap: 4px; }
+            .spec-value { font-size: 13px; }
+            .icon-sm { width: 14px; height: 14px; }
+            
+            .action-dock { width: 100%; flex-direction: column; background: #FFF; padding: 16px; border-radius: 16px; gap: 16px; border: 1px solid #EEE; }
+            .price-group { text-align: center; }
+            .btn-onyx { width: 100%; justify-content: center; height: 54px; }
+
+            .container-inner { padding: 0 16px; }
+            .cards-grid { grid-template-columns: 1fr; }
+            .section-title { font-size: 26px; margin-bottom: 24px; }
+            .outcome-card::before { font-size: 200px; bottom: -28px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- SECTION 1: HERO -->
-    <div class="container-hero">
-        <div class="hero-wrapper">
+    <!-- HERO SECTION -->
+    <section class="hero-section">
+        <div class="container-hero">
             <article class="card">
                 <div class="visual-container">
                     <img src="https://images.unsplash.com/photo-1555099962-4199c345e5dd?q=80&w=800&auto=format&fit=crop" alt="Coding Setup">
@@ -195,24 +233,24 @@
                     <div class="specs">
                         <div class="spec-item">
                             <div class="spec-label">
-                                <svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                                <svg class="icon-sm" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg>
                                 Start Date
                             </div>
                             <span class="spec-value">Feb 10, 2026</span>
                         </div>
-                        <div class="spec-item hide-mobile">
+                        <div class="spec-item">
                             <div class="spec-label">
-                                <svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                                <svg class="icon-sm" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6v6l4 2"/><circle cx="12" cy="12" r="10"/></svg>
                                 Schedule
                             </div>
                             <span class="spec-value">Live (Sat & Sun)</span>
                         </div>
                         <div class="spec-item">
                             <div class="spec-label">
-                                <svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4.5 9h15M4.5 15h15M10 2h4M6 2v20M18 2v20"/></svg>
-                                Level
+                                <svg class="icon-sm" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg>
+                                Curriculum
                             </div>
-                            <span class="spec-value">Beginner to Pro</span>
+                            <span class="spec-value">Beg to Pro</span>
                         </div>
                     </div>
 
@@ -232,72 +270,72 @@
                 </div>
             </article>
         </div>
-    </div>
+    </section>
 
-    <!-- SECTION 2: OUTCOMES -->
+    <!-- OUTCOMES SECTION -->
     <section class="sec-outcomes">
         <div class="container-inner">
             <h2 class="section-title">What you'll learn</h2>
             <div class="cards-grid">
-                <div class="outcome-card" data-index="1">
+                <a href="#" class="outcome-card" data-index="1">
                     <h3>Build a Portfolio</h3>
                     <p>Don't just watch videos. Create 3 major projects that you can show during interviews.</p>
-                    <a href="#" class="outcome-link">View Projects &gt;</a>
-                </div>
-                <div class="outcome-card" data-index="2">
+                    <span class="outcome-link">View Projects &gt;</span>
+                </a>
+                <a href="#" class="outcome-card" data-index="2">
                     <h3>System Design</h3>
                     <p>Learn how to architect scalable apps, a crucial topic for high-paying product roles.</p>
-                    <a href="#" class="outcome-link">View Syllabus &gt;</a>
-                </div>
-                <div class="outcome-card" data-index="3">
+                    <span class="outcome-link">View Syllabus &gt;</span>
+                </a>
+                <a href="#" class="outcome-card" data-index="3">
                     <h3>Interview Prep</h3>
                     <p>Mock interviews with industry experts to help you crack technical rounds.</p>
-                    <a href="#" class="outcome-link">Learn More &gt;</a>
-                </div>
+                    <span class="outcome-link">Learn More &gt;</span>
+                </a>
             </div>
         </div>
     </section>
 
-    <!-- SECTION 3: SKILLS -->
+    <!-- SKILLS SECTION -->
     <section class="sec-skills">
         <div class="container-inner">
             <div class="pills-grid">
-                <div class="skill-pill">
+                <a href="#" class="skill-pill">
                     <div class="pill-icon">
                         <svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
                     </div>
                     <span>React.js</span>
-                </div>
-                <div class="skill-pill">
+                </a>
+                <a href="#" class="skill-pill">
                     <div class="pill-icon">
                         <svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg>
                     </div>
                     <span>Node.js</span>
-                </div>
-                <div class="skill-pill">
+                </a>
+                <a href="#" class="skill-pill">
                     <div class="pill-icon">
                         <svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg>
                     </div>
                     <span>MongoDB</span>
-                </div>
-                <div class="skill-pill">
+                </a>
+                <a href="#" class="skill-pill">
                     <div class="pill-icon">
                         <svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
                     </div>
                     <span>Express</span>
-                </div>
-                <div class="skill-pill">
+                </a>
+                <a href="#" class="skill-pill">
                     <div class="pill-icon">
                         <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
                     </div>
                     <span>Tailwind CSS</span>
-                </div>
-                <div class="skill-pill">
+                </a>
+                <a href="#" class="skill-pill">
                     <div class="pill-icon">
                         <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
                     </div>
                     <span>System Design</span>
-                </div>
+                </a>
             </div>
         </div>
     </section>

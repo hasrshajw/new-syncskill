@@ -30,9 +30,9 @@
             font-family: 'IBM Plex Sans', sans-serif;
             margin: 0;
             background-color: #ffffff;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* EXTRACTED SECTION STYLES */
         .sec-outcomes { 
             padding: 48px 24px; 
             max-width: 1300px; 
@@ -58,6 +58,7 @@
             overflow: hidden; 
             display: flex; 
             flex-direction: column;
+            min-height: 200px;
         }
 
         .outcome-card h3 { 
@@ -76,20 +77,25 @@
             position: relative; 
             z-index: 2; 
             flex: 1; 
+            max-width: 80%; /* Ensures text doesn't overlap number too much */
         }
 
-        /* APPLYING THE CUSTOM FONT TO THE NUMBERS HERE */
+        /* NUMBERS POSITIONED UP AND LEFT */
         .outcome-card::before {
             content: attr(data-index); 
-            font-family: 'Udemy Sans Bold', sans-serif; /* Custom font applied */
+            font-family: 'Udemy Sans Bold', sans-serif;
             position: absolute; 
             font-size: 140px; 
             font-weight: 700; 
             color: #F3F4F6;
-            bottom: -30px; 
-            right: -10px; 
+            
+            /* Positioning Adjustments */
+            bottom: -10px; /* Moved up from -30px */
+            right: 15px;   /* Moved left from -10px */
+            
             z-index: 1; 
             line-height: 1;
+            pointer-events: none;
         }
 
         .outcome-link { 
@@ -106,16 +112,21 @@
 
     <section class="sec-outcomes">
         <div class="cards-grid">
+            <!-- Card 1 -->
             <div class="outcome-card" data-index="1">
                 <h3>Build a Portfolio</h3>
                 <p>Don't just watch videos. Create 3 major projects that you can show during interviews.</p>
                 <a href="#" class="outcome-link">View Projects &gt;</a>
             </div>
+            
+            <!-- Card 2 -->
             <div class="outcome-card" data-index="2">
                 <h3>System Design</h3>
                 <p>Learn how to architect scalable apps, a crucial topic for high-paying product roles.</p>
                 <a href="#" class="outcome-link">View Syllabus &gt;</a>
             </div>
+            
+            <!-- Card 3 -->
             <div class="outcome-card" data-index="3">
                 <h3>Interview Prep</h3>
                 <p>Mock interviews with industry experts to help you crack technical rounds.</p>

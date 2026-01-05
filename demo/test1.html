@@ -34,8 +34,8 @@
             --col-purple: #7C5DFA;
             
             /* Sizing */
-            --container-width: 1440px;
-            --inner-width: 1280px; /* Width for Sections 2 and 3 */
+            --container-width: 1280px;
+            --inner-width: 1150px; /* Width for Sections 2 and 3 */
             --radius-xl: 32px;
             --radius-lg: 20px;
             --shadow-premium: 0 20px 40px -12px rgba(14, 95, 58, 0.08);
@@ -123,7 +123,7 @@
         .outcome-card p { font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 16px; position: relative; z-index: 2; flex: 1; }
         .outcome-card::before {
             content: attr(data-index); font-family: 'Udemy Sans Bold', sans-serif; position: absolute; 
-            font-size: 200px; font-weight: 700; color: #F3F4F6; bottom: -15px; right: 15px; z-index: 1; line-height: 1; pointer-events: none;
+            font-size: 200px; font-weight: 700; color: #f2efff; bottom: -30px; right: 15px; z-index: 1; line-height: 1; pointer-events: none;
         }
         .outcome-link { color: var(--col-purple); font-weight: 600; font-size: 0.9rem; position: relative; z-index: 2; text-decoration: none; }
         .outcome-link:hover { text-decoration: underline; }
@@ -167,7 +167,7 @@
 
             .cards-grid { grid-template-columns: 1fr; }
             .section-title { font-size: 26px; }
-            .outcome-card::before { font-size: 140px; }
+            .outcome-card::before { font-size: 200px; bottom: -28px; }
             
             .skill-pill { padding: 8px 12px; gap: 8px; }
             .pill-icon { width: 26px; height: 26px; }

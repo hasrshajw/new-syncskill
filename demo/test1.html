@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Outcomes Section - Large Numbers</title>
+    <title>Course Enrollment, Outcomes & Skills</title>
     
     <!-- FONTS -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
-        /* Define the custom font */
+        /* --- 1. GLOBAL DESIGN TOKENS --- */
         @font-face {
             font-family: 'Udemy Sans Bold';
             src: url('Udemy-Sans-Bold-v1.woff2') format('woff2');
@@ -21,123 +21,283 @@
         }
 
         :root {
+            /* Hero Palette */
+            --brand-primary: #2FBF71;      
+            --brand-dark: #0E5F3A;         
+            --text-main: #111827;          
+            --text-muted: #6B7280;         
+            --bg-page: #FFFFFF;            
+            
+            /* Shared Colors (Outcomes & Skills) */
             --text-secondary: #4B5563;
             --col-dark: #002726;
             --col-purple: #7C5DFA;
+            
+            /* Sizing */
+            --container-width: 1280px;
+            --inner-width: 1100px; /* Width for Sections 2 and 3 */
+            --radius-xl: 32px;
+            --radius-lg: 20px;
+            --shadow-premium: 0 20px 40px -12px rgba(14, 95, 58, 0.08);
         }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'IBM Plex Sans', sans-serif;
-            margin: 0;
-            background-color: #ffffff;
-        }
-
-        /* --- SECTION 5: OUTCOMES --- */
-        .sec-outcomes { 
-            padding: 48px 24px; 
-            max-width: 1300px; 
-            margin: 0 auto; 
-        }
-
-        .cards-grid { 
-            display: grid; 
-            grid-template-columns: 1fr; 
-            gap: 24px; 
-        }
-
-        @media(min-width: 992px) { 
-            .cards-grid { grid-template-columns: 1fr 1fr 1fr; } 
-        }
-        
-        .outcome-card {
-            background: #fff; 
-            border: 1px solid #E5E7EB; 
-            border-radius: 16px; 
-            padding: 28px;
-            position: relative; 
-            overflow: hidden; /* Important: keeps the large numbers inside */
-            display: flex; 
-            flex-direction: column;
-            /* Height is determined purely by content and padding */
-        }
-
-        .outcome-card h3 { 
-            font-size: 1.25rem; 
-            font-weight: 700; 
-            margin: 0 0 8px 0; 
-            color: var(--col-dark); 
-            position: relative; 
-            z-index: 2; /* Keeps title above background number */
-        }
-
-        .outcome-card p { 
-            font-size: 0.95rem; 
-            color: var(--text-secondary); 
-            margin: 0 0 16px 0; 
-            position: relative; 
-            z-index: 2; 
-            flex: 1; 
+            background-color: #FDFDFD;
+            color: var(--text-main);
             line-height: 1.5;
+            padding: 60px 0;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* --- INCREASED BACKGROUND NUMBERS --- */
+        /* Common Layout Helpers */
+        .container-hero { max-width: var(--container-width); margin: 0 auto; }
+        .container-inner { max-width: var(--inner-width); margin: 0 auto; }
+
+        /* --- SECTION 1: HERO CARD --- */
+        .hero-wrapper { margin-bottom: 80px; }
+        .card {
+            background: var(--bg-page);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-premium);
+            border: 1px solid rgba(0, 0, 0, 0.03);
+            padding: 56px;
+            display: flex;
+            align-items: center;
+            gap: 60px;
+            position: relative;
+        }
+
+        .visual-container {
+            width: 520px; min-width: 520px; aspect-ratio: 520 / 400; 
+            flex-shrink: 0; position: relative; border-radius: var(--radius-lg); 
+            overflow: hidden; border: 1px solid rgba(0, 0, 0, 0.08); 
+        }
+
+        .visual-container img {
+            width: 100%; height: 100%; object-fit: cover;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            display: block;
+        }
+        .card:hover .visual-container img { transform: scale(1.04); }
+
+        .content { flex: 1; display: flex; flex-direction: column; justify-content: space-between; align-self: stretch; }
+        .header h1 { font-size: 42px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 16px; }
+        .header p { font-size: 18px; color: var(--text-muted); max-width: 600px; }
+
+        .specs {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px;
+            padding: 32px 0; border-top: 1px solid rgba(0,0,0,0.05); border-bottom: 1px solid rgba(0,0,0,0.05);
+            margin: 32px 0;
+        }
+        .spec-item { display: flex; flex-direction: column; gap: 6px; }
+        .spec-label { font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); font-weight: 600; display: flex; align-items: center; gap: 8px; }
+        .icon-sm { width: 16px; height: 16px; color: var(--brand-primary); }
+        .spec-value { font-size: 16px; font-weight: 600; }
+
+        .footer { display: flex; align-items: center; justify-content: flex-end; }
+        .action-dock { display: flex; align-items: center; gap: 32px; }
+        .price-curr { font-size: 32px; font-weight: 700; color: var(--text-main); line-height: 1.1; }
+        .price-prev { font-size: 14px; color: var(--text-muted); text-decoration: line-through; display: block; }
+        .price-subtext { font-size: 12px; color: var(--text-muted); display: block; margin-top: 4px; }
+        
+        .btn-onyx {
+            background-color: var(--brand-primary); color: #FFFFFF; padding: 0 40px; height: 60px; border-radius: 14px;
+            font-size: 16px; font-weight: 600; border: none; cursor: pointer; transition: all 0.3s ease;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .btn-onyx:hover { transform: translateY(-2px); background-color: var(--brand-dark); box-shadow: 0 10px 25px rgba(47, 191, 113, 0.2); }
+
+        /* --- SECTION 2: OUTCOMES --- */
+        .sec-outcomes { padding: 0 0 48px 0; }
+        .section-title { font-size: 32px; font-weight: 700; color: var(--text-main); margin-bottom: 32px; }
+        
+        .cards-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+        .outcome-card {
+            background: #fff; border: 1px solid #E5E7EB; border-radius: 16px; padding: 28px;
+            position: relative; overflow: hidden; display: flex; flex-direction: column;
+        }
+        .outcome-card h3 { font-size: 1.25rem; font-weight: 700; margin-bottom: 8px; color: var(--col-dark); position: relative; z-index: 2; }
+        .outcome-card p { font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 16px; position: relative; z-index: 2; flex: 1; }
         .outcome-card::before {
-            content: attr(data-index); 
-            font-family: 'Udemy Sans Bold', sans-serif;
-            position: absolute; 
-            
-            /* SIZE INCREASED */
-            font-size: 200px; 
-            
-            font-weight: 700; 
-            color: #F3F4F6;
-            
-            /* POSITIONED UP AND LEFT */
-            bottom: -15px; 
-            right: 15px; 
-            
-            z-index: 1; 
-            line-height: 1;
-            pointer-events: none;
+            content: attr(data-index); font-family: 'Udemy Sans Bold', sans-serif; position: absolute; 
+            font-size: 200px; font-weight: 700; color: #F3F4F6; bottom: -15px; right: 15px; z-index: 1; line-height: 1; pointer-events: none;
+        }
+        .outcome-link { color: var(--col-purple); font-weight: 600; font-size: 0.9rem; position: relative; z-index: 2; text-decoration: none; }
+        .outcome-link:hover { text-decoration: underline; }
+
+        /* --- SECTION 3: SKILLS --- */
+        .sec-skills { padding: 0 0 80px 0; }
+        .pills-grid { display: flex; flex-wrap: wrap; gap: 12px; }
+        
+        .skill-pill {
+            display: flex; align-items: center; gap: 12px; background: #F7F9FA; 
+            border: 1px solid #E5E7EB; padding: 12px 20px; border-radius: 12px; transition: all 0.2s ease; cursor: default;
+        }
+        .pill-icon { 
+            width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; 
+            background: #F0EFFD; border-radius: 8px; color: var(--col-purple); flex-shrink: 0;
+        }
+        .pill-icon svg { width: 18px; height: 18px; stroke-width: 2.5; fill: none; stroke: currentColor; }
+        .skill-pill span { font-size: 1rem; font-weight: 500; color: var(--text-secondary); }
+
+        .skill-pill:hover { 
+            transform: translateY(-2px); border-color: var(--col-purple); 
+            background: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.05); 
         }
 
-        .outcome-link { 
-            color: var(--col-purple); 
-            font-weight: 600; 
-            font-size: 0.9rem; 
-            position: relative; 
-            z-index: 2; 
-            text-decoration: none;
+        /* --- RESPONSIVE --- */
+        @media (max-width: 1100px) {
+            .container-hero, .container-inner { padding: 0 24px; }
+            .cards-grid { grid-template-columns: 1fr 1fr; }
         }
 
-        .outcome-link:hover {
-            text-decoration: underline;
+        @media (max-width: 768px) {
+            body { padding: 20px 0; }
+            .card { flex-direction: column; padding: 24px; gap: 24px; }
+            .visual-container { width: 100%; min-width: 0; }
+            .header h1 { font-size: 28px; }
+            .specs { grid-template-columns: 1fr 1fr; gap: 20px; }
+            .hide-mobile { display: none; }
+            .action-dock { width: 100%; flex-direction: column; background: #F9FAFB; padding: 16px; border-radius: 16px; gap: 16px; }
+            .price-group { text-align: center; }
+            .btn-onyx { width: 100%; justify-content: center; }
+
+            .cards-grid { grid-template-columns: 1fr; }
+            .section-title { font-size: 26px; }
+            .outcome-card::before { font-size: 140px; }
+            
+            .skill-pill { padding: 8px 12px; gap: 8px; }
+            .pill-icon { width: 26px; height: 26px; }
+            .pill-icon svg { width: 14px; height: 14px; }
+            .skill-pill span { font-size: 0.85rem; }
         }
     </style>
 </head>
 <body>
 
+    <!-- SECTION 1: HERO -->
+    <div class="container-hero">
+        <div class="hero-wrapper">
+            <article class="card">
+                <div class="visual-container">
+                    <img src="https://images.unsplash.com/photo-1555099962-4199c345e5dd?q=80&w=800&auto=format&fit=crop" alt="Coding Setup">
+                </div>
+
+                <div class="content">
+                    <div class="header">
+                        <h1>Full Stack Web Development</h1>
+                        <p>Learn by building real-world systems, not just watching tutorials. A live 12-week mentorship designed to make you industry-ready.</p>
+                    </div>
+
+                    <div class="specs">
+                        <div class="spec-item">
+                            <div class="spec-label">
+                                <svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                                Start Date
+                            </div>
+                            <span class="spec-value">Feb 10, 2026</span>
+                        </div>
+                        <div class="spec-item hide-mobile">
+                            <div class="spec-label">
+                                <svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                                Schedule
+                            </div>
+                            <span class="spec-value">Live (Sat & Sun)</span>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-label">
+                                <svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4.5 9h15M4.5 15h15M10 2h4M6 2v20M18 2v20"/></svg>
+                                Level
+                            </div>
+                            <span class="spec-value">Beginner to Pro</span>
+                        </div>
+                    </div>
+
+                    <div class="footer">
+                        <div class="action-dock">
+                            <div class="price-group">
+                                <span class="price-prev">₹12,000</span>
+                                <span class="price-curr">₹4,999</span>
+                                <span class="price-subtext">One-time fee • No hidden charges</span>
+                            </div>
+                            <button class="btn-onyx">
+                                Enroll Now
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </div>
+
+    <!-- SECTION 2: OUTCOMES -->
     <section class="sec-outcomes">
-        <div class="cards-grid">
-            <!-- Card 1 -->
-            <div class="outcome-card" data-index="1">
-                <h3>Build a Portfolio</h3>
-                <p>Don't just watch videos. Create 3 major projects that you can show during interviews.</p>
-                <a href="#" class="outcome-link">View Projects &gt;</a>
+        <div class="container-inner">
+            <h2 class="section-title">What you'll learn</h2>
+            <div class="cards-grid">
+                <div class="outcome-card" data-index="1">
+                    <h3>Build a Portfolio</h3>
+                    <p>Don't just watch videos. Create 3 major projects that you can show during interviews.</p>
+                    <a href="#" class="outcome-link">View Projects &gt;</a>
+                </div>
+                <div class="outcome-card" data-index="2">
+                    <h3>System Design</h3>
+                    <p>Learn how to architect scalable apps, a crucial topic for high-paying product roles.</p>
+                    <a href="#" class="outcome-link">View Syllabus &gt;</a>
+                </div>
+                <div class="outcome-card" data-index="3">
+                    <h3>Interview Prep</h3>
+                    <p>Mock interviews with industry experts to help you crack technical rounds.</p>
+                    <a href="#" class="outcome-link">Learn More &gt;</a>
+                </div>
             </div>
+        </div>
+    </section>
 
-            <!-- Card 2 -->
-            <div class="outcome-card" data-index="2">
-                <h3>System Design</h3>
-                <p>Learn how to architect scalable apps, a crucial topic for high-paying product roles.</p>
-                <a href="#" class="outcome-link">View Syllabus &gt;</a>
-            </div>
-
-            <!-- Card 3 -->
-            <div class="outcome-card" data-index="3">
-                <h3>Interview Prep</h3>
-                <p>Mock interviews with industry experts to help you crack technical rounds.</p>
-                <a href="#" class="outcome-link">Learn More &gt;</a>
+    <!-- SECTION 3: SKILLS -->
+    <section class="sec-skills">
+        <div class="container-inner">
+            <div class="pills-grid">
+                <div class="skill-pill">
+                    <div class="pill-icon">
+                        <svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                    </div>
+                    <span>React.js</span>
+                </div>
+                <div class="skill-pill">
+                    <div class="pill-icon">
+                        <svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg>
+                    </div>
+                    <span>Node.js</span>
+                </div>
+                <div class="skill-pill">
+                    <div class="pill-icon">
+                        <svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg>
+                    </div>
+                    <span>MongoDB</span>
+                </div>
+                <div class="skill-pill">
+                    <div class="pill-icon">
+                        <svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                    </div>
+                    <span>Express</span>
+                </div>
+                <div class="skill-pill">
+                    <div class="pill-icon">
+                        <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
+                    </div>
+                    <span>Tailwind CSS</span>
+                </div>
+                <div class="skill-pill">
+                    <div class="pill-icon">
+                        <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                    </div>
+                    <span>System Design</span>
+                </div>
             </div>
         </div>
     </section>

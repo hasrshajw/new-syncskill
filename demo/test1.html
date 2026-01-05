@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Extracted Outcomes Section</title>
+    
+    <!-- External Fonts for text -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Define the custom font for the background numbers */
+        @font-face {
+            font-family: 'Udemy Sans Bold';
+            src: url('Udemy-Sans-Bold-v1.woff2') format('woff2');
+            font-weight: bold;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        :root {
+            --text-secondary: #4B5563;
+            --col-dark: #002726;
+            --col-purple: #7C5DFA;
+        }
+
+        body {
+            font-family: 'IBM Plex Sans', sans-serif;
+            margin: 0;
+            background-color: #ffffff;
+        }
+
+        /* EXTRACTED SECTION STYLES */
+        .sec-outcomes { 
+            padding: 48px 24px; 
+            max-width: 1300px; 
+            margin: 0 auto; 
+        }
+
+        .cards-grid { 
+            display: grid; 
+            grid-template-columns: 1fr; 
+            gap: 24px; 
+        }
+
+        @media(min-width: 992px) { 
+            .cards-grid { grid-template-columns: 1fr 1fr 1fr; } 
+        }
+        
+        .outcome-card {
+            background: #fff; 
+            border: 1px solid #E5E7EB; 
+            border-radius: 16px; 
+            padding: 28px;
+            position: relative; 
+            overflow: hidden; 
+            display: flex; 
+            flex-direction: column;
+        }
+
+        .outcome-card h3 { 
+            font-size: 1.25rem; 
+            font-weight: 700; 
+            margin: 0 0 8px 0; 
+            color: var(--col-dark); 
+            position: relative; 
+            z-index: 2; 
+        }
+
+        .outcome-card p { 
+            font-size: 0.95rem; 
+            color: var(--text-secondary); 
+            margin-bottom: 16px; 
+            position: relative; 
+            z-index: 2; 
+            flex: 1; 
+        }
+
+        /* APPLYING THE CUSTOM FONT TO THE NUMBERS HERE */
+        .outcome-card::before {
+            content: attr(data-index); 
+            font-family: 'Udemy Sans Bold', sans-serif; /* Custom font applied */
+            position: absolute; 
+            font-size: 140px; 
+            font-weight: 700; 
+            color: #F3F4F6;
+            bottom: -30px; 
+            right: -10px; 
+            z-index: 1; 
+            line-height: 1;
+        }
+
+        .outcome-link { 
+            color: var(--col-purple); 
+            font-weight: 600; 
+            font-size: 0.9rem; 
+            position: relative; 
+            z-index: 2; 
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+    <section class="sec-outcomes">
+        <div class="cards-grid">
+            <div class="outcome-card" data-index="1">
+                <h3>Build a Portfolio</h3>
+                <p>Don't just watch videos. Create 3 major projects that you can show during interviews.</p>
+                <a href="#" class="outcome-link">View Projects &gt;</a>
+            </div>
+            <div class="outcome-card" data-index="2">
+                <h3>System Design</h3>
+                <p>Learn how to architect scalable apps, a crucial topic for high-paying product roles.</p>
+                <a href="#" class="outcome-link">View Syllabus &gt;</a>
+            </div>
+            <div class="outcome-card" data-index="3">
+                <h3>Interview Prep</h3>
+                <p>Mock interviews with industry experts to help you crack technical rounds.</p>
+                <a href="#" class="outcome-link">Learn More &gt;</a>
+            </div>
+        </div>
+    </section>
+
+</body>
+</html>

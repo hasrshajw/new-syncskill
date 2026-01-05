@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* --- 1. DESIGN TOKENS --- */
+        /* --- DESIGN TOKENS --- */
         :root {
             --bg-body: #F3F4F6;
             --bg-card: #FFFFFF;
@@ -39,8 +39,6 @@
         }
 
         /* --- HERO STYLES --- */
-        .hero-wrapper { width: 100%; }
-        
         .card {
             background: var(--bg-card);
             border-radius: var(--radius-xl);
@@ -57,6 +55,8 @@
             width: 440px; min-width: 440px; height: 340px;
             flex-shrink: 0; position: relative;
             border-radius: var(--radius-lg); overflow: hidden;
+            /* Lite border added to the container holding the image */
+            border: 1px solid rgba(0,0,0,0.08); 
         }
 
         .visual-container img {
@@ -92,13 +92,15 @@
         .spec-value { font-size: 15px; font-weight: 500; color: var(--text-primary); }
         .icon-sm { width: 14px; height: 14px; opacity: 0.6; }
 
-        /* Updated Footer to handle removed mentor info */
         .footer { display: flex; align-items: center; justify-content: flex-end; }
 
         .action-dock { display: flex; align-items: center; gap: 28px; }
         .price-group { text-align: right; }
         .price-prev { font-size: 13px; color: var(--text-tertiary); text-decoration: line-through; display: block; }
-        .price-curr { font-size: 26px; font-weight: 600; color: var(--text-primary); }
+        .price-curr { font-size: 26px; font-weight: 600; color: var(--text-primary); line-height: 1.2; }
+        
+        /* New style for price subtext */
+        .price-subtext { font-size: 11px; color: var(--text-tertiary); display: block; margin-top: 2px; }
         
         .btn-onyx {
             background-color: var(--accent-black); color: #fff;
@@ -109,7 +111,6 @@
         }
         .btn-onyx:hover { transform: translateY(-2px); background-color: #000; }
 
-        /* --- RESPONSIVE --- */
         @media (max-width: 960px) {
             .card { flex-direction: column; padding: 20px; gap: 24px; }
             .visual-container { width: 100%; min-width: 0; height: auto; aspect-ratio: 16/9; }
@@ -125,17 +126,17 @@
     <div class="container">
         <div class="hero-wrapper">
             <article class="card">
-                <!-- Visual -->
+                <!-- Visual Container with Lite Border -->
                 <div class="visual-container">
                     <div class="tag">Cohort 12 Filling Fast</div>
                     <img src="https://images.unsplash.com/photo-1555099962-4199c345e5dd?q=80&w=800&auto=format&fit=crop" alt="Coding Setup">
                 </div>
 
-                <!-- Content -->
                 <div class="content">
                     <div class="header">
                         <h1>Full Stack Web Development</h1>
-                        <p>Don't just learn syntax. Build real systems. A comprehensive 12-week mentorship to transform you from a student to an industry-ready engineer.</p>
+                        <!-- Updated Description -->
+                        <p>Learn by building real-world systems, not just watching tutorials.<br>A live 12-week mentorship designed to make you industry-ready.</p>
                     </div>
 
                     <div class="specs">
@@ -167,6 +168,8 @@
                             <div class="price-group">
                                 <span class="price-prev">₹12,000</span>
                                 <span class="price-curr">₹4,999</span>
+                                <!-- New Small Text Added Here -->
+                                <span class="price-subtext">One-time fee • No hidden charges</span>
                             </div>
                             <button class="btn-onyx">
                                 Enroll Now

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- 1. DESIGN TOKENS --- */
+        :root {
+            --bg-body: #F3F4F6;
+            --bg-card: #FFFFFF;
+            --text-primary: #111827;
+            --text-secondary: #4B5563;
+            --text-tertiary: #9CA3AF;
+            --accent-black: #0F172A; 
+            --accent-purple: #7C5DFA;
+            --space-card-padding: 40px;
+            --gap-desktop: 48px;
+            --container-width: 1080px;
+            --shadow-card: 0 25px 50px -12px rgba(0, 0, 0, 0.08);
+            --border-subtle: 1px solid rgba(0,0,0,0.06);
+            --radius-xl: 24px;
+            --radius-lg: 16px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'IBM Plex Sans', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-primary);
+            padding: 40px 0;
+        }
+
+        .container {
+            max-width: var(--container-width);
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* --- HERO STYLES --- */
+        .hero-wrapper { width: 100%; }
+        
+        .card {
+            background: var(--bg-card);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-card);
+            border: 1px solid #FFFFFF;
+            padding: var(--space-card-padding);
+            display: flex;
+            align-items: flex-start;
+            gap: var(--gap-desktop);
+            position: relative;
+        }
+
+        .visual-container {
+            width: 440px; min-width: 440px; height: 340px;
+            flex-shrink: 0; position: relative;
+            border-radius: var(--radius-lg); overflow: hidden;
+        }
+
+        .visual-container img {
+            width: 100%; height: 100%; object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        .card:hover .visual-container img { transform: scale(1.03); }
+
+        .tag {
+            position: absolute; top: 16px; left: 16px; z-index: 10;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(4px);
+            padding: 6px 14px; border-radius: 100px;
+            font-size: 12px; font-weight: 600; text-transform: uppercase;
+            color: var(--text-primary);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            display: flex; align-items: center; gap: 6px;
+        }
+        .tag::before { content:''; width:6px; height:6px; background: var(--accent-purple); border-radius:50%; }
+
+        .content { flex: 1; display: flex; flex-direction: column; min-height: 340px; justify-content: space-between; }
+        
+        .header h1 { font-size: 34px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 12px; }
+        .header p { font-size: 16px; line-height: 1.6; color: var(--text-secondary); }
+
+        .specs {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+            padding: 28px 0; border-top: var(--border-subtle); border-bottom: var(--border-subtle);
+            margin-bottom: 28px;
+        }
+        .spec-item { display: flex; flex-direction: column; gap: 6px; }
+        .spec-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-tertiary); font-weight: 600; display: flex; align-items: center; gap: 6px; }
+        .spec-value { font-size: 15px; font-weight: 500; color: var(--text-primary); }
+        .icon-sm { width: 14px; height: 14px; opacity: 0.6; }
+
+        /* Updated Footer to handle removed mentor info */
+        .footer { display: flex; align-items: center; justify-content: flex-end; }
+
+        .action-dock { display: flex; align-items: center; gap: 28px; }
+        .price-group { text-align: right; }
+        .price-prev { font-size: 13px; color: var(--text-tertiary); text-decoration: line-through; display: block; }
+        .price-curr { font-size: 26px; font-weight: 600; color: var(--text-primary); }
+        
+        .btn-onyx {
+            background-color: var(--accent-black); color: #fff;
+            padding: 0 36px; height: 52px; border-radius: 10px;
+            font-family: inherit; font-size: 15px; font-weight: 500;
+            border: none; cursor: pointer; transition: all 0.2s ease;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .btn-onyx:hover { transform: translateY(-2px); background-color: #000; }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 960px) {
+            .card { flex-direction: column; padding: 20px; gap: 24px; }
+            .visual-container { width: 100%; min-width: 0; height: auto; aspect-ratio: 16/9; }
+            .specs { grid-template-columns: 1fr 1fr; }
+            .spec-item:nth-child(3) { display: none; }
+            .footer { width: 100%; }
+            .action-dock { width: 100%; background: #F9FAFB; padding: 16px; border-radius: 16px; justify-content: space-between; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="hero-wrapper">
+            <article class="card">
+                <!-- Visual -->
+                <div class="visual-container">
+                    <div class="tag">Cohort 12 Filling Fast</div>
+                    <img src="https://images.unsplash.com/photo-1555099962-4199c345e5dd?q=80&w=800&auto=format&fit=crop" alt="Coding Setup">
+                </div>
+
+                <!-- Content -->
+                <div class="content">
+                    <div class="header">
+                        <h1>Full Stack Web Development</h1>
+                        <p>Don't just learn syntax. Build real systems. A comprehensive 12-week mentorship to transform you from a student to an industry-ready engineer.</p>
+                    </div>
+
+                    <div class="specs">
+                        <div class="spec-item">
+                            <div class="spec-label">
+                                <svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                                Start Date
+                            </div>
+                            <span class="spec-value">Feb 10, 2026</span>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-label">
+                                <svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                                Schedule
+                            </div>
+                            <span class="spec-value">Live (Sat & Sun)</span>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-label">
+                                <svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4.5 9h15M4.5 15h15M10 2h4M6 2v20M18 2v20"/></svg>
+                                Level
+                            </div>
+                            <span class="spec-value">Beginner to Pro</span>
+                        </div>
+                    </div>
+
+                    <div class="footer">
+                        <div class="action-dock">
+                            <div class="price-group">
+                                <span class="price-prev">₹12,000</span>
+                                <span class="price-curr">₹4,999</span>
+                            </div>
+                            <button class="btn-onyx">
+                                Enroll Now
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </div>
+
+</body>
+</html>

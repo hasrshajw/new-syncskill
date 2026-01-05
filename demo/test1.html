@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Outcomes Section - Custom Font</title>
+    <title>Extracted Outcomes Section</title>
     
-    <!-- External Fonts for text content -->
+    <!-- FONTS -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 
     <style>
-        /* Define the custom font provided by the user */
+        /* Define the custom font */
         @font-face {
             font-family: 'Udemy Sans Bold';
             src: url('Udemy-Sans-Bold-v1.woff2') format('woff2');
@@ -30,17 +30,15 @@
             font-family: 'IBM Plex Sans', sans-serif;
             margin: 0;
             background-color: #ffffff;
-            -webkit-font-smoothing: antialiased;
         }
 
-        /* --- SECTION CONTAINER --- */
+        /* --- SECTION 5: OUTCOMES (EXTRACTED) --- */
         .sec-outcomes { 
             padding: 48px 24px; 
             max-width: 1300px; 
             margin: 0 auto; 
         }
 
-        /* --- GRID CONFIG --- */
         .cards-grid { 
             display: grid; 
             grid-template-columns: 1fr; 
@@ -51,17 +49,16 @@
             .cards-grid { grid-template-columns: 1fr 1fr 1fr; } 
         }
         
-        /* --- CARD STYLES --- */
         .outcome-card {
             background: #fff; 
             border: 1px solid #E5E7EB; 
             border-radius: 16px; 
             padding: 28px;
-            position: relative; /* Anchor for the background numbers */
+            position: relative; 
             overflow: hidden; 
             display: flex; 
             flex-direction: column;
-            min-height: 200px; /* Ensures consistent height across cards */
+            /* No height or min-height set to prevent resizing */
         }
 
         .outcome-card h3 { 
@@ -70,35 +67,33 @@
             margin: 0 0 8px 0; 
             color: var(--col-dark); 
             position: relative; 
-            z-index: 2; /* Sits above the number */
+            z-index: 2; 
         }
 
         .outcome-card p { 
             font-size: 0.95rem; 
             color: var(--text-secondary); 
-            margin-bottom: 16px; 
+            margin: 0 0 16px 0; 
             position: relative; 
             z-index: 2; 
             flex: 1; 
-            line-height: 1.6;
         }
 
-        /* --- BACKGROUND NUMBERS (1, 2, 3) --- */
         .outcome-card::before {
             content: attr(data-index); 
-            font-family: 'Udemy Sans Bold', sans-serif;
+            font-family: 'Udemy Sans Bold', sans-serif; /* Custom Font Applied */
             position: absolute; 
             font-size: 140px; 
             font-weight: 700; 
             color: #F3F4F6;
             
-            /* MOVED UP AND LEFT */
-            bottom: -5px;  /* Changed from -30px (Moves it UP) */
-            right: 15px;   /* Changed from -10px (Moves it LEFT) */
+            /* Positioned Up and Left compared to original */
+            bottom: -10px; 
+            right: 10px; 
             
             z-index: 1; 
             line-height: 1;
-            pointer-events: none; /* Prevents text selection interference */
+            pointer-events: none;
         }
 
         .outcome-link { 
@@ -108,11 +103,6 @@
             position: relative; 
             z-index: 2; 
             text-decoration: none;
-            display: inline-block;
-        }
-
-        .outcome-link:hover {
-            text-decoration: underline;
         }
     </style>
 </head>
@@ -120,21 +110,16 @@
 
     <section class="sec-outcomes">
         <div class="cards-grid">
-            <!-- Card 1 -->
             <div class="outcome-card" data-index="1">
                 <h3>Build a Portfolio</h3>
                 <p>Don't just watch videos. Create 3 major projects that you can show during interviews.</p>
                 <a href="#" class="outcome-link">View Projects &gt;</a>
             </div>
-
-            <!-- Card 2 -->
             <div class="outcome-card" data-index="2">
                 <h3>System Design</h3>
                 <p>Learn how to architect scalable apps, a crucial topic for high-paying product roles.</p>
                 <a href="#" class="outcome-link">View Syllabus &gt;</a>
             </div>
-
-            <!-- Card 3 -->
             <div class="outcome-card" data-index="3">
                 <h3>Interview Prep</h3>
                 <p>Mock interviews with industry experts to help you crack technical rounds.</p>

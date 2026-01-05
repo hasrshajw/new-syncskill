@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Extracted Outcomes Section</title>
+    <title>Outcomes Section - Custom Font</title>
     
-    <!-- External Fonts for text -->
+    <!-- External Fonts for text content -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 
     <style>
-        /* Define the custom font for the background numbers */
+        /* Define the custom font provided by the user */
         @font-face {
             font-family: 'Udemy Sans Bold';
             src: url('Udemy-Sans-Bold-v1.woff2') format('woff2');
@@ -33,12 +33,14 @@
             -webkit-font-smoothing: antialiased;
         }
 
+        /* --- SECTION CONTAINER --- */
         .sec-outcomes { 
             padding: 48px 24px; 
             max-width: 1300px; 
             margin: 0 auto; 
         }
 
+        /* --- GRID CONFIG --- */
         .cards-grid { 
             display: grid; 
             grid-template-columns: 1fr; 
@@ -49,16 +51,17 @@
             .cards-grid { grid-template-columns: 1fr 1fr 1fr; } 
         }
         
+        /* --- CARD STYLES --- */
         .outcome-card {
             background: #fff; 
             border: 1px solid #E5E7EB; 
             border-radius: 16px; 
             padding: 28px;
-            position: relative; 
+            position: relative; /* Anchor for the background numbers */
             overflow: hidden; 
             display: flex; 
             flex-direction: column;
-            min-height: 200px;
+            min-height: 200px; /* Ensures consistent height across cards */
         }
 
         .outcome-card h3 { 
@@ -67,7 +70,7 @@
             margin: 0 0 8px 0; 
             color: var(--col-dark); 
             position: relative; 
-            z-index: 2; 
+            z-index: 2; /* Sits above the number */
         }
 
         .outcome-card p { 
@@ -77,10 +80,10 @@
             position: relative; 
             z-index: 2; 
             flex: 1; 
-            max-width: 80%; /* Ensures text doesn't overlap number too much */
+            line-height: 1.6;
         }
 
-        /* NUMBERS POSITIONED UP AND LEFT */
+        /* --- BACKGROUND NUMBERS (1, 2, 3) --- */
         .outcome-card::before {
             content: attr(data-index); 
             font-family: 'Udemy Sans Bold', sans-serif;
@@ -89,13 +92,13 @@
             font-weight: 700; 
             color: #F3F4F6;
             
-            /* Positioning Adjustments */
-            bottom: -10px; /* Moved up from -30px */
-            right: 15px;   /* Moved left from -10px */
+            /* MOVED UP AND LEFT */
+            bottom: -5px;  /* Changed from -30px (Moves it UP) */
+            right: 15px;   /* Changed from -10px (Moves it LEFT) */
             
             z-index: 1; 
             line-height: 1;
-            pointer-events: none;
+            pointer-events: none; /* Prevents text selection interference */
         }
 
         .outcome-link { 
@@ -105,6 +108,11 @@
             position: relative; 
             z-index: 2; 
             text-decoration: none;
+            display: inline-block;
+        }
+
+        .outcome-link:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
@@ -118,14 +126,14 @@
                 <p>Don't just watch videos. Create 3 major projects that you can show during interviews.</p>
                 <a href="#" class="outcome-link">View Projects &gt;</a>
             </div>
-            
+
             <!-- Card 2 -->
             <div class="outcome-card" data-index="2">
                 <h3>System Design</h3>
                 <p>Learn how to architect scalable apps, a crucial topic for high-paying product roles.</p>
                 <a href="#" class="outcome-link">View Syllabus &gt;</a>
             </div>
-            
+
             <!-- Card 3 -->
             <div class="outcome-card" data-index="3">
                 <h3>Interview Prep</h3>

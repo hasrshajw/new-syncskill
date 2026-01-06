@@ -75,18 +75,57 @@
         }
 
         .visual-container {
-            width: 480px; flex-basis: 480px; flex-shrink: 1; aspect-ratio: 520 / 400; position: relative; border-radius: var(--radius-lg); overflow: hidden; border: 1px solid rgba(0, 0, 0, 0.08); 
+            width: 480px; 
+            flex-basis: 480px; 
+            flex-shrink: 1;    
+            aspect-ratio: 520 / 400; 
+            position: relative; 
+            border-radius: var(--radius-lg); 
+            overflow: hidden; 
+            border: 1px solid rgba(0, 0, 0, 0.08); 
         }
-        .visual-container img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); display: block; }
+
+        .visual-container img {
+            width: 100%; height: 100%; object-fit: cover;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            display: block;
+        }
         .card:hover .visual-container img { transform: scale(1.04); }
 
-        .content { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: space-between; align-self: stretch; }
+        .content { 
+            flex: 1; 
+            min-width: 0; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: space-between; 
+            align-self: stretch; 
+        }
+        
         .header h1 { font-size: 42px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 16px; color: var(--text-main); }
         .header p { font-size: 18px; color: var(--text-muted); max-width: 600px; }
 
-        .specs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; padding: 24px 0; border-top: 1px solid rgba(0,0,0,0.05); border-bottom: 1px solid rgba(0,0,0,0.05); margin: 24px 0; text-align: left; }
+        .specs {
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 20px;
+            padding: 24px 0; 
+            border-top: 1px solid rgba(0,0,0,0.05); 
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            margin: 24px 0;
+            text-align: left;
+        }
         .spec-item { display: flex; flex-direction: column; gap: 6px; }
-        .spec-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); font-weight: 700; display: flex; align-items: center; gap: 8px; justify-content: flex-start; }
+        .spec-label { 
+            font-size: 11px; 
+            text-transform: uppercase; 
+            letter-spacing: 0.08em; 
+            color: var(--text-muted); 
+            font-weight: 700; 
+            display: flex; 
+            align-items: center; 
+            gap: 8px; 
+            justify-content: flex-start;
+        }
         .icon-sm { width: 18px; height: 18px; color: var(--brand-primary); flex-shrink: 0; }
         .spec-value { font-size: 16px; font-weight: 600; color: var(--text-main); }
 
@@ -105,7 +144,7 @@
 
         /* --- SECTION 2: OUTCOMES --- */
         .sec-outcomes { padding: 0 0 48px 0; }
-        .section-title { font-size: 32px; font-weight: 700; color: var(--text-main); margin-bottom: 32px; text-align: left; }
+        .section-title { font-size: 32px; font-weight: 700; color: var(--text-main); margin-bottom: 32px; }
         
         .cards-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
         .outcome-card {
@@ -134,7 +173,7 @@
         .skill-pill:hover { transform: translateY(-2px); border-color: var(--brand-primary); background: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
 
         /* --- SECTION 4: PROMO --- */
-        .sec-promo { background-color: var(--brand-light); color: var(--text-main); padding: 80px 0; margin-bottom: 80px; }
+        .sec-promo { background-color: var(--brand-light); color: var(--text-main); padding: 80px 0; }
         .promo-grid { display: flex; flex-direction: column; gap: 48px; max-width: 1200px; margin: 0 auto; padding: 0 24px; }
         .promo-content h2 { font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 700; line-height: 1.1; margin-bottom: 16px; letter-spacing: -0.02em; color: var(--text-main); }
         .promo-content p { font-size: 1.1rem; color: var(--text-muted); max-width: 60ch; line-height: 1.6; margin-bottom: 24px; }
@@ -150,55 +189,98 @@
         .included-item { display: flex; align-items: center; gap: 14px; font-weight: 600; font-size: 1rem; color: var(--text-main); }
         .included-icon { color: var(--brand-primary); width: 24px; height: 24px; flex-shrink: 0; }
 
-        /* --- SECTION 5: SYLLABUS --- */
-        .sec-syllabus { padding: 0 0 80px 0; }
-        
+        /* --- SECTION 5: SYLLABUS (NEW SECTION) --- */
+        .sec-syllabus {
+            padding: 80px 0;
+            background-color: #F9FAFB;
+            background-image: radial-gradient(#E5E7EB 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+        .syllabus-container { max-width: 1000px; margin: 0 auto; padding: 0 20px; }
+        .syllabus-title {
+            font-size: clamp(2rem, 5vw, 2.8rem);
+            font-weight: 700; text-align: left;
+            margin-bottom: 48px; letter-spacing: -0.03em;
+            color: #1F2937;
+        }
         .module-card {
-            background: #FFFFFF; border: var(--border-heavy); border-radius: 24px;
-            box-shadow: var(--shadow-premium); margin-bottom: 40px; overflow: hidden; padding: 32px;
+            background: #FFFFFF; border: 1px solid #E2E4E9;
+            border-radius: 24px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+            margin-bottom: 40px; overflow: hidden; padding: 32px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
-
+        .module-card:hover {
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.01);
+            border-color: #D1D5DB;
+        }
         .module-heading {
-            font-size: 20px; font-weight: 700; margin-bottom: 24px; padding-bottom: 16px;
-            border-bottom: 1px solid #F3F4F6; display: flex; align-items: center; gap: 12px;
+            font-size: 20px; font-weight: 700; margin-bottom: 24px; padding-bottom: 20px;
+            border-bottom: 1px solid #F3F4F6; display: flex; align-items: center; flex-wrap: wrap; gap: 12px;
         }
-
         .module-heading span.badge {
-            background: var(--brand-primary); color: white; padding: 4px 12px;
-            border-radius: 8px; font-size: 14px; white-space: nowrap;
+            background: var(--brand-light); color: var(--brand-primary); border: 1px solid var(--brand-primary);
+            padding: 4px 10px; display: flex; align-items: center; justify-content: center;
+            border-radius: 6px; font-size: 13px; font-weight: 600; white-space: nowrap;
         }
-
-        .card-layout { display: grid; grid-template-columns: 1fr; gap: 24px; }
-
-        @media (min-width: 992px) {
-            .card-layout { grid-template-columns: 320px 1fr; align-items: start; }
-            .promo-grid { display: grid; grid-template-columns: 1.4fr 1fr; align-items: center; gap: 80px; }
+        .card-layout { display: grid; grid-template-columns: 1fr; gap: 28px; }
+        .preview-box {
+            background: #FFFFFF; border: 1px solid #E2E4E9;
+            border-radius: 16px; overflow: hidden; display: flex; flex-direction: column;
         }
-
-        .preview-box { background: #FAFBFC; border: 1px solid #E5E7EB; border-radius: 16px; overflow: hidden; }
-        .preview-img { width: 100%; height: 160px; object-fit: cover; }
+        .preview-img { 
+            width: 100%; height: 160px; object-fit: cover;
+            border-bottom: 1px solid #E2E4E9; display: none; 
+        }
         .preview-text { padding: 20px; }
-        .preview-text h4 { font-size: 17px; font-weight: 600; margin-bottom: 8px; }
-        .preview-text p { font-size: 14px; color: var(--text-muted); margin-bottom: 16px; }
-        .view-link-syllabus { color: var(--brand-primary); font-weight: 600; font-size: 14px; display: inline-flex; align-items: center; gap: 4px; }
-
-        .accordion-header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-        .control-btn { background: transparent; border: none; color: var(--brand-primary); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; cursor: pointer; }
+        .preview-text h4 { font-size: 16px; font-weight: 700; margin-bottom: 8px; color: #111827; }
+        .preview-text p { font-size: 14px; color: #4B5563; margin-bottom: 16px; line-height: 1.5; }
+        .view-link { 
+            color: var(--brand-primary); font-weight: 600; text-decoration: none; font-size: 14px; 
+            display: inline-flex; align-items: center; gap: 4px; padding: 8px 0;
+        }
+        .view-link:hover { text-decoration: underline; }
+        .view-link svg { width: 16px; height: 16px; }
+        .accordion-header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding: 0 4px; }
+        .control-btn {
+            background: transparent; border: none; color: var(--brand-primary);
+            font-size: 12px; font-weight: 600; text-transform: uppercase;
+            letter-spacing: 0.05em; cursor: pointer; padding: 6px 10px;
+            border-radius: 4px; transition: background 0.2s;
+        }
+        .control-btn:hover { background: var(--brand-light); }
         .hidden { display: none; }
-
-        .accordion-group { border: 1px solid #E5E7EB; border-radius: 16px; overflow: hidden; }
-        .acc-item { border-bottom: 1px solid #E5E7EB; }
+        .accordion-group { border: 1px solid #E2E4E9; border-radius: 16px; overflow: hidden; background: #fff; }
+        .acc-item { border-bottom: 1px solid #E2E4E9; }
         .acc-item:last-child { border-bottom: none; }
-        .acc-trigger { width: 100%; padding: 16px 20px; background: #fff; border: none; display: flex; justify-content: space-between; align-items: center; cursor: pointer; text-align: left; }
+        .acc-trigger {
+            width: 100%; padding: 18px 24px; background: #fff; border: none;
+            display: flex; justify-content: space-between; align-items: center;
+            cursor: pointer; text-align: left; font-family: inherit; transition: background 0.2s;
+        }
         .acc-trigger:hover { background: #F9FAFB; }
-        .acc-title { font-size: 15px; font-weight: 600; color: var(--text-main); display: flex; align-items: center; gap: 12px; }
-        .acc-number { color: #9CA3AF; font-weight: 400; font-size: 12px; }
-        .acc-content { max-height: 0; overflow: hidden; transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1); background: #FAFBFC; padding: 0 20px; }
-        .acc-item.active .acc-content { padding-top: 12px; padding-bottom: 20px; max-height: 500px; }
-        .acc-item.active .acc-trigger svg { transform: rotate(180deg); }
+        .acc-item.active .acc-trigger { background: #FAFBFC; }
+        .acc-title { font-size: 15px; font-weight: 600; color: var(--text-main); display: flex; align-items: center; gap: 16px; }
+        .acc-number { color: #D1D5DB; font-weight: 500; font-size: 13px; min-width: 20px; }
+        .acc-item.active .acc-number { color: var(--brand-primary); }
+        .acc-content {
+            max-height: 0; overflow: hidden;
+            transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), padding 0.35s ease;
+            background: #FAFBFC; padding: 0 24px;
+            box-shadow: inset 0 4px 6px -4px rgba(0,0,0,0.05); 
+        }
+        .acc-item.active .acc-content { padding-top: 16px; padding-bottom: 24px; max-height: 500px; }
+        .acc-item.active .acc-trigger svg { transform: rotate(180deg); color: var(--brand-primary); }
         .acc-trigger svg { transition: transform 0.3s ease; color: #9CA3AF; }
-
-        /* --- RESPONSIVE ADJUSTMENTS --- */
+        .acc-content p { font-size: 14px; color: #4B5563; line-height: 1.6; max-width: 90%; }
+        
+        /* --- RESPONSIVE --- */
+        @media (min-width: 992px) { 
+            .promo-grid { display: grid; grid-template-columns: 1.4fr 1fr; align-items: center; gap: 80px; } 
+            .card-layout { grid-template-columns: 300px 1fr; align-items: start; }
+            .preview-img { display: block; }
+        }
+        
         @media (max-width: 1100px) {
             .card { gap: 30px; padding: 32px; }
             .visual-container { flex-basis: 350px; }
@@ -213,9 +295,14 @@
             .visual-container { width: calc(100% - 24px); margin: 0 12px; flex-basis: auto; border-radius: 16px; }
             .header h1 { font-size: 26px; line-height: 1.2; color: #FFFFFF; }
             .header p { font-size: 16px; color: #D1D5DB; }
-            .specs { grid-template-columns: 1fr 1fr; border-color: rgba(255,255,255,0.1); text-align: left; }
+            
+            .specs { 
+                grid-template-columns: 1fr 1fr; justify-items: center; text-align: center; 
+                border-color: rgba(255,255,255,0.1); 
+            }
             .spec-label { color: #9CA3AF; justify-content: center; }
             .spec-value { color: #FFFFFF; }
+            
             .hide-mobile { display: none; }
             .action-dock { width: 100%; flex-direction: column; background: #FFF; padding: 16px; border-radius: 16px; gap: 16px; border: 1px solid #EEE; }
             .price-group { text-align: center; }
@@ -226,8 +313,15 @@
             .outcome-card::before { font-size: 200px; bottom: -28px; }
             .skill-pill { padding: 6px 10px; gap: 6px; font-size: 0.8rem; }
             .sec-promo { padding: 40px 0; }
-            .module-card { padding: 16px; border-radius: 16px; }
-            .preview-img { display: none; }
+            .cta-desktop { margin-top: 24px; } 
+
+            .sec-syllabus { padding: 40px 0; }
+            .syllabus-container { padding: 0 16px; }
+            .module-card { padding: 20px; border-radius: 20px; }
+            .module-heading { font-size: 18px; gap: 10px; }
+            .acc-trigger { padding: 16px 16px; }
+            .acc-content { padding: 0 16px; }
+            .card-layout { gap: 24px; }
         }
     </style>
 </head>
@@ -351,6 +445,7 @@
             <div class="promo-content">
                 <h2>Break into a full stack web development career.</h2>
                 <p>Get the skills, structure, and hands-on experience to launch your career.</p>
+                
                 <div class="cta-container cta-desktop">
                     <div class="cta-price-wrapper">
                         <button class="btn-get-started">Get started</button>
@@ -359,6 +454,7 @@
                     <small class="guarantee-text">30-Day Money-Back Guarantee</small>
                 </div>
             </div>
+
             <div class="included-card">
                 <h3>What makes you hireable?</h3>
                 <div class="included-list">
@@ -375,7 +471,7 @@
                         <span>Mock Interviews</span>
                     </div>
                     <div class="included-item">
-                        <div class="included-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 256 256" fill="currentColor"><path d="M128,136a8,8,0,0,1-8,8H72a8,8,0,0,1,0-16h48A8,8,0,0,1,128,136Zm-8-40H72a8,8,0,0,0,0,16h48a8,8,0,0,0,0-16Zm112,65.47V224A8,8,0,0,1,220,231l-24-13.74L172,231A8,8,0,0,1,160,224V200H40a16,16,0,0,1-16-16V56A16,16,0,0,1,40,40H216a16,16,0,0,1,16,16V86.53a51.88,51.88,0,0,1,0,74.94ZM160,184V161.47A52,52,0,0,1,216,76V56H40V184Zm56-12a51.88,51.88,0,0,1-40,0v38.22l16-9.16a8,8,0,0,1,7.94,0l16,9.16Zm16-48a36,36,0,1,0-36,36A36,36,0,0,0,232,124Z"/></svg></div>
+                        <div class="included-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 256 256" fill="currentColor"><path d="M128,136a8,8,0,0,1-8,8H72a8,8,0,0,1,0-16h48A8,8,0,0,1,128,136Zm-8-40H72a8,8,0,0,0,0,16h48a8,8,0,0,0,0-16Zm112,65.47V224A8,8,0,0,1,220,231l-24-13.74L172,231A8,8,0,0,1,160,224V200H40a16,16,0,0,1-16-16V56A16,16,0,0,1,40,40H216a16,16,0,0,1,16,16V86.53a51.88,51.88,0,0,1,0,74.94ZM160,184V161.47A52,52,0,0,1,216,76V56H40V184Zm56-12a51.88,51.88,0,0,1-40,0v38.22l16-9.16a8,8,0,0,1,7.94,0l16,9.16Zm16-48a36,36,0,1,0-36,36A36,36,0,0,0,232,124Z"></path></svg></div>
                         <span>NSDC Certification</span>
                     </div>
                 </div>
@@ -383,27 +479,32 @@
         </div>
     </section>
 
-    <!-- INDUSTRIAL SYLLABUS SECTION -->
+    <!-- SYLLABUS SECTION -->
     <section class="sec-syllabus">
-        <div class="container-inner">
-            <h2 class="section-title">The Industrial Syllabus</h2>
+        <div class="syllabus-container">
+            <h1 class="syllabus-title">The Industrial Syllabus</h1>
 
             <!-- MODULE 1 -->
             <div class="module-card" id="module-1">
                 <h3 class="module-heading"><span class="badge">Module-1</span> JavaScript, React, & Node.js</h3>
                 <div class="card-layout">
+                    <!-- Preview Box -->
                     <div class="preview-box">
-                        <img src="https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=600&auto=format&fit=crop" class="preview-img">
+                        <img src="https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=600&auto=format&fit=crop" alt="Coding" class="preview-img">
                         <div class="preview-text">
                             <h4>MERN Foundation</h4>
-                            <p>Build high-performance web applications using the MERN tech stack.</p>
-                            <a href="#" class="view-link-syllabus">Preview Projects <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></a>
+                            <p>Build high-performance web applications using the industry's most popular tech stack.</p>
+                            <a href="#" class="view-link">
+                                Preview Projects
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                            </a>
                         </div>
                     </div>
                     
+                    <!-- Accordion List -->
                     <div class="accordion-container">
                         <div class="accordion-header-row">
-                            <span style="font-size: 11px; font-weight: 700; color: #9CA3AF;">4 LESSONS</span>
+                            <span style="font-size: 11px; font-weight: 700; color: var(--text-muted); letter-spacing: 0.5px;">4 LESSONS</span>
                             <div class="expand-controls">
                                 <button class="control-btn bulk-expand" onclick="bulkToggle('module-1', true)">Expand All</button>
                                 <button class="control-btn bulk-collapse hidden" onclick="bulkToggle('module-1', false)">Collapse All</button>
@@ -415,7 +516,7 @@
                                     <div class="acc-title"><span class="acc-number">01</span> Modern JavaScript (ES6+)</div>
                                     <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
                                 </button>
-                                <div class="acc-content"><p>Master arrow functions, destructuring, and the latest ES2024 features used in production code.</p></div>
+                                <div class="acc-content"><p>Master arrow functions, destructuring, modules, and the latest ES2024 features used in production code.</p></div>
                             </div>
                             <div class="acc-item">
                                 <button class="acc-trigger" onclick="toggleAcc(this)">
@@ -445,20 +546,22 @@
 
             <!-- MODULE 2 -->
             <div class="module-card" id="module-2">
-                <h3 class="module-heading"><span class="badge">Module-2</span> Technical Interviews</h3>
+                <h3 class="module-heading"><span class="badge">Module-2</span> JavaScript Interviews</h3>
                 <div class="card-layout">
                     <div class="preview-box">
-                        <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=600&auto=format&fit=crop" class="preview-img">
+                        <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=600&auto=format&fit=crop" alt="Code Screen" class="preview-img">
                         <div class="preview-text">
                             <h4>Ace Technical Rounds</h4>
-                            <p>Deep dive into the "why" behind JS to impress senior architects.</p>
-                            <a href="#" class="view-link-syllabus">View Cheat Sheet <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></a>
+                            <p>Deep dive into the "why" behind JavaScript to impress senior developers and architects.</p>
+                            <a href="#" class="view-link">
+                                View Cheat Sheet
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                            </a>
                         </div>
                     </div>
-                    
                     <div class="accordion-container">
                         <div class="accordion-header-row">
-                            <span style="font-size: 11px; font-weight: 700; color: #9CA3AF;">4 LESSONS</span>
+                            <span style="font-size: 11px; font-weight: 700; color: var(--text-muted); letter-spacing: 0.5px;">4 LESSONS</span>
                             <div class="expand-controls">
                                 <button class="control-btn bulk-expand" onclick="bulkToggle('module-2', true)">Expand All</button>
                                 <button class="control-btn bulk-collapse hidden" onclick="bulkToggle('module-2', false)">Collapse All</button>
@@ -470,28 +573,85 @@
                                     <div class="acc-title"><span class="acc-number">01</span> Memory Management & Closures</div>
                                     <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
                                 </button>
-                                <div class="acc-content"><p>Learn how the JS engine handles scope and memory, and why closures are essential.</p></div>
+                                <div class="acc-content"><p>Learn how the JS engine handles scope and memory, and why closures are essential for modern JS development.</p></div>
                             </div>
                             <div class="acc-item">
                                 <button class="acc-trigger" onclick="toggleAcc(this)">
-                                    <div class="acc-title"><span class="acc-number">02</span> Event Loop Internals</div>
+                                    <div class="acc-title"><span class="acc-number">02</span> Event Loop & Async Internals</div>
                                     <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
                                 </button>
-                                <div class="acc-content"><p>Master the microtask queue and how JavaScript handles single-threaded concurrency.</p></div>
+                                <div class="acc-content"><p>Master the microtask queue, macrotask queue, and how JavaScript handles single-threaded concurrency.</p></div>
                             </div>
                             <div class="acc-item">
                                 <button class="acc-trigger" onclick="toggleAcc(this)">
-                                    <div class="acc-title"><span class="acc-number">03</span> Prototypal Inheritance</div>
+                                    <div class="acc-title"><span class="acc-number">03</span> Prototype Chain & Inheritance</div>
                                     <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
                                 </button>
-                                <div class="acc-content"><p>Understand prototypal inheritance vs class-based inheritance for high-performance apps.</p></div>
+                                <div class="acc-content"><p>Understand prototypal inheritance vs class-based inheritance and how to use it for high-performance apps.</p></div>
                             </div>
                             <div class="acc-item">
                                 <button class="acc-trigger" onclick="toggleAcc(this)">
-                                    <div class="acc-title"><span class="acc-number">04</span> Senior Coding Tasks</div>
+                                    <div class="acc-title"><span class="acc-number">04</span> Senior Developer Coding Tasks</div>
                                     <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
                                 </button>
-                                <div class="acc-content"><p>Solve machine coding rounds like building a custom Promise library or a debounce function.</p></div>
+                                <div class="acc-content"><p>Solve real-world machine coding rounds like building a custom Promise library or a robust debounce function.</p></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MODULE 3 -->
+            <div class="module-card" id="module-3">
+                <h3 class="module-heading"><span class="badge">Module-3</span> Data Structures & Algorithms</h3>
+                <div class="card-layout">
+                    <div class="preview-box">
+                        <img src="https://images.unsplash.com/photo-1504639725590-34d0984388bd?q=80&w=600&auto=format&fit=crop" alt="Algorithms" class="preview-img">
+                        <div class="preview-text">
+                            <h4>Problem Solving</h4>
+                            <p>Build a foundation of algorithmic thinking to solve any technical challenge with ease.</p>
+                            <a href="#" class="view-link">
+                                Roadmap to FAANG
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="accordion-container">
+                        <div class="accordion-header-row">
+                            <span style="font-size: 11px; font-weight: 700; color: var(--text-muted); letter-spacing: 0.5px;">4 LESSONS</span>
+                            <div class="expand-controls">
+                                <button class="control-btn bulk-expand" onclick="bulkToggle('module-3', true)">Expand All</button>
+                                <button class="control-btn bulk-collapse hidden" onclick="bulkToggle('module-3', false)">Collapse All</button>
+                            </div>
+                        </div>
+                        <div class="accordion-group">
+                            <div class="acc-item">
+                                <button class="acc-trigger" onclick="toggleAcc(this)">
+                                    <div class="acc-title"><span class="acc-number">01</span> Big O & Optimization Logic</div>
+                                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                                </button>
+                                <div class="acc-content"><p>Learn to write code that scales. Understand time and space complexity at a professional level.</p></div>
+                            </div>
+                            <div class="acc-item">
+                                <button class="acc-trigger" onclick="toggleAcc(this)">
+                                    <div class="acc-title"><span class="acc-number">02</span> Dynamic Arrays & Linked Lists</div>
+                                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                                </button>
+                                <div class="acc-content"><p>Master the most used linear structures and understand their performance tradeoffs in JS environments.</p></div>
+                            </div>
+                            <div class="acc-item">
+                                <button class="acc-trigger" onclick="toggleAcc(this)">
+                                    <div class="acc-title"><span class="acc-number">03</span> Sorting & Recursive Patterns</div>
+                                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                                </button>
+                                <div class="acc-content"><p>Dive into recursion, backtracking, and advanced sorting algorithms like Merge and Quick Sort.</p></div>
+                            </div>
+                            <div class="acc-item">
+                                <button class="acc-trigger" onclick="toggleAcc(this)">
+                                    <div class="acc-title"><span class="acc-number">04</span> Trees, Graphs & Hash Tables</div>
+                                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                                </button>
+                                <div class="acc-content"><p>Master non-linear data structures essential for social networks, search engines, and routing apps.</p></div>
                             </div>
                         </div>
                     </div>
@@ -500,49 +660,61 @@
         </div>
     </section>
 
-    <!-- ACCORDION SCRIPT -->
-    <script>
-        function toggleAcc(btn) {
-            const item = btn.parentElement;
-            const group = item.parentElement;
-            const items = group.querySelectorAll('.acc-item');
-            const isActive = item.classList.contains('active');
-            items.forEach(i => i.classList.remove('active'));
-            if (!isActive) item.classList.add('active');
-            updateBulkButtons(group.closest('.module-card'));
+<script>
+    // Manually toggle individual accordion items
+    function toggleAcc(btn) {
+        const item = btn.parentElement;
+        const group = item.parentElement;
+        const isActive = item.classList.contains('active');
+        
+        if (isActive) {
+            item.classList.remove('active');
+        } else {
+            item.classList.add('active');
         }
+        
+        const moduleCard = group.closest('.module-card');
+        updateBulkButtons(moduleCard);
+    }
 
-        function bulkToggle(moduleId, shouldExpand) {
-            const module = document.getElementById(moduleId);
-            const items = module.querySelectorAll('.acc-item');
-            const expandBtn = module.querySelector('.bulk-expand');
-            const collapseBtn = module.querySelector('.bulk-collapse');
-            items.forEach(item => {
-                if (shouldExpand) item.classList.add('active');
-                else item.classList.remove('active');
-            });
-            if (shouldExpand) {
-                expandBtn.classList.add('hidden');
-                collapseBtn.classList.remove('hidden');
-            } else {
-                expandBtn.classList.remove('hidden');
-                collapseBtn.classList.add('hidden');
-            }
-        }
+    // Handle Expand All / Collapse All
+    function bulkToggle(moduleId, shouldExpand) {
+        const module = document.getElementById(moduleId);
+        const items = module.querySelectorAll('.acc-item');
+        const expandBtn = module.querySelector('.bulk-expand');
+        const collapseBtn = module.querySelector('.bulk-collapse');
+        
+        items.forEach(item => {
+            if (shouldExpand) item.classList.add('active');
+            else item.classList.remove('active');
+        });
 
-        function updateBulkButtons(moduleCard) {
-            const items = moduleCard.querySelectorAll('.acc-item');
-            const expandBtn = moduleCard.querySelector('.bulk-expand');
-            const collapseBtn = moduleCard.querySelector('.bulk-collapse');
-            const anyActive = Array.from(items).some(item => item.classList.contains('active'));
-            if (anyActive) {
-                expandBtn.classList.add('hidden');
-                collapseBtn.classList.remove('hidden');
-            } else {
-                expandBtn.classList.remove('hidden');
-                collapseBtn.classList.add('hidden');
-            }
+        if (shouldExpand) {
+            expandBtn.classList.add('hidden');
+            collapseBtn.classList.remove('hidden');
+        } else {
+            expandBtn.classList.remove('hidden');
+            collapseBtn.classList.add('hidden');
         }
-    </script>
+    }
+
+    // Helper to update buttons state based on current open items
+    function updateBulkButtons(moduleCard) {
+        const items = moduleCard.querySelectorAll('.acc-item');
+        const expandBtn = moduleCard.querySelector('.bulk-expand');
+        const collapseBtn = moduleCard.querySelector('.bulk-collapse');
+        
+        const total = items.length;
+        const activeCount = Array.from(items).filter(item => item.classList.contains('active')).length;
+        
+        if (activeCount === total) {
+            expandBtn.classList.add('hidden');
+            collapseBtn.classList.remove('hidden');
+        } else {
+            expandBtn.classList.remove('hidden');
+            collapseBtn.classList.add('hidden');
+        }
+    }
+</script>
 </body>
 </html>
